@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
+import { format } from "date-fns";
 
 const ExpensesList = ({ expenses }) => {
   const expensesList = expenses.map((expense) => {
@@ -10,7 +11,8 @@ const ExpensesList = ({ expenses }) => {
           <Card.Title>${expense.amount}</Card.Title>
         </Card.Body>
         <Card.Footer className="text-muted">
-          Realizado el {expense.createdAt}
+          Realizado el{" "}
+          {format(new Date(expense.createdAt), "dd/MM/yyyy kk:mm:ss")}
         </Card.Footer>
       </Card>
     );

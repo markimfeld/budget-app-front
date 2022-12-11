@@ -8,15 +8,28 @@ import BudgetList from "./components/BudgetList";
 function App() {
   const [budgets, setBudgets] = useState([]);
 
-  const [accessToken, setAccessToken] = useState(null);
+  const [showLoginForm, setShowLoginForm] = useState(true);
 
   const getBudgets = async () => {
     if (window.localStorage.getItem("auth-token") !== null) {
       axios.defaults.headers.common["auth-token"] =
         window.localStorage.getItem("auth-token");
-      const { data } = await axios.get("http://localhost:3001/api/v1/budgets");
-      setBudgets(data.data);
-      console.log(data);
+
+      try {
+        const { data } = await axios.get(
+          "http://localhost:3001/api/v1/budgets"
+        );
+
+        setBudgets(data.data);
+        console.log(data);
+        setShowLoginForm(false);
+      } catch (err) {
+        if (err.response.data.status === 400) {
+          window.localStorage.clear();
+          setShowLoginForm(true);
+          window.location.reload();
+        }
+      }
     }
   };
 
@@ -26,8 +39,6 @@ function App() {
 
   const getAccessToken = (token) => {
     if (token !== null) {
-      setAccessToken(token);
-
       window.localStorage.setItem("auth-token", token);
       window.location.reload();
     }
@@ -46,11 +57,12 @@ function App() {
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
             <Navbar.Text>
-              {window.localStorage.getItem("auth-token") !== null && (
-                <a href="#logout" onClick={() => onLogout()}>
-                  Cerrar sesión
-                </a>
-              )}
+              {showLoginForm === false &&
+                window.localStorage.getItem("auth-token") !== null && (
+                  <a href="#logout" onClick={() => onLogout()}>
+                    Cerrar sesión
+                  </a>
+                )}
             </Navbar.Text>
           </Navbar.Collapse>
         </Container>
@@ -58,16 +70,18 @@ function App() {
       <Container>
         <Row>
           <Col>
-            {window.localStorage.getItem("auth-token") === null && (
-              <Login onGetAccessToken={getAccessToken} />
-            )}
+            {showLoginForm === true &&
+              window.localStorage.getItem("auth-token") === null && (
+                <Login onGetAccessToken={getAccessToken} />
+              )}
           </Col>
         </Row>
         <Row className="mt-3">
           <Col>
-            {window.localStorage.getItem("auth-token") !== null && (
-              <BudgetList budgets={budgets} />
-            )}
+            {showLoginForm === false &&
+              window.localStorage.getItem("auth-token") !== null && (
+                <BudgetList budgets={budgets} />
+              )}
           </Col>
         </Row>
       </Container>
