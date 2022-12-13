@@ -54,7 +54,7 @@ const BudgetList = ({
         <Card.Body>
           <Card.Title>${budget.leftAmount}</Card.Title>
           <Card.Text>Gastado hasta ahora ${budget.spentAmount}</Card.Text>
-          <Button variant="success" onClick={() => getExpenses(budget._id)}>
+          <Button variant="primary" onClick={() => getExpenses(budget._id)}>
             Ver detalle
           </Button>
         </Card.Body>
@@ -67,6 +67,7 @@ const BudgetList = ({
 
   const onVolver = () => {
     setExpenses([]);
+    setShowExpensesList(false);
   };
 
   const onCancel = (showBudgetForm) => {
@@ -76,17 +77,18 @@ const BudgetList = ({
   return (
     <>
       <div>
-        {expenses.length > 0 && showExpensesList && (
+        {showExpensesList && (
           <div>
-            <Button variant="link" onClick={() => onVolver()}>
+            <h2 className="text-center mb-3">Gastos</h2>
+            <ExpensesList expenses={expenses} />
+            <Button variant="secondary" onClick={() => onVolver()}>
               Volver
             </Button>
-            <ExpensesList expenses={expenses} />
           </div>
         )}
       </div>
       <div>
-        {expenses.length === 0 && showBudgetList && (
+        {showBudgetList && !showExpensesList && (
           <div>
             <h2 className="text-center">Presupuestos</h2>
             <p>Total gastado hasta hoy: ${totalSpent}</p>

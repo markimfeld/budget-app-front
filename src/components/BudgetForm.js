@@ -30,6 +30,9 @@ const BudgetForm = ({ onShowBudgetForm }) => {
       const newBudget = { name, expectedAmount };
 
       const data = await budgetService.store(newBudget, config);
+
+      console.log(data);
+      onShowBudgetForm(false);
     }
   };
 
