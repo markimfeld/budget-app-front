@@ -6,10 +6,16 @@ import { Card, Button } from "react-bootstrap";
 import ExpensesList from "./ExpensesList";
 import BudgetForm from "./BudgetForm";
 
-const BudgetList = ({ budgets }) => {
+import expenseService from "../services/expense";
+
+const BudgetList = ({
+  budgets,
+  showBudgetList,
+  showBudgetForm,
+  onHandleRenderBudgetForm,
+  user,
+}) => {
   const [expenses, setExpenses] = useState([]);
-  const [showBudgetForm, setShowBudgetForm] = useState(false);
-  const [showBudgetList, setShowBudgetList] = useState(true);
   const [showExpensesList, setShowExpensesList] = useState(false);
 
   const totales = budgets.map((budget) => budget.spentAmount);
@@ -20,19 +26,24 @@ const BudgetList = ({ budgets }) => {
   );
 
   const getExpenses = async (budgetId) => {
-    if (window.localStorage.getItem("auth-token") !== null) {
-      axios.defaults.headers.common["auth-token"] =
-        window.localStorage.getItem("auth-token");
-      const { data } = await axios.get("http://localhost:3001/api/v1/expenses");
+    if (user !== null) {
+      const config = {
+        headers: {
+          Authorization: `${user.accessToken}`,
+        },
+      };
+      try {
+        const { data } = await expenseService.getAll(config);
 
-      const expensesByBudgetId = data.data.filter(
-        (expense) => expense.budget._id === budgetId
-      );
+        const expensesByBudgetId = data.filter(
+          (expense) => expense.budget._id === budgetId
+        );
 
-      setExpenses(expensesByBudgetId);
-      setShowExpensesList(true);
-      setShowBudgetList(false);
-      console.log(expensesByBudgetId);
+        setExpenses(expensesByBudgetId);
+        setShowExpensesList(true);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -54,49 +65,40 @@ const BudgetList = ({ budgets }) => {
     );
   });
 
-  const onNewBudget = () => {
-    console.log("Creating new budget");
-    setShowBudgetForm(true);
-    setShowBudgetList(false);
-  };
-
   const onVolver = () => {
     setExpenses([]);
-    setShowBudgetList(true);
   };
 
-  const onCancel = (isCanceled) => {
-    setShowBudgetForm(false);
-    setShowBudgetList(true);
+  const onCancel = (showBudgetForm) => {
+    onHandleRenderBudgetForm(showBudgetForm);
   };
 
   return (
     <>
       <div>
-        {expenses.length > 0 && showExpensesList === true && (
+        {expenses.length > 0 && showExpensesList && (
           <div>
-            <a href="#volver" onClick={() => onVolver()}>
+            <Button variant="link" onClick={() => onVolver()}>
               Volver
-            </a>
+            </Button>
             <ExpensesList expenses={expenses} />
           </div>
         )}
       </div>
       <div>
-        {expenses.length === 0 && showBudgetList === true && (
+        {expenses.length === 0 && showBudgetList && (
           <div>
             <h2 className="text-center">Presupuestos</h2>
-            <Button onClick={() => onNewBudget()}>Nuevo presupuesto</Button>
             <p>Total gastado hasta hoy: ${totalSpent}</p>
             {budgets.length > 0 && budgetList}
           </div>
         )}
       </div>
       <div>
-        {showBudgetForm === true && (
+        {showBudgetForm && (
           <div>
             <h2 className="text-center">Nuevo presupuesto</h2>
-            <BudgetForm onCancel={onCancel} />
+            <BudgetForm onShowBudgetForm={onCancel} />
           </div>
         )}
       </div>

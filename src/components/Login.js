@@ -1,23 +1,24 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import axios from "axios";
 
-const Login = ({ onGetAccessToken }) => {
+import loginService from "../services/login";
+
+const Login = ({ onChangeUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const getToken = async () => {
-    const endpoint = "http://localhost:3001/api/v1/users/login";
-    const credentials = {
-      email,
-      password,
-    };
+  const handleLogin = async (event) => {
+    event.preventDefault();
 
-    const { data } = await axios.post(endpoint, credentials);
+    try {
+      const data = await loginService.login({ email, password });
 
-    if (data.user.accessToken !== null && data.user.accessToken !== undefined) {
-      onGetAccessToken(data.user.accessToken);
+      if (data.user !== null && data.user !== undefined) {
+        onChangeUser(data.user);
+      }
+    } catch (error) {
+      console.log(error.response.data);
     }
   };
 
@@ -29,13 +30,8 @@ const Login = ({ onGetAccessToken }) => {
     setPassword(e.target.value);
   };
 
-  const onSubmitData = (e) => {
-    e.preventDefault();
-    getToken();
-  };
-
   return (
-    <Form onSubmit={onSubmitData}>
+    <Form onSubmit={handleLogin}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email</Form.Label>
         <Form.Control

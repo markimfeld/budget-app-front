@@ -1,32 +1,32 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { Container, Row, Col, Navbar } from "react-bootstrap";
+import { Container, Row, Col, Navbar, Button, Nav } from "react-bootstrap";
 
 import Login from "./components/Login";
 import BudgetList from "./components/BudgetList";
 
-function App() {
-  const [budgets, setBudgets] = useState([]);
+import budgetService from "./services/budget";
 
-  const [showLoginForm, setShowLoginForm] = useState(true);
+function App() {
+  const [user, setUser] = useState(null);
+  const [budgets, setBudgets] = useState([]);
+  const [showBudgetForm, setShowBudgetForm] = useState(false);
+  const [showBudgetList, setShowBudgetList] = useState(true);
 
   const getBudgets = async () => {
-    if (window.localStorage.getItem("auth-token") !== null) {
-      axios.defaults.headers.common["auth-token"] =
-        window.localStorage.getItem("auth-token");
+    if (user !== null) {
+      const config = {
+        headers: {
+          Authorization: `${user.accessToken}`,
+        },
+      };
 
       try {
-        const { data } = await axios.get(
-          "http://localhost:3001/api/v1/budgets"
-        );
+        const data = await budgetService.getAll(config);
 
         setBudgets(data.data);
-        console.log(data);
-        setShowLoginForm(false);
       } catch (err) {
         if (err.response.data.status === 400) {
           window.localStorage.clear();
-          setShowLoginForm(true);
           window.location.reload();
         }
       }
@@ -35,53 +35,70 @@ function App() {
 
   useEffect(() => {
     getBudgets();
+  }, [user]);
+
+  useEffect(() => {
+    const userLogged = window.localStorage.getItem("user");
+    if (userLogged) {
+      const user = JSON.parse(userLogged);
+      setUser(user);
+    }
   }, []);
 
-  const getAccessToken = (token) => {
-    if (token !== null) {
-      window.localStorage.setItem("auth-token", token);
-      window.location.reload();
+  const handleChangeUser = (newUser) => {
+    if (newUser !== null) {
+      setUser(newUser);
+      window.localStorage.setItem("user", JSON.stringify(newUser));
     }
   };
 
-  const onLogout = () => {
+  const handleLogout = () => {
+    setUser(null);
     window.localStorage.clear();
-    window.location.reload();
+  };
+
+  const handleRenderNewBudgetForm = (showForm) => {
+    if (showForm) {
+      setShowBudgetForm(true);
+      setShowBudgetList(false);
+    } else {
+      setShowBudgetForm(false);
+      setShowBudgetList(true);
+    }
   };
 
   return (
     <>
-      <Navbar>
+      <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="#home">Mis Finanzas</Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end">
-            <Navbar.Text>
-              {showLoginForm === false &&
-                window.localStorage.getItem("auth-token") !== null && (
-                  <a href="#logout" onClick={() => onLogout()}>
-                    Cerrar sesión
-                  </a>
-                )}
-            </Navbar.Text>
-          </Navbar.Collapse>
+          <Navbar.Brand>Finanzas App</Navbar.Brand>
+          {user !== null && (
+            <Nav className="justify-content-end">
+              <Nav.Link onClick={() => handleRenderNewBudgetForm(true)}>
+                Crear presupuesto
+              </Nav.Link>
+              <Nav.Link onClick={() => handleLogout()}>Cerrar sesión</Nav.Link>
+            </Nav>
+          )}
         </Container>
       </Navbar>
       <Container>
-        <Row>
+        <Row className="mt-5">
           <Col>
-            {showLoginForm === true &&
-              window.localStorage.getItem("auth-token") === null && (
-                <Login onGetAccessToken={getAccessToken} />
-              )}
+            {user === null && <Login onChangeUser={handleChangeUser} />}
           </Col>
         </Row>
         <Row className="mt-3">
           <Col>
-            {showLoginForm === false &&
-              window.localStorage.getItem("auth-token") !== null && (
-                <BudgetList budgets={budgets} />
-              )}
+            {user !== null && (
+              <BudgetList
+                budgets={budgets}
+                showBudgetForm={showBudgetForm}
+                showBudgetList={showBudgetList}
+                onHandleRenderBudgetForm={handleRenderNewBudgetForm}
+                user={user}
+              />
+            )}
           </Col>
         </Row>
       </Container>

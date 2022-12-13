@@ -1,54 +1,52 @@
 import axios from "axios";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 
-const BudgetForm = ({ onCancel }) => {
+import budgetService from "../services/budget";
+
+const BudgetForm = ({ onShowBudgetForm }) => {
+  const [user, setUser] = useState(null);
   const [name, setName] = useState("");
   const [expectedAmount, setExpectedAmount] = useState(0);
 
-  const addBudget = async () => {
-    if (window.localStorage.getItem("auth-token") !== null) {
-      axios.defaults.headers.common["auth-token"] =
-        window.localStorage.getItem("auth-token");
+  useEffect(() => {
+    const userLogged = window.localStorage.getItem("user");
+    if (userLogged) {
+      const user = JSON.parse(userLogged);
+      setUser(user);
+    }
+  }, []);
 
-      const endpoint = "http://localhost:3001/api/v1/budgets";
+  const handleAddBudget = async (event) => {
+    event.preventDefault();
+    if (user !== null) {
+      const config = {
+        headers: {
+          Authorization: `${user.accessToken}`,
+        },
+      };
+
       const newBudget = { name, expectedAmount };
 
-      const { data } = await axios.post(
-        "http://localhost:3001/api/v1/budgets",
-        newBudget
-      );
-
-      console.log(data);
+      const data = await budgetService.store(newBudget, config);
     }
   };
 
   const onChangeName = (e) => {
-    console.log(e.target.value);
     setName(e.target.value);
   };
 
   const onChangeExpectedAmount = (e) => {
-    console.log(e.target.value);
     setExpectedAmount(e.target.value);
   };
 
-  const onSubmitBudget = (e) => {
-    e.preventDefault();
-    console.log("Submitted");
-    console.log(name);
-    console.log(expectedAmount);
-    addBudget();
-    window.location.reload();
-  };
-
   const onCancelOperation = () => {
-    onCancel(true);
+    onShowBudgetForm(false);
   };
 
   return (
-    <Form onSubmit={onSubmitBudget}>
+    <Form onSubmit={handleAddBudget}>
       <Form.Group className="mb-3" controlId="formBasicNombre">
         <Form.Label>Nombre</Form.Label>
         <Form.Control
