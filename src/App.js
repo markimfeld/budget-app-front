@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Container, Row, Col, Navbar, Button, Nav } from "react-bootstrap";
+import { Container, Row, Col, Navbar, Nav } from "react-bootstrap";
 
 import Login from "./components/Login";
 import BudgetList from "./components/BudgetList";
@@ -67,6 +67,10 @@ function App() {
     }
   };
 
+  const handleUpdateBudgets = (newBudget) => {
+    setBudgets([...budgets, newBudget]);
+  };
+
   return (
     <>
       <Navbar bg="dark" variant="dark">
@@ -97,6 +101,7 @@ function App() {
                 showBudgetList={showBudgetList}
                 onHandleRenderBudgetForm={handleRenderNewBudgetForm}
                 user={user}
+                handleUpdateBudgets={handleUpdateBudgets}
               />
             )}
           </Col>

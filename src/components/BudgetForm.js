@@ -1,11 +1,10 @@
-import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Stack } from "react-bootstrap";
 
 import budgetService from "../services/budget";
 
-const BudgetForm = ({ onShowBudgetForm }) => {
+const BudgetForm = ({ onShowBudgetForm, handleBudgetUpdate }) => {
   const [user, setUser] = useState(null);
   const [name, setName] = useState("");
   const [expectedAmount, setExpectedAmount] = useState(0);
@@ -31,7 +30,7 @@ const BudgetForm = ({ onShowBudgetForm }) => {
 
       const data = await budgetService.store(newBudget, config);
 
-      console.log(data);
+      handleBudgetUpdate(data.data);
       onShowBudgetForm(false);
     }
   };
@@ -70,12 +69,14 @@ const BudgetForm = ({ onShowBudgetForm }) => {
         />
       </Form.Group>
       <div className="d-grid gap-2">
-        <Button variant="primary" type="submit">
-          Guardar
-        </Button>
-        <Button variant="danger" onClick={() => onCancelOperation()}>
-          Cancelar
-        </Button>
+        <Stack gap={2} className="col-md-5 mx-auto">
+          <Button variant="primary" type="submit">
+            Guardar
+          </Button>
+          <Button variant="danger" onClick={() => onCancelOperation()}>
+            Cancelar
+          </Button>
+        </Stack>
       </div>
     </Form>
   );
