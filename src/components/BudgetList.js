@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Card, Button } from "react-bootstrap";
+import { Card, Button, Stack } from "react-bootstrap";
 
 import ExpensesList from "./ExpensesList";
 import BudgetForm from "./BudgetForm";
@@ -54,18 +54,28 @@ const BudgetList = ({
 
   const budgetList = budgets.map((budget) => {
     return (
-      <Card key={budget._id} className="text-center mb-4">
-        <Card.Header>{budget.name}</Card.Header>
+      <Card key={budget._id} className="mb-4">
+        <Card.Header>
+          <Stack direction="horizontal" gap={3}>
+            <span>{budget.name}</span>
+            <Button
+              className="ms-auto"
+              variant="outline-secondary"
+              onClick={() => getExpenses(budget)}
+            >
+              Ver detalle
+            </Button>
+          </Stack>
+        </Card.Header>
         <Card.Body>
-          <Card.Title>${budget.leftAmount}</Card.Title>
-          <Card.Text>Gastado hasta ahora ${budget.spentAmount}</Card.Text>
-          <Button variant="primary" onClick={() => getExpenses(budget)}>
-            Ver detalle
-          </Button>
+          <Card.Title>${budget.spentAmount} </Card.Title>
+          <Card.Text className="text-muted m-0 p-0">
+            Monto disponible ${budget.leftAmount}
+          </Card.Text>
+          <Card.Text className="text-muted">
+            Monto límite ${budget.expectedAmount}
+          </Card.Text>
         </Card.Body>
-        <Card.Footer className="text-muted">
-          Monto máximo ${budget.expectedAmount}
-        </Card.Footer>
       </Card>
     );
   });
@@ -89,7 +99,7 @@ const BudgetList = ({
   };
 
   const handleChangeExpenses = (newExpense) => {
-    setExpenses([...expenses, newExpense]);
+    setExpenses([newExpense, ...expenses]);
   };
 
   return (
@@ -112,8 +122,12 @@ const BudgetList = ({
       <div>
         {showBudgetList && !showExpensesList && (
           <div>
-            <h2 className="text-center">Presupuestos</h2>
-            <p>Total gastado hasta hoy: ${totalSpent}</p>
+            <Card className="mb-3">
+              <Card.Body>
+                <p className="m-0 mb-1">Balance</p>
+                <h3 className="ms-auto">${totalSpent}</h3>
+              </Card.Body>
+            </Card>
             {budgets.length > 0 && budgetList}
           </div>
         )}

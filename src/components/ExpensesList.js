@@ -11,15 +11,23 @@ const ExpensesList = ({ expenses, selectedBudget, handleChangeExpenses }) => {
 
   const expensesList = expenses.map((expense) => {
     return (
-      <Card key={expense._id} className="text-center mb-4">
-        <Card.Header>{expense.name}</Card.Header>
+      <Card key={expense._id} className="mb-4">
         <Card.Body>
-          <Card.Title>${expense.amount}</Card.Title>
+          <Stack direction="horizontal" gap={3}>
+            <span>
+              <Card.Title>{expense.name}</Card.Title>
+              <Card.Text className="m-0 p-0">{expense.description}</Card.Text>
+              <Card.Text className="text-muted">
+                {format(new Date(expense.createdAt), "dd/MM/yyyy kk:mm")}
+              </Card.Text>
+            </span>
+            <Card.Title className="ms-auto">${expense.amount}</Card.Title>
+          </Stack>
         </Card.Body>
-        <Card.Footer className="text-muted">
-          Realizado el
-          {format(new Date(expense.createdAt), "dd/MM/yyyy kk:mm:ss")}
-        </Card.Footer>
+        {/* <Card.Footer className="text-muted">
+          Realizado el{" "}
+          
+        </Card.Footer> */}
       </Card>
     );
   });
@@ -39,6 +47,10 @@ const ExpensesList = ({ expenses, selectedBudget, handleChangeExpenses }) => {
     handleChangeExpenses(newExpense);
   };
 
+  const handleVolver = () => {
+    console.log("volver");
+  };
+
   return (
     <div>
       {showExpenseForm && (
@@ -49,16 +61,34 @@ const ExpensesList = ({ expenses, selectedBudget, handleChangeExpenses }) => {
         />
       )}
       {showExpenseList && (
-        <Stack direction="horizontal" gap={3}>
-          <h3 className="ms-auto">{selectedBudget.name}</h3>
-          <Button
-            className="ms-auto"
-            variant="primary"
-            onClick={handleNewExpense}
-          >
-            Nuevo gasto
-          </Button>
-        </Stack>
+        <Card className="mb-3">
+          <Card.Body>
+            <Stack direction="horizontal" gap={3}>
+              <div>
+                <Card.Title>{selectedBudget.name}</Card.Title>
+                <Card.Text className="text-muted">
+                  Disponible: ${selectedBudget.leftAmount}
+                </Card.Text>
+              </div>
+              <Stack direction="vertical" gap={2}>
+                <Button
+                  className="ms-auto"
+                  variant="outline-secondary"
+                  onClick={handleNewExpense}
+                >
+                  Nuevo gasto
+                </Button>
+                <Button
+                  className="ms-auto"
+                  variant="outline-danger"
+                  onClick={handleVolver}
+                >
+                  Volver
+                </Button>
+              </Stack>
+            </Stack>
+          </Card.Body>
+        </Card>
       )}
       <div className="mt-3">
         {expenses.length > 0 && showExpenseList && expensesList}

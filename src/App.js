@@ -73,28 +73,40 @@ function App() {
 
   return (
     <>
-      <Navbar bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand>Finanzas App</Navbar.Brand>
-          {user !== null && (
-            <Nav className="justify-content-end">
-              <Nav.Link onClick={() => handleRenderNewBudgetForm(true)}>
-                Crear presupuesto
-              </Nav.Link>
-              <Nav.Link onClick={() => handleLogout()}>Cerrar sesión</Nav.Link>
-            </Nav>
-          )}
-        </Container>
-      </Navbar>
-      <Container>
-        <Row className="mt-5">
-          <Col>
-            {user === null && <Login onChangeUser={handleChangeUser} />}
-          </Col>
-        </Row>
-        <Row className="mt-3">
-          <Col>
+      {user !== null && (
+        <Navbar bg="dark" variant="dark">
+          <Container>
+            <Navbar.Brand>Finanzas App</Navbar.Brand>
             {user !== null && (
+              <Nav className="justify-content-end">
+                <Nav.Link onClick={() => handleRenderNewBudgetForm(true)}>
+                  Crear presupuesto
+                </Nav.Link>
+                <Nav.Link onClick={() => handleLogout()}>
+                  Cerrar sesión
+                </Nav.Link>
+              </Nav>
+            )}
+          </Container>
+        </Navbar>
+      )}
+      {user === null && (
+        <Container>
+          <Row
+            className="m-auto align-items-center"
+            style={{ height: "97vh", width: "50vw" }}
+          >
+            <Col>
+              <Login onChangeUser={handleChangeUser} />
+            </Col>
+          </Row>
+        </Container>
+      )}
+
+      {user !== null && (
+        <Container>
+          <Row className="mt-4">
+            <Col>
               <BudgetList
                 budgets={budgets}
                 showBudgetForm={showBudgetForm}
@@ -103,10 +115,10 @@ function App() {
                 user={user}
                 handleUpdateBudgets={handleUpdateBudgets}
               />
-            )}
-          </Col>
-        </Row>
-      </Container>
+            </Col>
+          </Row>
+        </Container>
+      )}
     </>
   );
 }

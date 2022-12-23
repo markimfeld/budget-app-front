@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Card } from "react-bootstrap";
 
 import Error from "./Error";
 
@@ -21,7 +21,6 @@ const Login = ({ onChangeUser }) => {
         onChangeUser(data.user);
       }
     } catch (error) {
-      console.log(error.response.data);
       setError(error.response.data);
       setTimeout(() => {
         setError(null);
@@ -40,34 +39,51 @@ const Login = ({ onChangeUser }) => {
   return (
     <>
       {error !== null && <Error error={error} />}
-      <Form onSubmit={handleLogin}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            name="email"
-            value={email}
-            onChange={onChangeEmail}
-            type="email"
-            placeholder="lionelmessi@gmail.com"
-          />
-        </Form.Group>
+      <Card>
+        <Card.Body>
+          <Card.Title className="text-center">Finanzas</Card.Title>
+          <Form onSubmit={handleLogin}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                name="email"
+                value={email}
+                onChange={onChangeEmail}
+                type="email"
+                placeholder="lionelmessi@gmail.com"
+                required
+              />
+            </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Contraseña</Form.Label>
-          <Form.Control
-            password={password}
-            value={password}
-            onChange={onChangePassword}
-            type="password"
-            placeholder="Ingresá tu contraseña"
-          />
-        </Form.Group>
-        <div className="d-grid gap-2">
-          <Button variant="primary" type="submit">
-            Iniciar sesión
-          </Button>
-        </div>
-      </Form>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Contraseña</Form.Label>
+              <Form.Control
+                password={password}
+                value={password}
+                onChange={onChangePassword}
+                type="password"
+                placeholder="Ingresá tu contraseña"
+                required
+              />
+            </Form.Group>
+            <div className="d-grid gap-2">
+              <Button variant="primary" type="submit">
+                Iniciar sesión
+              </Button>
+            </div>
+          </Form>
+        </Card.Body>
+      </Card>
+      <Card className="mt-3">
+        <Card.Body>
+          <Card.Text className="text-center">
+            ¿No tenes cuenta?{" "}
+            <Button variant="link" className="m-0 p-0">
+              Crear una cuenta
+            </Button>
+          </Card.Text>
+        </Card.Body>
+      </Card>
     </>
   );
 };
