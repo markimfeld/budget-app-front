@@ -1,56 +1,43 @@
 import React from "react";
-import { useState } from "react";
-import { Card, Button, Stack } from "react-bootstrap";
+import { useState, useContext } from "react";
+import { Card, Button, Stack, Container, Row, Col } from "react-bootstrap";
 
 import ExpensesList from "./ExpensesList";
 import BudgetForm from "./BudgetForm";
 
 import Success from "./Success";
 
-import expenseService from "../services/expense";
+import { BudgetContext } from "../context/BudgetContext";
+import { ExpenseContext } from "../context/ExpenseContext";
 
-const BudgetList = ({
-  budgets,
-  showBudgetList,
-  showBudgetForm,
-  onHandleRenderBudgetForm,
-  user,
-  handleUpdateBudgets,
-}) => {
-  const [expenses, setExpenses] = useState([]);
-  const [showExpensesList, setShowExpensesList] = useState(false);
+const BudgetList = () => {
+  const { budgets, showBudgetForm, showBudgetList } = useContext(BudgetContext);
+  const { expenses, getExpenses, showExpensesList } =
+    useContext(ExpenseContext);
+
   const [message, setMessage] = useState(null);
   const [selectedBudget, setSelectedBudget] = useState(null);
 
-  const totales = budgets.map((budget) => budget.spentAmount);
-
-  const totalSpent = totales.reduce(
-    (acc, currentValue) => acc + currentValue,
-    0
-  );
-
-  const getExpenses = async (budget) => {
-    if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
-      try {
-        const { data } = await expenseService.getAll(config);
-
-        const expensesByBudgetId = data.filter(
-          (expense) => expense.budget._id === budget._id
-        );
-
-        setExpenses(expensesByBudgetId);
-        setShowExpensesList(true);
-        setSelectedBudget(budget);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
+  // const getExpenses = async (budget) => {
+  // if (user !== null) {
+  //   const config = {
+  //     headers: {
+  //       Authorization: `${user.accessToken}`,
+  //     },
+  //   };
+  //   try {
+  //     const { data } = await expenseService.getAll(config);
+  //     const expensesByBudgetId = data.filter(
+  //       (expense) => expense.budget._id === budget._id
+  //     );
+  //     setExpenses(expensesByBudgetId);
+  //     setShowExpensesList(true);
+  //     setSelectedBudget(budget);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+  // };
 
   const budgetList = budgets.map((budget) => {
     return (
@@ -81,30 +68,26 @@ const BudgetList = ({
   });
 
   const onVolver = () => {
-    setExpenses([]);
-    setShowExpensesList(false);
+    // setExpenses([]);
+    // setShowExpensesList(false);
   };
 
-  const onCancel = (showBudgetForm) => {
-    onHandleRenderBudgetForm(showBudgetForm);
-  };
+  // const handleBudgetUpdate = (newBudget) => {
+  //   handleUpdateBudgets(newBudget);
+  // setMessage("Nuevo presupuesto agregado exitosamente!");
 
-  const handleBudgetUpdate = (newBudget) => {
-    handleUpdateBudgets(newBudget);
-    setMessage("Nuevo presupuesto agregado exitosamente!");
-
-    setTimeout(() => {
-      setMessage(null);
-    }, 5000);
-  };
+  // setTimeout(() => {
+  //   setMessage(null);
+  // }, 5000);
+  // };
 
   const handleChangeExpenses = (newExpense) => {
-    setExpenses([newExpense, ...expenses]);
+    // setExpenses([newExpense, ...expenses]);
   };
 
   return (
     <>
-      {message !== null && <Success message={message} />}
+      {/* {message !== null && <Success message={message} />}
       <div>
         {showExpensesList && (
           <div>
@@ -112,34 +95,37 @@ const BudgetList = ({
               expenses={expenses}
               selectedBudget={selectedBudget}
               handleChangeExpenses={handleChangeExpenses}
+              onVolver={onVolver}
             />
-            <Button variant="secondary" onClick={() => onVolver()}>
-              Volver
-            </Button>
           </div>
         )}
-      </div>
+      </div> */}
       <div>
         {showBudgetList && !showExpensesList && (
           <div>
-            <Card className="mb-3">
-              <Card.Body>
-                <p className="m-0 mb-1">Balance</p>
-                <h3 className="ms-auto">${totalSpent}</h3>
-              </Card.Body>
-            </Card>
             {budgets.length > 0 && budgetList}
+            {/* {budgets.length === 0 && (
+          <Card className="mb-4">
+            <Card.Body>
+              <Card.Text>
+                No hay presupuestos creados aun.{" "}
+                <Button
+                  onClick={() => handleRenderNewBudgetForm(true)}
+                  variant="link"
+                >
+                  Crear nuevo presupuesto
+                </Button>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        )} */}
           </div>
         )}
       </div>
       <div>
         {showBudgetForm && (
           <div>
-            <h2 className="text-center">Nuevo presupuesto</h2>
-            <BudgetForm
-              onShowBudgetForm={onCancel}
-              handleBudgetUpdate={handleBudgetUpdate}
-            />
+            <BudgetForm />
           </div>
         )}
       </div>

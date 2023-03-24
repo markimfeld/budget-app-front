@@ -1,31 +1,21 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Form, Button, Card } from "react-bootstrap";
 
 import Error from "./Error";
 
-import loginService from "../services/login";
+import { UserContext } from "../context/UserContext";
 
-const Login = ({ onChangeUser }) => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
 
-  const handleLogin = async (event) => {
+  const { login, error } = useContext(UserContext);
+
+  const handleLogin = (event) => {
     event.preventDefault();
 
-    try {
-      const data = await loginService.login({ email, password });
-
-      if (data.user !== null && data.user !== undefined) {
-        onChangeUser(data.user);
-      }
-    } catch (error) {
-      setError(error.response.data);
-      setTimeout(() => {
-        setError(null);
-      }, 5000);
-    }
+    login(email, password);
   };
 
   const onChangeEmail = (e) => {

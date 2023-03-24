@@ -5,7 +5,12 @@ import { format } from "date-fns";
 
 import ExpenseForm from "./ExpenseForm";
 
-const ExpensesList = ({ expenses, selectedBudget, handleChangeExpenses }) => {
+const ExpensesList = ({
+  expenses,
+  selectedBudget,
+  handleChangeExpenses,
+  onVolver,
+}) => {
   const [showExpenseForm, setShowExpenseForm] = useState(false);
   const [showExpenseList, setShowExpenseList] = useState(true);
 
@@ -48,7 +53,7 @@ const ExpensesList = ({ expenses, selectedBudget, handleChangeExpenses }) => {
   };
 
   const handleVolver = () => {
-    console.log("volver");
+    onVolver();
   };
 
   return (
@@ -58,10 +63,11 @@ const ExpensesList = ({ expenses, selectedBudget, handleChangeExpenses }) => {
           selectedBudget={selectedBudget}
           handleShowExpenseFormChange={handleShowExpenseFormChange}
           handleUpdateExpenses={handleUpdateExpenses}
+          handleVolver={handleVolver}
         />
       )}
       {showExpenseList && (
-        <Card className="mb-3">
+        <Card border="dark" className="mb-3">
           <Card.Body>
             <Stack direction="horizontal" gap={3}>
               <div>
@@ -92,6 +98,18 @@ const ExpensesList = ({ expenses, selectedBudget, handleChangeExpenses }) => {
       )}
       <div className="mt-3">
         {expenses.length > 0 && showExpenseList && expensesList}
+        {expenses.length === 0 && showExpenseList && (
+          <Card className="mb-4">
+            <Card.Body>
+              <Card.Text>
+                No hay gastos creados aun.{" "}
+                <Button onClick={handleNewExpense} variant="link">
+                  Crear nuevo gasto
+                </Button>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        )}
       </div>
     </div>
   );

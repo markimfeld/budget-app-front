@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Form, Button, Stack } from "react-bootstrap";
+import { Form, Button, Stack, Card } from "react-bootstrap";
 
 import expenseService from "../services/expense";
 
@@ -8,6 +8,7 @@ const ExpenseForm = ({
   selectedBudget,
   handleShowExpenseFormChange,
   handleUpdateExpenses,
+  handleVolver,
 }) => {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(0);
@@ -54,39 +55,49 @@ const ExpenseForm = ({
     console.log(amount);
   };
 
-  const onCancelOperation = () => {};
+  const onCancelOperation = () => {
+    handleVolver();
+  };
 
   return (
-    <Form onSubmit={onSubmitExpense}>
-      <Form.Group className="mb-3" controlId="formBasicNombre">
-        <Form.Label>Nombre</Form.Label>
-        <Form.Control
-          onChange={onChangeName}
-          name="name"
-          type="text"
-          placeholder="Ejemplo: Pollo"
-        />
-      </Form.Group>
+    <Card>
+      <Card.Body>
+        <Card.Title className="text-center">Nuevo gasto</Card.Title>
+        <Form onSubmit={onSubmitExpense}>
+          <Form.Group className="mb-3" controlId="formBasicNombre">
+            <Form.Label>Nombre</Form.Label>
+            <Form.Control
+              onChange={onChangeName}
+              name="name"
+              type="text"
+              placeholder="Ejemplo: Pollo"
+            />
+          </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formBasicMontoLimite">
-        <Form.Label>Monto límite</Form.Label>
-        <Form.Control
-          onChange={onChangeAmount}
-          name="expectedAmount"
-          type="number"
-          placeholder="Ejemplo: 15000"
-        />
-      </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicMontoLimite">
+            <Form.Label>Monto límite</Form.Label>
+            <Form.Control
+              onChange={onChangeAmount}
+              name="expectedAmount"
+              type="number"
+              placeholder="Ejemplo: $5333.00"
+            />
+          </Form.Group>
 
-      <Stack gap={2} className="col-md-5 mx-auto">
-        <Button variant="primary" type="submit">
-          Guardar
-        </Button>
-        <Button variant="danger" onClick={() => onCancelOperation()}>
-          Cancelar
-        </Button>
-      </Stack>
-    </Form>
+          <Stack direction="horizontal" gap={3}>
+            <Button className="ms-auto" variant="primary" type="submit">
+              Guardar
+            </Button>
+            <Button
+              variant="outline-secondary"
+              onClick={() => onCancelOperation()}
+            >
+              Cancelar
+            </Button>
+          </Stack>
+        </Form>
+      </Card.Body>
+    </Card>
   );
 };
 
