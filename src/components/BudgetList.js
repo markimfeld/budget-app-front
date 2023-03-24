@@ -12,11 +12,10 @@ import { ExpenseContext } from "../context/ExpenseContext";
 
 const BudgetList = () => {
   const { budgets, showBudgetForm, showBudgetList } = useContext(BudgetContext);
-  const { expenses, getExpenses, showExpensesList } =
+  const { expenses, getExpenses, showExpensesList, selectedBudget } =
     useContext(ExpenseContext);
 
   const [message, setMessage] = useState(null);
-  const [selectedBudget, setSelectedBudget] = useState(null);
 
   // const getExpenses = async (budget) => {
   // if (user !== null) {
@@ -87,7 +86,7 @@ const BudgetList = () => {
 
   return (
     <>
-      {/* {message !== null && <Success message={message} />}
+      {/* {message !== null && <Success message={message} />} */}
       <div>
         {showExpensesList && (
           <div>
@@ -99,7 +98,7 @@ const BudgetList = () => {
             />
           </div>
         )}
-      </div> */}
+      </div>
       <div>
         {showBudgetList && !showExpensesList && (
           <div>

@@ -11,6 +11,7 @@ export const ExpenseContext = createContext();
 export const ExpenseContextProvider = ({ children }) => {
   const [expenses, setExpenses] = useState([]);
   const [showExpensesList, setShowExpensesList] = useState(false);
+  const [selectedBudget, setSelectedBudget] = useState(null);
 
   const { user } = useContext(UserContext);
 
@@ -29,6 +30,7 @@ export const ExpenseContextProvider = ({ children }) => {
         setExpenses(expensesByBudgetId);
 
         handleShowExpenseList(true);
+        setSelectedBudget(budget);
       } catch (error) {
         console.log(error);
       }
@@ -45,7 +47,13 @@ export const ExpenseContextProvider = ({ children }) => {
 
   return (
     <ExpenseContext.Provider
-      value={{ expenses, getExpenses, showExpensesList, handleShowExpenseList }}
+      value={{
+        expenses,
+        getExpenses,
+        showExpensesList,
+        handleShowExpenseList,
+        selectedBudget,
+      }}
     >
       {children}
     </ExpenseContext.Provider>
