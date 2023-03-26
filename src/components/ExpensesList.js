@@ -1,18 +1,25 @@
 import React from "react";
-import { useState } from "react";
+import { useContext } from "react";
 import { Card, Button, Stack } from "react-bootstrap";
 import { format } from "date-fns";
 
 import ExpenseForm from "./ExpenseForm";
 
-const ExpensesList = ({
-  expenses,
-  selectedBudget,
-  handleChangeExpenses,
-  onVolver,
-}) => {
-  const [showExpenseForm, setShowExpenseForm] = useState(false);
-  const [showExpenseList, setShowExpenseList] = useState(true);
+import { ExpenseContext } from "../context/ExpenseContext";
+
+import { BudgetContext } from "../context/BudgetContext";
+
+const ExpensesList = () => {
+  const {
+    expenses,
+    selectedBudget,
+    handleShowExpenseList,
+    handleShowExpenseForm,
+    showExpenseForm,
+    showExpensesList,
+  } = useContext(ExpenseContext);
+
+  const { handleShowBudgetList } = useContext(BudgetContext);
 
   const expensesList = expenses.map((expense) => {
     return (
@@ -39,34 +46,22 @@ const ExpensesList = ({
 
   const handleNewExpense = () => {
     console.log("New expense");
-    setShowExpenseForm(true);
-    setShowExpenseList(false);
-  };
-
-  const handleShowExpenseFormChange = (shouldShowExpenseList) => {
-    setShowExpenseList(shouldShowExpenseList);
-    setShowExpenseForm(!shouldShowExpenseList);
+    handleShowExpenseForm(true);
+    handleShowExpenseList(false);
   };
 
   const handleUpdateExpenses = (newExpense) => {
-    handleChangeExpenses(newExpense);
+    // handleChangeExpenses(newExpense);
   };
 
   const handleVolver = () => {
-    onVolver();
+    // onVolver();
   };
 
   return (
     <div>
-      {showExpenseForm && (
-        <ExpenseForm
-          selectedBudget={selectedBudget}
-          handleShowExpenseFormChange={handleShowExpenseFormChange}
-          handleUpdateExpenses={handleUpdateExpenses}
-          handleVolver={handleVolver}
-        />
-      )}
-      {showExpenseList && (
+      {showExpenseForm && <ExpenseForm />}
+      {showExpensesList && (
         <Card border="dark" className="mb-3">
           <Card.Body>
             <Stack direction="horizontal" gap={3}>
@@ -97,8 +92,8 @@ const ExpensesList = ({
         </Card>
       )}
       <div className="mt-3">
-        {expenses.length > 0 && showExpenseList && expensesList}
-        {expenses.length === 0 && showExpenseList && (
+        {expenses.length > 0 && expensesList}
+        {expenses.length === 0 && (
           <Card className="mb-4">
             <Card.Body>
               <Card.Text>

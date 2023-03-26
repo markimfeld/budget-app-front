@@ -88,10 +88,16 @@ export const BudgetContextProvider = ({ children }) => {
   const handleShowBudgetForm = (showForm) => {
     if (showForm) {
       setShowBudgetForm(true);
-      setShowBudgetList(false);
     } else {
       setShowBudgetForm(false);
+    }
+  };
+
+  const handleShowBudgetList = (showList) => {
+    if (showList) {
       setShowBudgetList(true);
+    } else {
+      setShowBudgetList(false);
     }
   };
 
@@ -111,6 +117,7 @@ export const BudgetContextProvider = ({ children }) => {
         showBudgetForm,
         showBudgetList,
         handleUpdateBudgets,
+        handleShowBudgetList,
       }}
     >
       {children}

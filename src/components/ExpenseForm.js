@@ -1,26 +1,21 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 import { Form, Button, Stack, Card } from "react-bootstrap";
 
 import expenseService from "../services/expense";
 
-const ExpenseForm = ({
-  selectedBudget,
-  handleShowExpenseFormChange,
-  handleUpdateExpenses,
-  handleVolver,
-}) => {
+import { ExpenseContext } from "../context/ExpenseContext";
+import { BudgetContext } from "../context/BudgetContext";
+import { UserContext } from "../context/UserContext";
+
+const ExpenseForm = () => {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(0);
-  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const userLogged = window.localStorage.getItem("user");
-    if (userLogged) {
-      const user = JSON.parse(userLogged);
-      setUser(user);
-    }
-  }, []);
+  const { handleShowExpenseList, handleShowExpenseForm } =
+    useContext(ExpenseContext);
+  const { selectedBudget } = useContext(BudgetContext);
+  const { user } = useContext(UserContext);
 
   const onSubmitExpense = async (event) => {
     event.preventDefault();
@@ -37,8 +32,8 @@ const ExpenseForm = ({
       try {
         const { data } = await expenseService.store(newExpense, config);
         console.log(data);
-        handleUpdateExpenses(data);
-        handleShowExpenseFormChange(true);
+        // handleUpdateExpenses(data);
+        // handleShowExpenseFormChange(true);
       } catch (error) {
         console.log(error.response.data);
       }
@@ -56,7 +51,7 @@ const ExpenseForm = ({
   };
 
   const onCancelOperation = () => {
-    handleVolver();
+    // handleVolver();
   };
 
   return (

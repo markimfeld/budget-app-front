@@ -1,6 +1,6 @@
 import React from "react";
-import { useState, useContext } from "react";
-import { Card, Button, Stack, Container, Row, Col } from "react-bootstrap";
+import { useContext } from "react";
+import { Card, Button, Stack } from "react-bootstrap";
 
 import ExpensesList from "./ExpensesList";
 import BudgetForm from "./BudgetForm";
@@ -14,29 +14,6 @@ const BudgetList = () => {
   const { budgets, showBudgetForm, showBudgetList } = useContext(BudgetContext);
   const { expenses, getExpenses, showExpensesList, selectedBudget } =
     useContext(ExpenseContext);
-
-  const [message, setMessage] = useState(null);
-
-  // const getExpenses = async (budget) => {
-  // if (user !== null) {
-  //   const config = {
-  //     headers: {
-  //       Authorization: `${user.accessToken}`,
-  //     },
-  //   };
-  //   try {
-  //     const { data } = await expenseService.getAll(config);
-  //     const expensesByBudgetId = data.filter(
-  //       (expense) => expense.budget._id === budget._id
-  //     );
-  //     setExpenses(expensesByBudgetId);
-  //     setShowExpensesList(true);
-  //     setSelectedBudget(budget);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-  // };
 
   const budgetList = budgets.map((budget) => {
     return (
@@ -71,15 +48,6 @@ const BudgetList = () => {
     // setShowExpensesList(false);
   };
 
-  // const handleBudgetUpdate = (newBudget) => {
-  //   handleUpdateBudgets(newBudget);
-  // setMessage("Nuevo presupuesto agregado exitosamente!");
-
-  // setTimeout(() => {
-  //   setMessage(null);
-  // }, 5000);
-  // };
-
   const handleChangeExpenses = (newExpense) => {
     // setExpenses([newExpense, ...expenses]);
   };
@@ -90,17 +58,12 @@ const BudgetList = () => {
       <div>
         {showExpensesList && (
           <div>
-            <ExpensesList
-              expenses={expenses}
-              selectedBudget={selectedBudget}
-              handleChangeExpenses={handleChangeExpenses}
-              onVolver={onVolver}
-            />
+            <ExpensesList />
           </div>
         )}
       </div>
       <div>
-        {showBudgetList && !showExpensesList && (
+        {showBudgetList && (
           <div>
             {budgets.length > 0 && budgetList}
             {/* {budgets.length === 0 && (

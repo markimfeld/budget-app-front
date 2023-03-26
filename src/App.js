@@ -12,7 +12,8 @@ import { ExpenseContextProvider } from "./context/ExpenseContext";
 function App() {
   const { user, loadUserFromStorage, logout } = useContext(UserContext);
 
-  const { handleShowBudgetForm } = useContext(BudgetContext);
+  const { handleShowBudgetForm, handleShowBudgetList } =
+    useContext(BudgetContext);
 
   useEffect(() => {
     loadUserFromStorage();
@@ -23,6 +24,11 @@ function App() {
     logout();
   };
 
+  const handleShowBudgetFormOrList = (showForm) => {
+    handleShowBudgetForm(showForm);
+    handleShowBudgetList(!showForm);
+  };
+
   return (
     <>
       {user !== null && (
@@ -31,7 +37,7 @@ function App() {
             <Navbar.Brand>Finanzas App</Navbar.Brand>
             {user !== null && (
               <Nav className="justify-content-end">
-                <Nav.Link onClick={() => handleShowBudgetForm(true)}>
+                <Nav.Link onClick={() => handleShowBudgetFormOrList(true)}>
                   Crear presupuesto
                 </Nav.Link>
                 <Nav.Link onClick={() => handleLogout()}>

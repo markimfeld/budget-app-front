@@ -11,7 +11,7 @@ const BudgetForm = () => {
   const [name, setName] = useState("");
   const [expectedAmount, setExpectedAmount] = useState(0);
 
-  const { handleUpdateBudgets, handleShowBudgetForm } =
+  const { handleUpdateBudgets, handleShowBudgetForm, handleShowBudgetList } =
     useContext(BudgetContext);
 
   useEffect(() => {
@@ -37,6 +37,7 @@ const BudgetForm = () => {
 
       handleUpdateBudgets(data.data);
       handleShowBudgetForm(false);
+      handleShowBudgetList(true);
     }
   };
 
@@ -50,6 +51,7 @@ const BudgetForm = () => {
 
   const onCancelOperation = () => {
     handleShowBudgetForm(false);
+    handleShowBudgetList(true);
   };
 
   return (
