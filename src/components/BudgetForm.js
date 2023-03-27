@@ -11,8 +11,12 @@ const BudgetForm = () => {
   const [name, setName] = useState("");
   const [expectedAmount, setExpectedAmount] = useState(0);
 
-  const { handleUpdateBudgets, handleShowBudgetForm, handleShowBudgetList } =
-    useContext(BudgetContext);
+  const {
+    handleUpdateBudgets,
+    handleShowBudgetForm,
+    handleShowBudgetList,
+    handleSetMessageBudget,
+  } = useContext(BudgetContext);
 
   useEffect(() => {
     const userLogged = window.localStorage.getItem("user");
@@ -38,6 +42,7 @@ const BudgetForm = () => {
       handleUpdateBudgets(data.data);
       handleShowBudgetForm(false);
       handleShowBudgetList(true);
+      handleSetMessageBudget("Nuevo presupuesto creado exitosamente!");
     }
   };
 

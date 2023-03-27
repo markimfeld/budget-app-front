@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Alert } from "react-bootstrap";
 
-const Success = ({ message }) => {
+import { BudgetContext } from "../context/BudgetContext";
+import { ExpenseContext } from "../context/ExpenseContext";
+
+const Success = () => {
+  const { messageBudget } = useContext(BudgetContext);
+  const { messageExpense } = useContext(ExpenseContext);
+
   return (
-    <Alert key="success" variant="success">
-      {message}
-    </Alert>
+    <>
+      {messageBudget !== null && (
+        <Alert key="success" variant="success">
+          {messageBudget}
+        </Alert>
+      )}
+      {messageExpense !== null && (
+        <Alert key="success" variant="success">
+          {messageExpense}
+        </Alert>
+      )}
+    </>
   );
 };
 

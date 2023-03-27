@@ -4,9 +4,9 @@ import { Card, Button, Stack } from "react-bootstrap";
 import { format } from "date-fns";
 
 import ExpenseForm from "./ExpenseForm";
+import Success from "../components/Success";
 
 import { ExpenseContext } from "../context/ExpenseContext";
-
 import { BudgetContext } from "../context/BudgetContext";
 
 const ExpensesList = () => {
@@ -17,6 +17,8 @@ const ExpensesList = () => {
     handleShowExpenseForm,
     showExpenseForm,
     showExpensesList,
+    handleSelectedBudget,
+    messageExpense,
   } = useContext(ExpenseContext);
 
   const { handleShowBudgetList } = useContext(BudgetContext);
@@ -44,61 +46,62 @@ const ExpensesList = () => {
     );
   });
 
-  const handleNewExpense = () => {
-    console.log("New expense");
-    handleShowExpenseForm(true);
-    handleShowExpenseList(false);
+  const handleNewExpense = (showForm) => {
+    handleShowExpenseForm(showForm);
+    handleShowExpenseList(!showForm);
+    handleShowBudgetList(!showForm);
+    handleSelectedBudget(selectedBudget);
   };
 
-  const handleUpdateExpenses = (newExpense) => {
-    // handleChangeExpenses(newExpense);
-  };
-
-  const handleVolver = () => {
-    // onVolver();
+  const handleVolver = (showList) => {
+    handleShowExpenseList(!showList);
+    handleShowExpenseForm(!showList);
+    handleShowBudgetList(showList);
   };
 
   return (
-    <div>
-      {showExpenseForm && <ExpenseForm />}
-      {showExpensesList && (
-        <Card border="dark" className="mb-3">
-          <Card.Body>
-            <Stack direction="horizontal" gap={3}>
-              <div>
-                <Card.Title>{selectedBudget.name}</Card.Title>
-                <Card.Text className="text-muted">
-                  Disponible: ${selectedBudget.leftAmount}
-                </Card.Text>
-              </div>
-              <Stack direction="vertical" gap={2}>
-                <Button
-                  className="ms-auto"
-                  variant="outline-secondary"
-                  onClick={handleNewExpense}
-                >
-                  Nuevo gasto
-                </Button>
-                <Button
-                  className="ms-auto"
-                  variant="outline-danger"
-                  onClick={handleVolver}
-                >
-                  Volver
-                </Button>
+    <>
+      <div>
+        {showExpensesList && (
+          <Card border="dark" className="mb-3">
+            <Card.Body>
+              <Stack direction="horizontal" gap={3}>
+                <div>
+                  <Card.Title>{selectedBudget.name}</Card.Title>
+                  <Card.Text className="text-muted">
+                    Disponible: ${selectedBudget.leftAmount}
+                  </Card.Text>
+                </div>
+                <Stack direction="vertical" gap={2}>
+                  <Button
+                    className="ms-auto"
+                    variant="outline-secondary"
+                    onClick={() => handleNewExpense(true)}
+                  >
+                    Nuevo gasto
+                  </Button>
+                  <Button
+                    className="ms-auto"
+                    variant="outline-danger"
+                    onClick={() => handleVolver(true)}
+                  >
+                    Volver
+                  </Button>
+                </Stack>
               </Stack>
-            </Stack>
-          </Card.Body>
-        </Card>
-      )}
+            </Card.Body>
+          </Card>
+        )}
+      </div>
       <div className="mt-3">
-        {expenses.length > 0 && expensesList}
-        {expenses.length === 0 && (
+        {messageExpense !== null && <Success />}
+        {expenses.length > 0 && showExpensesList && expensesList}
+        {expenses.length === 0 && showExpensesList && (
           <Card className="mb-4">
             <Card.Body>
               <Card.Text>
                 No hay gastos creados aun.{" "}
-                <Button onClick={handleNewExpense} variant="link">
+                <Button onClick={() => handleNewExpense(true)} variant="link">
                   Crear nuevo gasto
                 </Button>
               </Card.Text>
@@ -106,7 +109,8 @@ const ExpensesList = () => {
           </Card>
         )}
       </div>
-    </div>
+      <div>{showExpenseForm && <ExpenseForm />}</div>
+    </>
   );
 };
 
