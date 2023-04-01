@@ -4,16 +4,21 @@ import { Card, Button, Stack } from "react-bootstrap";
 
 import ExpensesList from "./ExpensesList";
 import BudgetForm from "./BudgetForm";
-
-import Success from "./Success";
+import Success from "../components/Success";
 
 import { BudgetContext } from "../context/BudgetContext";
 import { ExpenseContext } from "../context/ExpenseContext";
 
 const BudgetList = () => {
-  const { budgets, showBudgetForm, showBudgetList } = useContext(BudgetContext);
-  const { expenses, getExpenses, showExpensesList, selectedBudget } =
-    useContext(ExpenseContext);
+  const {
+    budgets,
+    showBudgetForm,
+    showBudgetList,
+    messageBudget,
+    handleShowBudgetForm,
+    handleShowBudgetList,
+  } = useContext(BudgetContext);
+  const { getExpenses } = useContext(ExpenseContext);
 
   const budgetList = budgets.map((budget) => {
     return (
@@ -43,20 +48,16 @@ const BudgetList = () => {
     );
   });
 
-  const onVolver = () => {
-    // setExpenses([]);
-    // setShowExpensesList(false);
-  };
-
-  const handleChangeExpenses = (newExpense) => {
-    // setExpenses([newExpense, ...expenses]);
+  const handleShowBudgetFormOrList = (showForm) => {
+    handleShowBudgetForm(showForm);
+    handleShowBudgetList(!showForm);
   };
 
   return (
     <>
-      {/* {message !== null && <Success message={message} />} */}
+      {messageBudget !== null && <Success />}
       <div>
-        {showExpensesList && (
+        {!showBudgetList && (
           <div>
             <ExpensesList />
           </div>
@@ -66,21 +67,21 @@ const BudgetList = () => {
         {showBudgetList && (
           <div>
             {budgets.length > 0 && budgetList}
-            {/* {budgets.length === 0 && (
-          <Card className="mb-4">
-            <Card.Body>
-              <Card.Text>
-                No hay presupuestos creados aun.{" "}
-                <Button
-                  onClick={() => handleRenderNewBudgetForm(true)}
-                  variant="link"
-                >
-                  Crear nuevo presupuesto
-                </Button>
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        )} */}
+            {budgets.length === 0 && (
+              <Card className="mb-4">
+                <Card.Body>
+                  <Card.Text>
+                    No hay presupuestos creados aun.{" "}
+                    <Button
+                      onClick={() => handleShowBudgetFormOrList(true)}
+                      variant="link"
+                    >
+                      Crear nuevo presupuesto
+                    </Button>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            )}
           </div>
         )}
       </div>

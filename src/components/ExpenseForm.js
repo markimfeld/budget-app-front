@@ -5,16 +5,19 @@ import { Form, Button, Stack, Card } from "react-bootstrap";
 import expenseService from "../services/expense";
 
 import { ExpenseContext } from "../context/ExpenseContext";
-import { BudgetContext } from "../context/BudgetContext";
 import { UserContext } from "../context/UserContext";
 
 const ExpenseForm = () => {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(0);
 
-  const { handleShowExpenseList, handleShowExpenseForm } =
-    useContext(ExpenseContext);
-  const { selectedBudget } = useContext(BudgetContext);
+  const {
+    handleShowExpenseList,
+    handleShowExpenseForm,
+    selectedBudget,
+    handleUpdateExpenses,
+    handleSetMessageExpense,
+  } = useContext(ExpenseContext);
   const { user } = useContext(UserContext);
 
   const onSubmitExpense = async (event) => {
@@ -31,9 +34,10 @@ const ExpenseForm = () => {
 
       try {
         const { data } = await expenseService.store(newExpense, config);
-        console.log(data);
-        // handleUpdateExpenses(data);
-        // handleShowExpenseFormChange(true);
+        handleShowExpenseList(true);
+        handleShowExpenseForm(false);
+        handleUpdateExpenses(data);
+        handleSetMessageExpense("Nuevo gasto creado exitosamente!");
       } catch (error) {
         console.log(error.response.data);
       }
@@ -50,8 +54,9 @@ const ExpenseForm = () => {
     console.log(amount);
   };
 
-  const onCancelOperation = () => {
-    // handleVolver();
+  const onCancelOperation = (showList) => {
+    handleShowExpenseForm(!showList);
+    handleShowExpenseList(showList);
   };
 
   return (
@@ -85,7 +90,7 @@ const ExpenseForm = () => {
             </Button>
             <Button
               variant="outline-secondary"
-              onClick={() => onCancelOperation()}
+              onClick={() => onCancelOperation(true)}
             >
               Cancelar
             </Button>

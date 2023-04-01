@@ -14,6 +14,7 @@ export const ExpenseContextProvider = ({ children }) => {
   const [showExpensesList, setShowExpensesList] = useState(false);
   const [showExpenseForm, setShowExpenseForm] = useState(false);
   const [selectedBudget, setSelectedBudget] = useState(null);
+  const [messageExpense, setMessageExpense] = useState(null);
 
   const { user } = useContext(UserContext);
 
@@ -51,13 +52,27 @@ export const ExpenseContextProvider = ({ children }) => {
   };
 
   const handleShowExpenseForm = (showForm) => {
-    console.log(":::: ", showForm);
-
     if (showForm) {
       setShowExpenseForm(true);
     } else {
       setShowExpenseForm(false);
     }
+  };
+
+  const handleSelectedBudget = (budget) => {
+    setSelectedBudget(budget);
+  };
+
+  const handleUpdateExpenses = (newExpense) => {
+    setExpenses([newExpense, ...expenses]);
+  };
+
+  const handleSetMessageExpense = (message) => {
+    setMessageExpense(message);
+
+    setTimeout(() => {
+      setMessageExpense(null);
+    }, 5000);
   };
 
   return (
@@ -70,6 +85,10 @@ export const ExpenseContextProvider = ({ children }) => {
         selectedBudget,
         showExpenseForm,
         handleShowExpenseForm,
+        handleSelectedBudget,
+        handleUpdateExpenses,
+        handleSetMessageExpense,
+        messageExpense,
       }}
     >
       {children}

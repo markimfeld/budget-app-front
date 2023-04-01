@@ -18,6 +18,7 @@ export const BudgetContextProvider = ({ children }) => {
   });
   const [showBudgetForm, setShowBudgetForm] = useState(false);
   const [showBudgetList, setShowBudgetList] = useState(true);
+  const [messageBudget, setMessageBudget] = useState(null);
 
   const { user } = useContext(UserContext);
 
@@ -105,6 +106,13 @@ export const BudgetContextProvider = ({ children }) => {
     setBudgets([...budgets, newBudget]);
   };
 
+  const handleSetMessageBudget = (message) => {
+    setMessageBudget(message);
+    setTimeout(() => {
+      setMessageBudget(null);
+    }, 5000);
+  };
+
   return (
     <BudgetContext.Provider
       value={{
@@ -118,6 +126,8 @@ export const BudgetContextProvider = ({ children }) => {
         showBudgetList,
         handleUpdateBudgets,
         handleShowBudgetList,
+        handleSetMessageBudget,
+        messageBudget,
       }}
     >
       {children}
