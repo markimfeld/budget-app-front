@@ -40,9 +40,29 @@ export const UserContextProvider = ({ children }) => {
     }
   };
 
+  const register = async () => {
+    let firstName = "joel";
+    let lastName = "gomez";
+    let username = "jgomez";
+    let password = "jgomez";
+    let email = "jgomez@gmail.com";
+
+    try {
+      const response = await loginService.register({
+        firstName,
+        lastName,
+        username,
+        email,
+        password,
+      });
+
+      console.log(response);
+    } catch (err) {}
+  };
+
   return (
     <UserContext.Provider
-      value={{ user, login, logout, error, loadUserFromStorage }}
+      value={{ user, login, logout, error, loadUserFromStorage, register }}
     >
       {children}
     </UserContext.Provider>
