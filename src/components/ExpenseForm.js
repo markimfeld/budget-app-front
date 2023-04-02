@@ -6,6 +6,7 @@ import expenseService from "../services/expense";
 
 import { ExpenseContext } from "../context/ExpenseContext";
 import { UserContext } from "../context/UserContext";
+import { BudgetContext } from "../context/BudgetContext";
 
 const ExpenseForm = () => {
   const [name, setName] = useState("");
@@ -17,8 +18,10 @@ const ExpenseForm = () => {
     selectedBudget,
     handleUpdateExpenses,
     handleSetMessageExpense,
+    handleUpdateSelectedBudget,
   } = useContext(ExpenseContext);
   const { user } = useContext(UserContext);
+  const { getBudgets } = useContext(BudgetContext);
 
   const onSubmitExpense = async (event) => {
     event.preventDefault();
@@ -38,6 +41,8 @@ const ExpenseForm = () => {
         handleShowExpenseForm(false);
         handleUpdateExpenses(data);
         handleSetMessageExpense("Nuevo gasto creado exitosamente!");
+        handleUpdateSelectedBudget(selectedBudget._id);
+        getBudgets();
       } catch (error) {
         console.log(error.response.data);
       }

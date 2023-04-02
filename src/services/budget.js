@@ -15,8 +15,16 @@ const budgetService = {
     const { data } = await axios.get(finalUrl, config);
     return data;
   },
+  getOne: async (config, id) => {
+    const { data } = await axios.get(`${baseUrl}/${id}`, config);
+    return data;
+  },
   store: async (newBudget, config) => {
     const { data } = await axios.post(baseUrl, newBudget, config);
+    return data;
+  },
+  delete: async (id, config) => {
+    const { data } = axios.delete(`${baseUrl}/${id}`, config);
     return data;
   },
 };

@@ -110,7 +110,26 @@ export const BudgetContextProvider = ({ children }) => {
     setMessageBudget(message);
     setTimeout(() => {
       setMessageBudget(null);
-    }, 5000);
+    }, 2500);
+  };
+
+  const handleDeleteBudget = async (budget) => {
+    if (user !== null) {
+      const config = {
+        headers: {
+          Authorization: `${user.accessToken}`,
+        },
+      };
+      try {
+        await budgetService.delete(budget._id, config);
+        setBudgets(budgets.filter((b) => b._id !== budget._id));
+      } catch (err) {
+        if (err.response.data.status === 400) {
+          window.localStorage.clear();
+          window.location.reload();
+        }
+      }
+    }
   };
 
   return (
@@ -128,6 +147,8 @@ export const BudgetContextProvider = ({ children }) => {
         handleShowBudgetList,
         handleSetMessageBudget,
         messageBudget,
+        getBudgets,
+        handleDeleteBudget,
       }}
     >
       {children}

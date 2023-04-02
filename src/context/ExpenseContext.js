@@ -6,6 +6,7 @@ import { BudgetContext } from "./BudgetContext";
 
 // services
 import expenseService from "../services/expense";
+import budgetService from "../services/budget";
 
 export const ExpenseContext = createContext();
 
@@ -72,7 +73,50 @@ export const ExpenseContextProvider = ({ children }) => {
 
     setTimeout(() => {
       setMessageExpense(null);
-    }, 5000);
+    }, 2500);
+  };
+
+  const handleUpdateSelectedBudget = async (budgetId) => {
+    if (user !== null) {
+      const config = {
+        headers: {
+          Authorization: `${user.accessToken}`,
+        },
+      };
+      try {
+        const response = await budgetService.getOne(config, budgetId);
+        setSelectedBudget(response.data);
+      } catch (err) {
+        if (err.response.data.status === 400) {
+          window.localStorage.clear();
+          window.location.reload();
+        }
+      }
+    }
+  };
+
+  const handleDeleteExpense = async (expense) => {
+    if (user !== null) {
+      const config = {
+        headers: {
+          Authorization: `${user.accessToken}`,
+        },
+      };
+      try {
+        // REVISAR PORQUE CUANDO SE ELIMINA NO ESTA ARREGLANDO LOS NUMEROS
+
+        const { expenseDeleted } = await expenseService.del(
+          expense._id,
+          config
+        );
+        setExpenses(expenses.filter((e) => e._id !== expense._id));
+      } catch (err) {
+        if (err.response.data.status === 400) {
+          window.localStorage.clear();
+          window.location.reload();
+        }
+      }
+    }
   };
 
   return (
@@ -89,6 +133,8 @@ export const ExpenseContextProvider = ({ children }) => {
         handleUpdateExpenses,
         handleSetMessageExpense,
         messageExpense,
+        handleUpdateSelectedBudget,
+        handleDeleteExpense,
       }}
     >
       {children}

@@ -72,21 +72,21 @@ const Dashboard = () => {
                   size="sm"
                   onClick={handlePreviusMonth}
                 >
-                  Mes anterior
+                  <i className="fa-solid fa-arrow-left"></i>
                 </Button>
                 <Button
-                  variant="outline-success"
+                  variant="outline-primary"
                   size="sm"
                   onClick={handleCurrentMonth}
                 >
-                  Mes actual
+                  <i className="fa-solid fa-calendar"></i>
                 </Button>
                 <Button
                   variant="outline-secondary"
                   size="sm"
                   onClick={handleNextMonth}
                 >
-                  Mes siguiente
+                  <i className="fa-solid fa-arrow-right"></i>
                 </Button>
               </Stack>
             </Card.Body>

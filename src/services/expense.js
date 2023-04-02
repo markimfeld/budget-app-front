@@ -11,6 +11,11 @@ const expenseService = {
     const { data } = await axios.post(baseUrl, newExpense, config);
     return data;
   },
+  del: async (id, config) => {
+    const { data } = await axios.delete(`${baseUrl}/${id}`, config);
+    console.log(data);
+    return data;
+  },
 };
 
 export default expenseService;
