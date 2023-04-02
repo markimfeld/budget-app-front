@@ -10,7 +10,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login, error } = useContext(UserContext);
+  const { login, error, register } = useContext(UserContext);
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -68,7 +68,11 @@ const Login = () => {
         <Card.Body>
           <Card.Text className="text-center">
             ¿No tenes cuenta?{" "}
-            <Button variant="link" className="m-0 p-0">
+            <Button
+              variant="link"
+              className="m-0 p-0"
+              onClick={() => register()}
+            >
               Crear una cuenta
             </Button>
           </Card.Text>
