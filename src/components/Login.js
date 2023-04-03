@@ -10,7 +10,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login, error, register } = useContext(UserContext);
+  const { login, error, handleShowRegisterForm, handleShowLoginForm } =
+    useContext(UserContext);
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -24,6 +25,11 @@ const Login = () => {
 
   const onChangePassword = (e) => {
     setPassword(e.target.value);
+  };
+
+  const handleShowRegister = () => {
+    handleShowRegisterForm(true);
+    handleShowLoginForm(false);
   };
 
   return (
@@ -71,7 +77,7 @@ const Login = () => {
             <Button
               variant="link"
               className="m-0 p-0"
-              onClick={() => register()}
+              onClick={() => handleShowRegister()}
             >
               Crear una cuenta
             </Button>

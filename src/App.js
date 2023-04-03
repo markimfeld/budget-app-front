@@ -2,6 +2,7 @@ import { useEffect, useContext } from "react";
 import { Container, Row, Col, Navbar, Nav } from "react-bootstrap";
 
 import Login from "./components/Login";
+import Register from "./components/Register";
 import MainLayout from "./components/MainLayout";
 
 import { UserContext } from "./context/UserContext";
@@ -10,7 +11,8 @@ import { BudgetContext } from "./context/BudgetContext";
 import { ExpenseContextProvider } from "./context/ExpenseContext";
 
 function App() {
-  const { user, loadUserFromStorage, logout } = useContext(UserContext);
+  const { user, loadUserFromStorage, logout, showRegisterForm, showLoginForm } =
+    useContext(UserContext);
 
   const { handleShowBudgetForm, handleShowBudgetList } =
     useContext(BudgetContext);
@@ -48,7 +50,7 @@ function App() {
           </Container>
         </Navbar>
       )}
-      {user === null && (
+      {user === null && showLoginForm && (
         <Container>
           <Row
             className="m-auto align-items-center"
@@ -56,6 +58,19 @@ function App() {
           >
             <Col>
               <Login />
+            </Col>
+          </Row>
+        </Container>
+      )}
+
+      {user === null && showRegisterForm && (
+        <Container>
+          <Row
+            className="m-auto align-items-center"
+            style={{ height: "97vh", width: "50vw" }}
+          >
+            <Col>
+              <Register />
             </Col>
           </Row>
         </Container>

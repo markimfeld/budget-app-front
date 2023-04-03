@@ -11,6 +11,9 @@ export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
+  const [showRegisterForm, setShowRegisterForm] = useState(false);
+  const [showLoginForm, setshowLoginForm] = useState(true);
+
   const login = async (email, password) => {
     try {
       const response = await loginService.login({ email, password });
@@ -18,6 +21,7 @@ export const UserContextProvider = ({ children }) => {
       if (response.status === 200) {
         setUser(response.user);
         window.localStorage.setItem("user", JSON.stringify(response.user));
+        handleShowLoginForm(false);
       }
     } catch (err) {
       setError(err.response.data);
@@ -30,6 +34,7 @@ export const UserContextProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     window.localStorage.clear();
+    handleShowLoginForm(true);
   };
 
   const loadUserFromStorage = () => {
@@ -40,29 +45,50 @@ export const UserContextProvider = ({ children }) => {
     }
   };
 
-  const register = async () => {
-    let firstName = "joel";
-    let lastName = "gomez";
-    let username = "jgomez";
-    let password = "jgomez";
-    let email = "jgomez@gmail.com";
+  const register = async (newUser) => {
+    // handleShowRegisterForm(true);
+    // handleShowLoginForm(false);
 
     try {
-      const response = await loginService.register({
-        firstName,
-        lastName,
-        username,
-        email,
-        password,
-      });
+      const response = await loginService.register(newUser);
 
-      console.log(response);
+      login(newUser.email, newUser.password);
+
+      handleShowRegisterForm(false);
+      handleShowLoginForm(false);
     } catch (err) {}
+  };
+
+  const handleShowLoginForm = (showLogin) => {
+    if (showLogin) {
+      setshowLoginForm(true);
+    } else {
+      setshowLoginForm(false);
+    }
+  };
+
+  const handleShowRegisterForm = (showRegister) => {
+    if (showRegister) {
+      setShowRegisterForm(true);
+    } else {
+      setShowRegisterForm(false);
+    }
   };
 
   return (
     <UserContext.Provider
-      value={{ user, login, logout, error, loadUserFromStorage, register }}
+      value={{
+        user,
+        login,
+        logout,
+        error,
+        loadUserFromStorage,
+        register,
+        showRegisterForm,
+        showLoginForm,
+        handleShowLoginForm,
+        handleShowRegisterForm,
+      }}
     >
       {children}
     </UserContext.Provider>
