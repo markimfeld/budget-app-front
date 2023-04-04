@@ -46,17 +46,21 @@ export const UserContextProvider = ({ children }) => {
   };
 
   const register = async (newUser) => {
-    // handleShowRegisterForm(true);
-    // handleShowLoginForm(false);
-
     try {
       const response = await loginService.register(newUser);
 
-      login(newUser.email, newUser.password);
+      if (response.isStored) {
+        login(newUser.email, newUser.password);
 
-      handleShowRegisterForm(false);
-      handleShowLoginForm(false);
-    } catch (err) {}
+        handleShowRegisterForm(false);
+        handleShowLoginForm(false);
+      }
+    } catch (err) {
+      setError(err.response.data);
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
+    }
   };
 
   const handleShowLoginForm = (showLogin) => {

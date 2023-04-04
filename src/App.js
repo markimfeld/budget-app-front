@@ -53,10 +53,10 @@ function App() {
       {user === null && showLoginForm && (
         <Container>
           <Row
-            className="m-auto align-items-center"
-            style={{ height: "97vh", width: "50vw" }}
+            className="justify-content-md-center align-items-center"
+            style={{ height: "97vh" }}
           >
-            <Col>
+            <Col md="6">
               <Login />
             </Col>
           </Row>
@@ -66,10 +66,10 @@ function App() {
       {user === null && showRegisterForm && (
         <Container>
           <Row
-            className="m-auto align-items-center"
-            style={{ height: "97vh", width: "50vw" }}
+            className="justify-content-md-center align-items-center"
+            style={{ height: "97vh" }}
           >
-            <Col>
+            <Col md="6">
               <Register />
             </Col>
           </Row>

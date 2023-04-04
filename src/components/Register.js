@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useContext } from "react";
-import { Form, Button, Card } from "react-bootstrap";
+import { Form, Button, Card, Col, Row, FloatingLabel } from "react-bootstrap";
 
 import Error from "./Error";
 
@@ -19,9 +19,7 @@ const Register = () => {
   const handleRegister = (event) => {
     event.preventDefault();
 
-    // register
     register({ firstName, lastName, username, email, password });
-    console.log("register");
   };
 
   const onChangeEmail = (e) => {
@@ -51,77 +49,99 @@ const Register = () => {
 
   return (
     <>
-      {error !== null && <Error error={error} />}
-      <Card>
+      {error !== null && <Error />}
+      <Card style={{ borderRadius: 0 }}>
         <Card.Body>
-          <Card.Title className="text-center">Finanzas</Card.Title>
+          <Card.Title className="text-center fs-1 mb-4">Finanzas</Card.Title>
           <Form onSubmit={handleRegister}>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Nombre</Form.Label>
-              <Form.Control
-                password={firstName}
-                value={firstName}
-                onChange={onChangeFirstName}
-                type="text"
-                placeholder="Ej: Lionel"
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Apellido</Form.Label>
-              <Form.Control
-                password={lastName}
-                value={lastName}
-                onChange={onChangeLastName}
-                type="text"
-                placeholder="Ej: Messi"
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Usuario</Form.Label>
-              <Form.Control
-                password={username}
-                value={username}
-                onChange={onChangeUsername}
-                type="text"
-                placeholder="Ej: lionelmessi"
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                name="email"
-                value={email}
-                onChange={onChangeEmail}
-                type="email"
-                placeholder="lionelmessi@gmail.com"
-                required
-              />
-            </Form.Group>
+            <Row className="g-2 mb-2">
+              <Col md>
+                <FloatingLabel controlId="floatingFirstname" label="Nombre">
+                  <Form.Control
+                    name={firstName}
+                    value={firstName}
+                    onChange={onChangeFirstName}
+                    type="text"
+                    placeholder="Ej: Lionel"
+                    required
+                  />
+                </FloatingLabel>
+              </Col>
+              <Col md>
+                <FloatingLabel controlId="floatingLastname" label="Apellido">
+                  <Form.Control
+                    name={lastName}
+                    value={lastName}
+                    onChange={onChangeLastName}
+                    type="text"
+                    placeholder="Ej: Messi"
+                    required
+                  />
+                </FloatingLabel>
+              </Col>
+            </Row>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Contraseña</Form.Label>
-              <Form.Control
-                password={password}
-                value={password}
-                onChange={onChangePassword}
-                type="password"
-                placeholder="Ingresá tu contraseña"
-                required
-              />
-            </Form.Group>
+            <Row className="g-2 mb-2">
+              <Col>
+                <FloatingLabel controlId="floatingUsername" label="Usuario">
+                  <Form.Control
+                    name={username}
+                    value={username}
+                    onChange={onChangeUsername}
+                    type="text"
+                    placeholder="Ej: lionelmessi"
+                    required
+                  />
+                </FloatingLabel>
+              </Col>
+            </Row>
+            <Row className="g-2 mb-3">
+              <Col md>
+                <FloatingLabel controlId="floatingEmail" label="Email">
+                  <Form.Control
+                    name="email"
+                    value={email}
+                    onChange={onChangeEmail}
+                    type="email"
+                    placeholder="lionelmessi@gmail.com"
+                    required
+                  />
+                </FloatingLabel>
+              </Col>
+              <Col md>
+                <FloatingLabel controlId="floatingPassword" label="Contraseña">
+                  <Form.Control
+                    name="password"
+                    value={password}
+                    onChange={onChangePassword}
+                    type="password"
+                    placeholder="password"
+                    required
+                  />
+                </FloatingLabel>
+              </Col>
+            </Row>
 
             <div className="d-grid gap-2">
               <Button variant="primary" type="submit">
                 Inscribir
               </Button>
-              <Button variant="secondary" onClick={() => handleCancel()}>
-                Cancelar
-              </Button>
             </div>
           </Form>
+        </Card.Body>
+      </Card>
+      <Card className="mt-3" style={{ borderRadius: 0 }}>
+        <Card.Body>
+          <Card.Text className="text-center">
+            ¿Ya tenes cuenta?{" "}
+            <Button
+              variant="link"
+              className="m-0 p-0"
+              onClick={() => handleCancel()}
+            >
+              Iniciar sesión
+            </Button>
+          </Card.Text>
         </Card.Body>
       </Card>
     </>
