@@ -1,6 +1,6 @@
 import React from "react";
 import { useContext } from "react";
-import { Card, Button } from "react-bootstrap";
+import { Card, Button, Spinner } from "react-bootstrap";
 
 import ExpensesList from "./ExpensesList";
 import BudgetForm from "./BudgetForm";
@@ -17,6 +17,7 @@ const BudgetList = () => {
     messageBudget,
     handleShowBudgetForm,
     handleShowBudgetList,
+    isLoading,
   } = useContext(BudgetContext);
 
   const budgetList = budgets.map((budget) => {
@@ -39,10 +40,22 @@ const BudgetList = () => {
         )}
       </div>
       <div>
+        {isLoading && (
+          <div className="text-center">
+            <Card className="mb-4">
+              <Card.Body>
+                <Spinner animation="border" role="status">
+                  <span className="visually-hidden">Cargando...</span>
+                </Spinner>
+              </Card.Body>
+            </Card>
+          </div>
+        )}
+
         {showBudgetList && (
           <div>
-            {budgets.length > 0 && budgetList}
-            {budgets.length === 0 && (
+            {budgets.length > 0 && !isLoading && budgetList}
+            {budgets.length === 0 && !isLoading && (
               <Card className="mb-4">
                 <Card.Body>
                   <Card.Text>

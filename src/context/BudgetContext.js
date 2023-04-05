@@ -9,6 +9,7 @@ import { UserContext } from "./UserContext";
 export const BudgetContext = createContext();
 
 export const BudgetContextProvider = ({ children }) => {
+  const { user } = useContext(UserContext);
   const [budgets, setBudgets] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -19,8 +20,7 @@ export const BudgetContextProvider = ({ children }) => {
   const [showBudgetForm, setShowBudgetForm] = useState(false);
   const [showBudgetList, setShowBudgetList] = useState(true);
   const [messageBudget, setMessageBudget] = useState(null);
-
-  const { user } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getBudgets = async () => {
     if (user !== null) {
@@ -30,13 +30,14 @@ export const BudgetContextProvider = ({ children }) => {
         },
       };
       try {
-        const response = await budgetService.getAll(config, filters);
+        const response = await budgetService.getAll(config, {
+          ...filters,
+          createdBy: user.id,
+        });
         setBudgets(response.data);
+        setIsLoading(false);
       } catch (err) {
-        if (err.response.data.status === 400) {
-          window.localStorage.clear();
-          window.location.reload();
-        }
+        console.log(err);
       }
     }
   };
@@ -149,6 +150,7 @@ export const BudgetContextProvider = ({ children }) => {
         messageBudget,
         getBudgets,
         handleDeleteBudget,
+        isLoading,
       }}
     >
       {children}

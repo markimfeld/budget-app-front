@@ -6,8 +6,8 @@ const budgetService = {
   getAll: async (config, filters) => {
     let finalUrl;
 
-    if (filters.month && filters.year) {
-      finalUrl = `${baseUrl}?month=${filters.month}&year=${filters.year}`;
+    if (filters.month && filters.year && filters.createdBy) {
+      finalUrl = `${baseUrl}?month=${filters.month}&year=${filters.year}&createdBy=${filters.createdBy}`;
     } else {
       finalUrl = baseUrl;
     }

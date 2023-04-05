@@ -11,8 +11,14 @@ import { BudgetContext } from "./context/BudgetContext";
 import { ExpenseContextProvider } from "./context/ExpenseContext";
 
 function App() {
-  const { user, loadUserFromStorage, logout, showRegisterForm, showLoginForm } =
-    useContext(UserContext);
+  const {
+    user,
+    loadUserFromStorage,
+    logout,
+    showRegisterForm,
+    showLoginForm,
+    isLoading,
+  } = useContext(UserContext);
 
   const { handleShowBudgetForm, handleShowBudgetList } =
     useContext(BudgetContext);
@@ -36,11 +42,15 @@ function App() {
       {user !== null && (
         <Navbar bg="dark" variant="dark">
           <Container>
-            <Navbar.Brand>Finanzas App</Navbar.Brand>
+            <Navbar.Brand>Finance Pro</Navbar.Brand>
             {user !== null && (
               <Nav className="justify-content-end">
                 <Nav.Link onClick={() => handleShowBudgetFormOrList(true)}>
                   Crear presupuesto
+                </Nav.Link>
+
+                <Nav.Link>
+                  {user.firstName} {user.lastName}
                 </Nav.Link>
                 <Nav.Link onClick={() => handleLogout()}>
                   Cerrar sesión
@@ -50,7 +60,7 @@ function App() {
           </Container>
         </Navbar>
       )}
-      {user === null && showLoginForm && (
+      {user === null && showLoginForm && !isLoading && (
         <Container>
           <Row
             className="justify-content-md-center align-items-center"
@@ -63,7 +73,7 @@ function App() {
         </Container>
       )}
 
-      {user === null && showRegisterForm && (
+      {user === null && showRegisterForm && !isLoading && (
         <Container>
           <Row
             className="justify-content-md-center align-items-center"
