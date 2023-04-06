@@ -75,7 +75,7 @@ const Dashboard = () => {
                   <i className="fa-solid fa-arrow-left"></i>
                 </Button>
                 <Button
-                  variant="outline-primary"
+                  variant="outline-secondary"
                   size="sm"
                   onClick={handleCurrentMonth}
                 >
