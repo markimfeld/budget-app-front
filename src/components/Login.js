@@ -37,7 +37,9 @@ const Login = () => {
       {error !== null && <Error />}
       <Card style={{ borderRadius: 0 }}>
         <Card.Body>
-          <Card.Title className="text-center fs-1 mb-4">Finance Pro</Card.Title>
+          <Card.Title className="text-center fs-1 mb-4">
+            <i className="fa-solid fa-coins"></i> Finance Pro
+          </Card.Title>
           <Form onSubmit={handleLogin}>
             <Row className="g-2 mb-2">
               <Col md>

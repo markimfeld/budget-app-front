@@ -94,7 +94,7 @@ const Dashboard = () => {
         </Col>
       </Row>
       <Row>
-        <Col>
+        <Col md={4}>
           <Card className="mb-3" border="dark">
             <Card.Body>
               <p className="m-0 mb-1">Presupuestado</p>
@@ -102,7 +102,7 @@ const Dashboard = () => {
             </Card.Body>
           </Card>
         </Col>
-        <Col>
+        <Col md={4}>
           <Card className="mb-3" border="danger">
             <Card.Body>
               <p className="m-0 mb-1">Gastado</p>
@@ -110,7 +110,7 @@ const Dashboard = () => {
             </Card.Body>
           </Card>
         </Col>
-        <Col>
+        <Col md={4}>
           <Card className="mb-3" border="success">
             <Card.Body>
               <p className="m-0 mb-1">Balance</p>

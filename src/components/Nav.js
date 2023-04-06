@@ -21,29 +21,28 @@ const Menu = () => {
   };
 
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
-        <Navbar.Brand>Finance Pro</Navbar.Brand>
-        <Nav className="justify-content-end">
-          <Nav.Link onClick={() => handleShowBudgetFormOrList(true)}>
-            Nuevo presupuesto
-          </Nav.Link>
-
-          {/* <Nav.Link onClick={() => handleLogout()}>
-            <i className="fa-solid fa-right-from-bracket"></i>
-          </Nav.Link> */}
-          <NavDropdown title={user.firstName} id="collasible-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Preferencias</NavDropdown.Item>
-            {/* <NavDropdown.Item href="#action/3.2">
-              Another action
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item> */}
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.4" onClick={() => handleLogout()}>
-              Cerrar sesión
-            </NavDropdown.Item>
-          </NavDropdown>
-        </Nav>
+        <Navbar.Brand className="fs-4">
+          <i className="fa-solid fa-coins"></i> Finance Pro
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+          <Nav>
+            <Nav.Link onClick={() => handleShowBudgetFormOrList(true)}>
+              Nuevo presupuesto
+            </Nav.Link>
+            <NavDropdown title={user.firstName} id="collasible-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">
+                Preferencias
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={() => handleLogout()}>
+                Cerrar sesión
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
       </Container>
     </Navbar>
   );
