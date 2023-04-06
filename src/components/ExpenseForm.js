@@ -7,6 +7,7 @@ import expenseService from "../services/expense";
 import { ExpenseContext } from "../context/ExpenseContext";
 import { UserContext } from "../context/UserContext";
 import { BudgetContext } from "../context/BudgetContext";
+import budgetService from "../services/budget";
 
 const ExpenseForm = () => {
   const [name, setName] = useState("");
@@ -35,8 +36,22 @@ const ExpenseForm = () => {
 
       const newExpense = { name, amount, budget: selectedBudget };
 
+      let updatedBudget = { ...selectedBudget };
+
+      updatedBudget.spentAmount += newExpense.amount;
+      updatedBudget.leftAmount =
+        updatedBudget.expectedAmount - updatedBudget.spentAmount;
+
       try {
         const { data } = await expenseService.store(newExpense, config);
+
+        const { budgetUpdated } = await budgetService.update(
+          selectedBudget._id,
+          updatedBudget,
+          config
+        );
+        console.log(budgetUpdated);
+
         handleShowExpenseList(true);
         handleShowExpenseForm(false);
         handleUpdateExpenses(data);

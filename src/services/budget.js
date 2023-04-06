@@ -27,6 +27,10 @@ const budgetService = {
     const { data } = axios.delete(`${baseUrl}/${id}`, config);
     return data;
   },
+  update: async (id, budgetToUpdate, config) => {
+    const { data } = axios.put(`${baseUrl}/${id}`, budgetToUpdate, config);
+    return data;
+  },
 };
 
 export default budgetService;
