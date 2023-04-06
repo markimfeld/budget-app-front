@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import { BudgetContext } from "../context/BudgetContext";
 
-const Menu = () => {
+const Header = () => {
   const { user, logout } = useContext(UserContext);
 
   const { handleShowBudgetForm, handleShowBudgetList } =
@@ -18,6 +18,14 @@ const Menu = () => {
 
   const handleLogout = () => {
     logout();
+  };
+
+  const handleTheme = () => {
+    alert("Cambiando tema");
+  };
+
+  const handleSettings = () => {
+    alert("Settings");
   };
 
   return (
@@ -33,12 +41,16 @@ const Menu = () => {
               Nuevo presupuesto
             </Nav.Link>
             <NavDropdown title={user.firstName} id="collasible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">
-                Preferencias
+              <NavDropdown.Item onClick={() => handleSettings()}>
+                <i className="fa-solid fa-gear"></i> Preferencias
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleTheme()}>
+                <i className="fa-solid fa-moon"></i> Tema
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={() => handleLogout()}>
-                Cerrar sesión
+                <i className="fa-solid fa-arrow-right-from-bracket"></i> Cerrar
+                sesión
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
@@ -48,4 +60,4 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default Header;

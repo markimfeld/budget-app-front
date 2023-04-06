@@ -4,7 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import MainLayout from "./components/MainLayout";
-import Menu from "./components/Nav";
+import Header from "./components/Header";
 
 import { UserContext } from "./context/UserContext";
 
@@ -26,7 +26,7 @@ function App() {
 
   return (
     <>
-      {user !== null && <Menu />}
+      {user !== null && <Header />}
       {user === null && showLoginForm && !isLoading && (
         <Container>
           <Row
