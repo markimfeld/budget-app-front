@@ -19,7 +19,7 @@ export const ExpenseContextProvider = ({ children }) => {
 
   const { user } = useContext(UserContext);
 
-  const { handleShowBudgetList } = useContext(BudgetContext);
+  const { handleShowBudgetList, getBudgets } = useContext(BudgetContext);
 
   const getExpenses = async (budget) => {
     if (user !== null) {
@@ -103,13 +103,23 @@ export const ExpenseContextProvider = ({ children }) => {
         },
       };
       try {
-        // REVISAR PORQUE CUANDO SE ELIMINA NO ESTA ARREGLANDO LOS NUMEROS
+        await expenseService.del(expense._id, config);
 
-        const { expenseDeleted } = await expenseService.del(
-          expense._id,
-          config
-        );
+        let updatedBudget = { ...selectedBudget };
+
+        updatedBudget.spentAmount =
+          Number.parseFloat(updatedBudget.spentAmount) -
+          Number.parseFloat(expense.amount);
+        updatedBudget.leftAmount =
+          updatedBudget.expectedAmount - updatedBudget.spentAmount;
+
+        await budgetService.update(selectedBudget._id, updatedBudget, config);
+
         setExpenses(expenses.filter((e) => e._id !== expense._id));
+
+        handleUpdateSelectedBudget(selectedBudget._id);
+
+        getBudgets();
       } catch (err) {
         if (err.response.data.status === 400) {
           window.localStorage.clear();

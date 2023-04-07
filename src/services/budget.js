@@ -28,7 +28,11 @@ const budgetService = {
     return data;
   },
   update: async (id, budgetToUpdate, config) => {
-    const { data } = axios.put(`${baseUrl}/${id}`, budgetToUpdate, config);
+    const { data } = await axios.put(
+      `${baseUrl}/${id}`,
+      budgetToUpdate,
+      config
+    );
     return data;
   },
 };

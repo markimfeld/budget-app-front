@@ -53,7 +53,7 @@ function App() {
         </Container>
       )}
 
-      {user !== null && (
+      {user !== null && !isLoading && (
         <Container>
           <Row className="mt-4">
             <Col>

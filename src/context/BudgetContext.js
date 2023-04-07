@@ -9,7 +9,7 @@ import { UserContext } from "./UserContext";
 export const BudgetContext = createContext();
 
 export const BudgetContextProvider = ({ children }) => {
-  const { user } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
   const [budgets, setBudgets] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -37,7 +37,12 @@ export const BudgetContextProvider = ({ children }) => {
         setBudgets(response.data);
         setIsLoading(false);
       } catch (err) {
-        console.log(err);
+        if (
+          err.response.data.status === 400 &&
+          err.response.data.message === "Token no válido"
+        ) {
+          logout();
+        }
       }
     }
   };

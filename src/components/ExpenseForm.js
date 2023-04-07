@@ -38,19 +38,16 @@ const ExpenseForm = () => {
 
       let updatedBudget = { ...selectedBudget };
 
-      updatedBudget.spentAmount += newExpense.amount;
+      updatedBudget.spentAmount =
+        Number.parseFloat(updatedBudget.spentAmount) +
+        Number.parseFloat(newExpense.amount);
       updatedBudget.leftAmount =
         updatedBudget.expectedAmount - updatedBudget.spentAmount;
 
       try {
         const { data } = await expenseService.store(newExpense, config);
 
-        const { budgetUpdated } = await budgetService.update(
-          selectedBudget._id,
-          updatedBudget,
-          config
-        );
-        console.log(budgetUpdated);
+        await budgetService.update(selectedBudget._id, updatedBudget, config);
 
         handleShowExpenseList(true);
         handleShowExpenseForm(false);
@@ -59,19 +56,17 @@ const ExpenseForm = () => {
         handleUpdateSelectedBudget(selectedBudget._id);
         getBudgets();
       } catch (error) {
-        console.log(error.response.data);
+        console.log(error);
       }
     }
   };
 
   const onChangeName = (event) => {
     setName(event.target.value);
-    console.log(name);
   };
 
   const onChangeAmount = (event) => {
     setAmount(event.target.value);
-    console.log(amount);
   };
 
   const onCancelOperation = (showList) => {
