@@ -1,30 +1,32 @@
 import React, { useContext } from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Form, Button, Stack, Card } from "react-bootstrap";
 
 import budgetService from "../services/budget";
 
 import { BudgetContext } from "../context/BudgetContext";
+import { UserContext } from "../context/UserContext";
 
 const BudgetForm = () => {
-  const [user, setUser] = useState(null);
-  const [name, setName] = useState("");
-  const [expectedAmount, setExpectedAmount] = useState(0);
-
+  const { user } = useContext(UserContext);
   const {
     handleUpdateBudgets,
     handleShowBudgetForm,
     handleShowBudgetList,
     handleSetMessageBudget,
+    budgetToUpdate,
+    isEditing,
+    handleIsEditing,
   } = useContext(BudgetContext);
 
-  useEffect(() => {
-    const userLogged = window.localStorage.getItem("user");
-    if (userLogged) {
-      const user = JSON.parse(userLogged);
-      setUser(user);
-    }
-  }, []);
+  const [name, setName] = useState(
+    isEditing && budgetToUpdate.name ? budgetToUpdate.name : ""
+  );
+  const [expectedAmount, setExpectedAmount] = useState(
+    isEditing && budgetToUpdate.expectedAmount
+      ? budgetToUpdate.expectedAmount
+      : 0
+  );
 
   const handleAddBudget = async (event) => {
     event.preventDefault();
@@ -37,12 +39,31 @@ const BudgetForm = () => {
 
       const newBudget = { name, expectedAmount };
 
-      const data = await budgetService.store(newBudget, config);
+      if (!isEditing) {
+        const data = await budgetService.store(newBudget, config);
 
-      handleUpdateBudgets(data.data);
-      handleShowBudgetForm(false);
-      handleShowBudgetList(true);
-      handleSetMessageBudget("Nuevo presupuesto creado exitosamente!");
+        handleUpdateBudgets(data.data);
+        handleShowBudgetForm(false);
+        handleShowBudgetList(true);
+        handleSetMessageBudget("Nuevo presupuesto creado exitosamente!");
+      } else {
+        let budgetUpdated = { ...budgetToUpdate };
+        budgetUpdated.expectedAmount = Number.parseFloat(expectedAmount);
+        budgetUpdated.name = name;
+        budgetUpdated.leftAmount =
+          Number.parseFloat(expectedAmount) - budgetUpdated.spentAmount;
+
+        const data = await budgetService.update(
+          budgetToUpdate._id,
+          budgetUpdated,
+          config
+        );
+
+        handleUpdateBudgets(data.data);
+        handleShowBudgetForm(false);
+        handleShowBudgetList(true);
+        handleSetMessageBudget("Presupuesto editado exitosamente!");
+      }
     }
   };
 
@@ -57,12 +78,16 @@ const BudgetForm = () => {
   const onCancelOperation = () => {
     handleShowBudgetForm(false);
     handleShowBudgetList(true);
+    handleIsEditing(false);
   };
 
   return (
     <Card>
       <Card.Body>
-        <Card.Title className="text-center">Nuevo presupuesto</Card.Title>
+        <Card.Title className="text-center">
+          {!isEditing && "Nuevo presupuesto"}
+          {isEditing && "Modificar presupuesto"}
+        </Card.Title>
         <Form onSubmit={handleAddBudget}>
           <Form.Group className="mb-3" controlId="formBasicNombre">
             <Form.Label>Nombre</Form.Label>
@@ -71,6 +96,7 @@ const BudgetForm = () => {
               name="name"
               type="text"
               placeholder="Ejemplo: Comida"
+              value={name}
             />
           </Form.Group>
 
@@ -81,13 +107,21 @@ const BudgetForm = () => {
               name="expectedAmount"
               type="number"
               placeholder="Ejemplo: $15000.00"
+              value={expectedAmount}
             />
           </Form.Group>
           <div className="d-grid gap-2">
             <Stack direction="horizontal" gap={3}>
-              <Button className="ms-auto" variant="primary" type="submit">
-                Guardar
-              </Button>
+              {!isEditing && (
+                <Button className="ms-auto" variant="primary" type="submit">
+                  Guardar
+                </Button>
+              )}
+              {isEditing && (
+                <Button className="ms-auto" variant="primary" type="submit">
+                  Modificar
+                </Button>
+              )}
               <Button
                 variant="outline-secondary"
                 onClick={() => onCancelOperation()}

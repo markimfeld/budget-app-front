@@ -7,10 +7,23 @@ import { ExpenseContext } from "../context/ExpenseContext";
 
 const Budget = ({ budget }) => {
   const { getExpenses } = useContext(ExpenseContext);
-  const { handleDeleteBudget } = useContext(BudgetContext);
+  const {
+    handleDeleteBudget,
+    handleBudgetToUpdate,
+    handleShowBudgetForm,
+    handleShowBudgetList,
+    handleIsEditing,
+  } = useContext(BudgetContext);
 
   const handleGetExpenses = (budget) => {
     getExpenses(budget);
+  };
+
+  const handleEdit = (budget) => {
+    handleBudgetToUpdate(budget);
+    handleShowBudgetForm(true);
+    handleShowBudgetList(false);
+    handleIsEditing(true);
   };
 
   return (
@@ -26,6 +39,13 @@ const Budget = ({ budget }) => {
               onClick={() => handleGetExpenses(budget)}
             >
               <i className="fa-solid fa-list"></i>
+            </Button>
+            <Button
+              className=""
+              variant="outline-success"
+              onClick={() => handleEdit(budget)}
+            >
+              <i className="fa-solid fa-edit"></i>
             </Button>
             <Button
               className=""

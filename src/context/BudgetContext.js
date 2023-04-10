@@ -21,6 +21,8 @@ export const BudgetContextProvider = ({ children }) => {
   const [showBudgetList, setShowBudgetList] = useState(true);
   const [messageBudget, setMessageBudget] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [budgetToUpdate, setBudgetToUpdate] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   const getBudgets = async () => {
     if (user !== null) {
@@ -109,7 +111,15 @@ export const BudgetContextProvider = ({ children }) => {
   };
 
   const handleUpdateBudgets = (newBudget) => {
-    setBudgets([...budgets, newBudget]);
+    const updatedBudgets = budgets.filter(
+      (budget) => newBudget._id !== budget._id
+    );
+
+    setBudgets([...updatedBudgets, newBudget]);
+  };
+
+  const handleBudgetToUpdate = (budget) => {
+    setBudgetToUpdate(budget);
   };
 
   const handleSetMessageBudget = (message) => {
@@ -117,6 +127,10 @@ export const BudgetContextProvider = ({ children }) => {
     setTimeout(() => {
       setMessageBudget(null);
     }, 2500);
+  };
+
+  const handleIsEditing = (isEditing) => {
+    setIsEditing(isEditing);
   };
 
   const handleDeleteBudget = async (budget) => {
@@ -156,6 +170,10 @@ export const BudgetContextProvider = ({ children }) => {
         getBudgets,
         handleDeleteBudget,
         isLoading,
+        handleIsEditing,
+        isEditing,
+        handleBudgetToUpdate,
+        budgetToUpdate,
       }}
     >
       {children}
