@@ -1,6 +1,6 @@
 import React from "react";
 import { useContext } from "react";
-import { Card, Button, Spinner } from "react-bootstrap";
+import { Card, Button, Spinner, Stack } from "react-bootstrap";
 
 import ExpensesList from "./ExpensesList";
 import BudgetForm from "./BudgetForm";
@@ -42,8 +42,11 @@ const BudgetList = () => {
       <div>
         {isLoading && (
           <div className="text-center">
-            <Card className="mb-4">
-              <Card.Body>
+            <Card className="mb-4" style={{ border: "none", height: "150px" }}>
+              <Card.Body
+                style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+                className="d-flex justify-content-center align-items-center"
+              >
                 <Spinner animation="border" role="status">
                   <span className="visually-hidden">Cargando...</span>
                 </Spinner>

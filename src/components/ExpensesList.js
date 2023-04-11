@@ -23,8 +23,20 @@ const ExpensesList = () => {
 
   const { handleShowBudgetList } = useContext(BudgetContext);
 
-  const expensesList = expenses.map((expense) => {
-    return <Expense key={expense._id} expense={expense} />;
+  const expensesList = expenses.map((expense, i) => {
+    if (i === expenses.length - 1) {
+      return (
+        <div key={expense._id}>
+          <Expense expense={expense} />
+        </div>
+      );
+    } else {
+      return (
+        <div key={expense._id} className="mb-2">
+          <Expense expense={expense} />
+        </div>
+      );
+    }
   });
 
   const handleNewExpense = (showForm) => {
@@ -44,7 +56,12 @@ const ExpensesList = () => {
     <>
       <div>
         {showExpensesList && (
-          <Card border="dark" className="mb-3">
+          <Card
+            border="light"
+            className="mb-3"
+            // bg="light"
+            style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+          >
             <Card.Body>
               <Stack direction="horizontal" gap={3}>
                 <div>
@@ -56,13 +73,15 @@ const ExpensesList = () => {
                 <Stack direction="horizontal" gap={3} className="ms-auto">
                   <Button
                     className="ms-auto"
-                    variant="outline-primary"
+                    size="sm"
+                    variant="outline-secondary"
                     onClick={() => handleNewExpense(true)}
                   >
                     <i className="fa-solid fa-plus"></i>
                   </Button>
                   <Button
                     className=""
+                    size="sm"
                     variant="outline-secondary"
                     onClick={() => handleVolver(true)}
                   >
@@ -76,7 +95,27 @@ const ExpensesList = () => {
       </div>
       <div className="mt-3">
         {messageExpense !== null && <Success />}
-        {expenses.length > 0 && showExpensesList && expensesList}
+        {expenses.length > 0 && showExpensesList && (
+          <div>
+            <p
+              className="text-muted"
+              style={{
+                paddingLeft: 5,
+                paddingBottom: 0,
+                marginBottom: 0,
+              }}
+            >
+              Movimientos
+            </p>
+            <Card
+              border="light"
+              className="p-2 mb-5"
+              style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+            >
+              {expensesList}
+            </Card>
+          </div>
+        )}
         {expenses.length === 0 && showExpensesList && (
           <Card className="mb-4">
             <Card.Body>

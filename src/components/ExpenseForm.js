@@ -11,6 +11,7 @@ import budgetService from "../services/budget";
 
 const ExpenseForm = () => {
   const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [amount, setAmount] = useState(0);
 
   const {
@@ -34,7 +35,7 @@ const ExpenseForm = () => {
         },
       };
 
-      const newExpense = { name, amount, budget: selectedBudget };
+      const newExpense = { name, amount, description, budget: selectedBudget };
 
       let updatedBudget = { ...selectedBudget };
 
@@ -65,6 +66,10 @@ const ExpenseForm = () => {
     setName(event.target.value);
   };
 
+  const onChangeDescription = (event) => {
+    setDescription(event.target.value);
+  };
+
   const onChangeAmount = (event) => {
     setAmount(event.target.value);
   };
@@ -85,7 +90,17 @@ const ExpenseForm = () => {
               onChange={onChangeName}
               name="name"
               type="text"
-              placeholder="Ejemplo: Pollo"
+              placeholder="Ejemplo: Horeb"
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicDescripcion">
+            <Form.Label>Descripción</Form.Label>
+            <Form.Control
+              onChange={onChangeDescription}
+              name="description"
+              type="text"
+              placeholder="Ejemplo: Alfajor"
             />
           </Form.Group>
 

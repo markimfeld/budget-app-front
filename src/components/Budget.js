@@ -28,35 +28,36 @@ const Budget = ({ budget }) => {
 
   return (
     <>
-      <Card className="mb-4">
-        <Card.Header>
+      <Card className="mb-4" style={{ border: "none" }}>
+        <Card.Header style={{ border: "none" }}>
           <Stack direction="horizontal" gap={3}>
             <span>{budget.name}</span>
 
             <Button
               className="ms-auto"
+              size="sm"
               variant="outline-secondary"
               onClick={() => handleGetExpenses(budget)}
             >
               <i className="fa-solid fa-list"></i>
             </Button>
             <Button
-              className=""
-              variant="outline-success"
+              size="sm"
+              variant="outline-secondary"
               onClick={() => handleEdit(budget)}
             >
               <i className="fa-solid fa-edit"></i>
             </Button>
             <Button
-              className=""
-              variant="outline-danger"
+              variant="outline-secondary"
+              size="sm"
               onClick={() => handleDeleteBudget(budget)}
             >
               <i className="fa-solid fa-trash"></i>
             </Button>
           </Stack>
         </Card.Header>
-        <Card.Body>
+        <Card.Body style={{ backgroundColor: "hsl(0, 0%, 97%, 0.5)" }}>
           <Card.Title>${budget.spentAmount} </Card.Title>
           <Card.Text className="text-muted m-0 p-0">
             Monto disponible ${budget.leftAmount}

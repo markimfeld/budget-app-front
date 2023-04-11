@@ -60,7 +60,14 @@ const Dashboard = () => {
     <>
       <Row>
         <Col>
-          <Card className="mb-3" bg="light" text="dark">
+          <Card
+            className="mb-3"
+            // bg="light"
+            text="dark"
+            border="light"
+            // style={{ backgroundColor: "hsla(0, 0%, 0%, 0.07)" }}
+            style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+          >
             <Card.Body>
               <Stack direction="horizontal" gap={3}>
                 <Card.Title>
@@ -95,7 +102,12 @@ const Dashboard = () => {
       </Row>
       <Row>
         <Col md={4}>
-          <Card className="mb-3" border="dark">
+          <Card
+            className="mb-3"
+            border="light"
+            // bg="light"
+            style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+          >
             <Card.Body>
               <p className="m-0 mb-1">Presupuestado</p>
               <h3 className="ms-auto">${expectedTotals}</h3>
@@ -103,7 +115,12 @@ const Dashboard = () => {
           </Card>
         </Col>
         <Col md={4}>
-          <Card className="mb-3" border="danger">
+          <Card
+            className="mb-3"
+            border="light"
+            // bg="light"
+            style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+          >
             <Card.Body>
               <p className="m-0 mb-1">Gastado</p>
               <h3 className="ms-auto">${spentTotals}</h3>
@@ -111,7 +128,12 @@ const Dashboard = () => {
           </Card>
         </Col>
         <Col md={4}>
-          <Card className="mb-3" border="success">
+          <Card
+            className="mb-3"
+            border="light"
+            // bg="light"
+            style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+          >
             <Card.Body>
               <p className="m-0 mb-1">Balance</p>
               <h3 className="ms-auto">${expectedTotals - spentTotals}</h3>
