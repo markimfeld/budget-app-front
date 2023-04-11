@@ -166,12 +166,12 @@ const ExpenseForm = () => {
 
           <Stack direction="horizontal" gap={3}>
             {!isEditing && (
-              <Button className="ms-auto" variant="primary" type="submit">
+              <Button className="ms-auto" variant="success" type="submit">
                 Guardar
               </Button>
             )}
             {isEditing && (
-              <Button className="ms-auto" variant="primary" type="submit">
+              <Button className="ms-auto" variant="success" type="submit">
                 Modificar
               </Button>
             )}
