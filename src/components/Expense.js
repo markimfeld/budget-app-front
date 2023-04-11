@@ -1,10 +1,23 @@
 import React, { useContext } from "react";
-import { Card, Stack } from "react-bootstrap";
+import { Card, Stack, Button } from "react-bootstrap";
 import { format } from "date-fns";
 import { ExpenseContext } from "../context/ExpenseContext";
 
 const Expense = ({ expense }) => {
-  const { handleDeleteExpense } = useContext(ExpenseContext);
+  const {
+    handleDeleteExpense,
+    handleIsEditing,
+    handleExpenseToUpdate,
+    handleShowExpenseForm,
+    handleShowExpenseList,
+  } = useContext(ExpenseContext);
+
+  const handleEdit = (expense) => {
+    handleIsEditing(true);
+    handleExpenseToUpdate(expense);
+    handleShowExpenseForm(true);
+    handleShowExpenseList(false);
+  };
 
   return (
     <Card
@@ -25,16 +38,24 @@ const Expense = ({ expense }) => {
             </Card.Text>
           </span>
           <Card.Title className="ms-auto">
-            <Stack direction="vertical" gap={3}>
+            <Stack direction="horizontal" gap={3}>
               <span className="fs-4">{expense.amount}</span>
-              {/* <Button
+              <Button
                 className=""
-                variant="outline-danger"
+                variant="outline-secondary"
+                size="sm"
+                onClick={() => handleEdit(expense)}
+              >
+                <i className="fa-solid fa-pen"></i>
+              </Button>
+              <Button
+                className=""
+                variant="outline-secondary"
                 size="sm"
                 onClick={() => handleDeleteExpense(expense)}
               >
                 <i className="fa-solid fa-trash"></i>
-              </Button> */}
+              </Button>
             </Stack>
           </Card.Title>
         </Stack>

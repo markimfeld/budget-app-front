@@ -16,6 +16,8 @@ export const ExpenseContextProvider = ({ children }) => {
   const [showExpenseForm, setShowExpenseForm] = useState(false);
   const [selectedBudget, setSelectedBudget] = useState(null);
   const [messageExpense, setMessageExpense] = useState(null);
+  const [expenseToUpdate, setExpenseToUpdate] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   const { user } = useContext(UserContext);
 
@@ -65,7 +67,10 @@ export const ExpenseContextProvider = ({ children }) => {
   };
 
   const handleUpdateExpenses = (newExpense) => {
-    setExpenses([newExpense, ...expenses]);
+    const updatedExpenses = expenses.filter(
+      (expense) => newExpense._id !== expense._id
+    );
+    setExpenses([newExpense, ...updatedExpenses]);
   };
 
   const handleSetMessageExpense = (message) => {
@@ -93,6 +98,14 @@ export const ExpenseContextProvider = ({ children }) => {
         }
       }
     }
+  };
+
+  const handleIsEditing = (isEditing) => {
+    setIsEditing(isEditing);
+  };
+
+  const handleExpenseToUpdate = (expense) => {
+    setExpenseToUpdate(expense);
   };
 
   const handleDeleteExpense = async (expense) => {
@@ -145,6 +158,10 @@ export const ExpenseContextProvider = ({ children }) => {
         messageExpense,
         handleUpdateSelectedBudget,
         handleDeleteExpense,
+        expenseToUpdate,
+        isEditing,
+        handleIsEditing,
+        handleExpenseToUpdate,
       }}
     >
       {children}

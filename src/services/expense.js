@@ -16,6 +16,14 @@ const expenseService = {
     console.log(data);
     return data;
   },
+  edit: async (id, expenseToUpdate, config) => {
+    const { data } = await axios.put(
+      `${baseUrl}/${id}`,
+      expenseToUpdate,
+      config
+    );
+    return data;
+  },
 };
 
 export default expenseService;

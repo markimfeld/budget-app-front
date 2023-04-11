@@ -117,10 +117,14 @@ const ExpensesList = () => {
           </div>
         )}
         {expenses.length === 0 && showExpensesList && (
-          <Card className="mb-4">
+          <Card
+            className="mb-4"
+            border="light"
+            style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+          >
             <Card.Body>
               <Card.Text>
-                No hay gastos creados aun.{" "}
+                No hay gastos creados aun 😄.{" "}
                 <Button onClick={() => handleNewExpense(true)} variant="link">
                   Crear nuevo gasto
                 </Button>

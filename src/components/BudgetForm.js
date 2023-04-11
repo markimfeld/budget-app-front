@@ -25,7 +25,7 @@ const BudgetForm = () => {
   const [expectedAmount, setExpectedAmount] = useState(
     isEditing && budgetToUpdate.expectedAmount
       ? budgetToUpdate.expectedAmount
-      : 0
+      : null
   );
 
   const handleAddBudget = async (event) => {

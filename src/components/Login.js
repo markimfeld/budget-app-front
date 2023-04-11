@@ -9,6 +9,7 @@ import { UserContext } from "../context/UserContext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginEnabledBtn, setLoginEnabledBtn] = useState(false);
 
   const { login, error, handleShowRegisterForm, handleShowLoginForm } =
     useContext(UserContext);
@@ -21,10 +22,17 @@ const Login = () => {
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
+    if (email && password) {
+      setLoginEnabledBtn(true);
+    }
   };
 
   const onChangePassword = (e) => {
     setPassword(e.target.value);
+
+    if (email && password) {
+      setLoginEnabledBtn(true);
+    }
   };
 
   const handleShowRegister = () => {
@@ -71,9 +79,16 @@ const Login = () => {
             </Row>
 
             <div className="d-grid gap-2">
-              <Button variant="primary" type="submit">
-                Iniciar sesión
-              </Button>
+              {loginEnabledBtn && (
+                <Button variant="success" type="submit">
+                  Iniciar sesión
+                </Button>
+              )}
+              {!loginEnabledBtn && (
+                <Button variant="success" type="submit" disabled>
+                  Iniciar sesión
+                </Button>
+              )}
             </div>
           </Form>
         </Card.Body>

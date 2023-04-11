@@ -12,6 +12,7 @@ const Register = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUserName] = useState("");
+  const [registerEnabledBtn, setRegisterEnabledBtn] = useState(false);
 
   const { error, register, handleShowLoginForm, handleShowRegisterForm } =
     useContext(UserContext);
@@ -24,22 +25,37 @@ const Register = () => {
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
+    if (email && password && firstName && lastName && username) {
+      setRegisterEnabledBtn(true);
+    }
   };
 
   const onChangePassword = (e) => {
     setPassword(e.target.value);
+    if (email && password && firstName && lastName && username) {
+      setRegisterEnabledBtn(true);
+    }
   };
 
   const onChangeFirstName = (e) => {
     setFirstName(e.target.value);
+    if (email && password && firstName && lastName && username) {
+      setRegisterEnabledBtn(true);
+    }
   };
 
   const onChangeLastName = (e) => {
     setLastName(e.target.value);
+    if (email && password && firstName && lastName && username) {
+      setRegisterEnabledBtn(true);
+    }
   };
 
   const onChangeUsername = (e) => {
     setUserName(e.target.value);
+    if (email && password && firstName && lastName && username) {
+      setRegisterEnabledBtn(true);
+    }
   };
 
   const handleCancel = () => {
@@ -125,9 +141,16 @@ const Register = () => {
             </Row>
 
             <div className="d-grid gap-2">
-              <Button variant="primary" type="submit">
-                Inscribir
-              </Button>
+              {registerEnabledBtn && (
+                <Button variant="success" type="submit">
+                  Inscribir
+                </Button>
+              )}
+              {!registerEnabledBtn && (
+                <Button variant="success" type="submit" disabled>
+                  Inscribir
+                </Button>
+              )}
             </div>
           </Form>
         </Card.Body>

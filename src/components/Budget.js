@@ -46,7 +46,7 @@ const Budget = ({ budget }) => {
               variant="outline-secondary"
               onClick={() => handleEdit(budget)}
             >
-              <i className="fa-solid fa-edit"></i>
+              <i className="fa-solid fa-pen"></i>
             </Button>
             <Button
               variant="outline-secondary"
