@@ -1,6 +1,6 @@
 import React from "react";
 import { useContext } from "react";
-import { Card, Button, Spinner, Stack } from "react-bootstrap";
+import { Card, Button, Spinner } from "react-bootstrap";
 
 import ExpensesList from "./ExpensesList";
 import BudgetForm from "./BudgetForm";
@@ -59,10 +59,14 @@ const BudgetList = () => {
           <div>
             {budgets.length > 0 && !isLoading && budgetList}
             {budgets.length === 0 && !isLoading && (
-              <Card className="mb-4">
+              <Card
+                className="mb-4"
+                border="light"
+                style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+              >
                 <Card.Body>
                   <Card.Text>
-                    No hay presupuestos creados aun.{" "}
+                    No hay presupuestos creados aun 😄.{" "}
                     <Button
                       onClick={() => handleShowBudgetFormOrList(true)}
                       variant="link"
