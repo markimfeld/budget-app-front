@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
-import { Card, Stack, Button } from "react-bootstrap";
+import { Card, Stack, DropdownButton, Dropdown } from "react-bootstrap";
+import "../components/Expense.css";
 import { format } from "date-fns";
 import { ExpenseContext } from "../context/ExpenseContext";
 
@@ -37,25 +38,27 @@ const Expense = ({ expense }) => {
               {format(new Date(expense.createdAt), "dd/MM/yyyy kk:mm")}
             </Card.Text>
           </span>
-          <Card.Title className="ms-auto">
+          <Card.Title className="ms-auto mb-0">
             <Stack direction="horizontal" gap={3}>
-              <span className="fs-4">{expense.amount}</span>
-              <Button
-                className=""
-                variant="outline-secondary"
-                size="sm"
-                onClick={() => handleEdit(expense)}
+              <span className="fs-4">${expense.amount}</span>
+
+              <DropdownButton
+                title={
+                  <i className="fa-solid fa-ellipsis-vertical text-dark"></i>
+                }
+                id="bg-vertical-dropdown-2"
+                variant="link"
               >
-                <i className="fa-solid fa-pen"></i>
-              </Button>
-              <Button
-                className=""
-                variant="outline-secondary"
-                size="sm"
-                onClick={() => handleDeleteExpense(expense)}
-              >
-                <i className="fa-solid fa-trash"></i>
-              </Button>
+                <Dropdown.Item eventKey="1" onClick={() => handleEdit(expense)}>
+                  Editar
+                </Dropdown.Item>
+                <Dropdown.Item
+                  eventKey="2"
+                  onClick={() => handleDeleteExpense(expense)}
+                >
+                  Borrar
+                </Dropdown.Item>
+              </DropdownButton>
             </Stack>
           </Card.Title>
         </Stack>

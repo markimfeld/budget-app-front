@@ -1,6 +1,6 @@
 import React from "react";
 import { useContext } from "react";
-import { Card, Button, Stack } from "react-bootstrap";
+import { Card, Stack, DropdownButton, Dropdown } from "react-bootstrap";
 
 import { BudgetContext } from "../context/BudgetContext";
 import { ExpenseContext } from "../context/ExpenseContext";
@@ -33,28 +33,30 @@ const Budget = ({ budget }) => {
           <Stack direction="horizontal" gap={3}>
             <span>{budget.name}</span>
 
-            <Button
+            <DropdownButton
+              title={
+                <i className="fa-solid fa-ellipsis-vertical text-dark"></i>
+              }
+              id="bg-vertical-dropdown-2"
+              variant="link"
               className="ms-auto"
-              size="sm"
-              variant="outline-secondary"
-              onClick={() => handleGetExpenses(budget)}
             >
-              <i className="fa-solid fa-list"></i>
-            </Button>
-            <Button
-              size="sm"
-              variant="outline-secondary"
-              onClick={() => handleEdit(budget)}
-            >
-              <i className="fa-solid fa-pen"></i>
-            </Button>
-            <Button
-              variant="outline-secondary"
-              size="sm"
-              onClick={() => handleDeleteBudget(budget)}
-            >
-              <i className="fa-solid fa-trash"></i>
-            </Button>
+              <Dropdown.Item
+                eventKey="1"
+                onClick={() => handleGetExpenses(budget)}
+              >
+                Ver gastos
+              </Dropdown.Item>
+              <Dropdown.Item eventKey="2" onClick={() => handleEdit(budget)}>
+                Editar
+              </Dropdown.Item>
+              <Dropdown.Item
+                eventKey="3"
+                onClick={() => handleDeleteBudget(budget)}
+              >
+                Borrar
+              </Dropdown.Item>
+            </DropdownButton>
           </Stack>
         </Card.Header>
         <Card.Body style={{ backgroundColor: "hsl(0, 0%, 97%, 0.5)" }}>

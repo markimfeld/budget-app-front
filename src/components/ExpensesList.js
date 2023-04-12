@@ -1,6 +1,6 @@
 import React from "react";
 import { useContext } from "react";
-import { Card, Button, Stack } from "react-bootstrap";
+import { Card, Button, Stack, DropdownButton, Dropdown } from "react-bootstrap";
 
 import ExpenseForm from "./ExpenseForm";
 import Success from "../components/Success";
@@ -71,22 +71,27 @@ const ExpensesList = () => {
                   </Card.Text>
                 </div>
                 <Stack direction="horizontal" gap={3} className="ms-auto">
-                  <Button
+                  <DropdownButton
+                    title={
+                      <i className="fa-solid fa-ellipsis-vertical text-dark"></i>
+                    }
+                    id="bg-vertical-dropdown-2"
+                    variant="link"
                     className="ms-auto"
-                    size="sm"
-                    variant="outline-secondary"
-                    onClick={() => handleNewExpense(true)}
                   >
-                    <i className="fa-solid fa-plus"></i>
-                  </Button>
-                  <Button
-                    className=""
-                    size="sm"
-                    variant="outline-secondary"
-                    onClick={() => handleVolver(true)}
-                  >
-                    <i className="fa-solid fa-angle-left"></i>
-                  </Button>
+                    <Dropdown.Item
+                      eventKey="1"
+                      onClick={() => handleNewExpense(true)}
+                    >
+                      Nuevo gasto
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      eventKey="2"
+                      onClick={() => handleVolver(true)}
+                    >
+                      Volver
+                    </Dropdown.Item>
+                  </DropdownButton>
                 </Stack>
               </Stack>
             </Card.Body>

@@ -40,7 +40,15 @@ const Header = () => {
             <Nav.Link onClick={() => handleShowBudgetFormOrList(true)}>
               Nuevo presupuesto
             </Nav.Link>
-            <NavDropdown title={user.firstName} id="collasible-nav-dropdown">
+            <NavDropdown
+              title={<i className="fa-solid fa-circle-user fa-xl"></i>}
+              id="collasible-nav-dropdown"
+            >
+              <NavDropdown.Item onClick={() => handleSettings()}>
+                <i className="fa-solid fa-circle-user fa-xl"></i>{" "}
+                {user.firstName}
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
               <NavDropdown.Item onClick={() => handleSettings()}>
                 <i className="fa-solid fa-gear"></i> Preferencias
               </NavDropdown.Item>
