@@ -19,7 +19,7 @@ export const ExpenseContextProvider = ({ children }) => {
   const [expenseToUpdate, setExpenseToUpdate] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { user } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
 
   const { handleShowBudgetList, getBudgets } = useContext(BudgetContext);
 
@@ -41,7 +41,9 @@ export const ExpenseContextProvider = ({ children }) => {
         setSelectedBudget(budget);
         handleShowBudgetList(false);
       } catch (error) {
-        console.log(error);
+        if (error.response.data.message === "Token no válido") {
+          logout();
+        }
       }
     }
   };

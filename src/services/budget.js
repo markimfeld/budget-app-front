@@ -24,7 +24,7 @@ const budgetService = {
     return data;
   },
   delete: async (id, config) => {
-    const { data } = axios.delete(`${baseUrl}/${id}`, config);
+    const { data } = await axios.delete(`${baseUrl}/${id}`, config);
     return data;
   },
   update: async (id, budgetToUpdate, config) => {

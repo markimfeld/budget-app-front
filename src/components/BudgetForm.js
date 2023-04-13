@@ -8,7 +8,7 @@ import { BudgetContext } from "../context/BudgetContext";
 import { UserContext } from "../context/UserContext";
 
 const BudgetForm = () => {
-  const { user } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
   const {
     handleUpdateBudgets,
     handleShowBudgetForm,
@@ -25,7 +25,7 @@ const BudgetForm = () => {
   const [expectedAmount, setExpectedAmount] = useState(
     isEditing && budgetToUpdate.expectedAmount
       ? budgetToUpdate.expectedAmount
-      : null
+      : 0
   );
 
   const handleAddBudget = async (event) => {
@@ -40,12 +40,17 @@ const BudgetForm = () => {
       const newBudget = { name, expectedAmount };
 
       if (!isEditing) {
-        const data = await budgetService.store(newBudget, config);
-
-        handleUpdateBudgets(data.data);
-        handleShowBudgetForm(false);
-        handleShowBudgetList(true);
-        handleSetMessageBudget("Nuevo presupuesto creado exitosamente!");
+        try {
+          const data = await budgetService.store(newBudget, config);
+          handleUpdateBudgets(data.data);
+          handleShowBudgetForm(false);
+          handleShowBudgetList(true);
+          handleSetMessageBudget("Nuevo presupuesto creado exitosamente!");
+        } catch (error) {
+          if (error.response.data.message === "Token no válido") {
+            logout();
+          }
+        }
       } else {
         let budgetUpdated = { ...budgetToUpdate };
         budgetUpdated.expectedAmount = Number.parseFloat(expectedAmount);
@@ -53,16 +58,22 @@ const BudgetForm = () => {
         budgetUpdated.leftAmount =
           Number.parseFloat(expectedAmount) - budgetUpdated.spentAmount;
 
-        const data = await budgetService.update(
-          budgetToUpdate._id,
-          budgetUpdated,
-          config
-        );
+        try {
+          const data = await budgetService.update(
+            budgetToUpdate._id,
+            budgetUpdated,
+            config
+          );
 
-        handleUpdateBudgets(data.data);
-        handleShowBudgetForm(false);
-        handleShowBudgetList(true);
-        handleSetMessageBudget("Presupuesto editado exitosamente!");
+          handleUpdateBudgets(data.data);
+          handleShowBudgetForm(false);
+          handleShowBudgetList(true);
+          handleSetMessageBudget("Presupuesto editado exitosamente!");
+        } catch (error) {
+          if (error.response.data.message === "Token no válido") {
+            logout();
+          }
+        }
       }
     }
   };

@@ -143,10 +143,12 @@ export const BudgetContextProvider = ({ children }) => {
       try {
         await budgetService.delete(budget._id, config);
         setBudgets(budgets.filter((b) => b._id !== budget._id));
-      } catch (err) {
-        if (err.response.data.status === 400) {
-          window.localStorage.clear();
-          window.location.reload();
+      } catch (error) {
+        if (
+          error.response.data.status === 400 &&
+          error.response.data.message === "Token no válido"
+        ) {
+          logout();
         }
       }
     }
