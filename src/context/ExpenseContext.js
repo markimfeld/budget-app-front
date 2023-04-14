@@ -41,7 +41,10 @@ export const ExpenseContextProvider = ({ children }) => {
         setSelectedBudget(budget);
         handleShowBudgetList(false);
       } catch (error) {
-        if (error.response.data.message === "Token no válido") {
+        if (
+          error.response.data.status === 400 &&
+          error.response.data.message === "Token no válido"
+        ) {
           logout();
         }
       }
@@ -93,10 +96,12 @@ export const ExpenseContextProvider = ({ children }) => {
       try {
         const response = await budgetService.getOne(config, budgetId);
         setSelectedBudget(response.data);
-      } catch (err) {
-        if (err.response.data.status === 400) {
-          window.localStorage.clear();
-          window.location.reload();
+      } catch (error) {
+        if (
+          error.response.data.status === 400 &&
+          error.response.data.message === "Token no válido"
+        ) {
+          logout();
         }
       }
     }
@@ -135,10 +140,12 @@ export const ExpenseContextProvider = ({ children }) => {
         handleUpdateSelectedBudget(selectedBudget._id);
 
         getBudgets();
-      } catch (err) {
-        if (err.response.data.status === 400) {
-          window.localStorage.clear();
-          window.location.reload();
+      } catch (error) {
+        if (
+          error.response.data.status === 400 &&
+          error.response.data.message === "Token no válido"
+        ) {
+          logout();
         }
       }
     }

@@ -13,7 +13,6 @@ const expenseService = {
   },
   del: async (id, config) => {
     const { data } = await axios.delete(`${baseUrl}/${id}`, config);
-    console.log(data);
     return data;
   },
   edit: async (id, expenseToUpdate, config) => {

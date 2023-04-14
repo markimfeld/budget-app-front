@@ -31,7 +31,7 @@ const ExpenseForm = () => {
     isEditing && expenseToUpdate.description ? expenseToUpdate.description : ""
   );
   const [amount, setAmount] = useState(
-    isEditing && expenseToUpdate.amount ? expenseToUpdate.amount : 0
+    isEditing && expenseToUpdate.amount ? expenseToUpdate.amount : ""
   );
 
   const onSubmitExpense = async (event) => {

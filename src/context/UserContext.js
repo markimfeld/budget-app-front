@@ -84,6 +84,10 @@ export const UserContextProvider = ({ children }) => {
     }
   };
 
+  const handleSetError = (error) => {
+    setError(error);
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -98,6 +102,7 @@ export const UserContextProvider = ({ children }) => {
         handleShowLoginForm,
         handleShowRegisterForm,
         isLoading,
+        handleSetError,
       }}
     >
       {children}

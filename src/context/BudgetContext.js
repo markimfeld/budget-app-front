@@ -131,6 +131,8 @@ export const BudgetContextProvider = ({ children }) => {
 
   const handleIsEditing = (isEditing) => {
     setIsEditing(isEditing);
+
+    // setIsEditing(prevState ==> !prevState)
   };
 
   const handleDeleteBudget = async (budget) => {

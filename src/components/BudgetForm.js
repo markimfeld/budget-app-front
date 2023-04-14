@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { useState } from "react";
-import { Form, Button, Stack, Card } from "react-bootstrap";
+import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
+
+import Error from "./Error";
 
 import budgetService from "../services/budget";
 
@@ -8,7 +10,7 @@ import { BudgetContext } from "../context/BudgetContext";
 import { UserContext } from "../context/UserContext";
 
 const BudgetForm = () => {
-  const { user, logout } = useContext(UserContext);
+  const { user, logout, error, handleSetError } = useContext(UserContext);
   const {
     handleUpdateBudgets,
     handleShowBudgetForm,
@@ -25,7 +27,7 @@ const BudgetForm = () => {
   const [expectedAmount, setExpectedAmount] = useState(
     isEditing && budgetToUpdate.expectedAmount
       ? budgetToUpdate.expectedAmount
-      : 0
+      : ""
   );
 
   const handleAddBudget = async (event) => {
@@ -47,8 +49,22 @@ const BudgetForm = () => {
           handleShowBudgetList(true);
           handleSetMessageBudget("Nuevo presupuesto creado exitosamente!");
         } catch (error) {
-          if (error.response.data.message === "Token no válido") {
+          if (
+            error.response.data.status === 400 &&
+            error.response.data.message === "Token no válido"
+          ) {
             logout();
+          }
+          if (
+            error.response.data.status === 400 &&
+            error.response.data.message ===
+              "The name and expectedAmount are required"
+          ) {
+            console.log("Hay campos requeridos");
+            handleSetError(error.response.data);
+            setTimeout(() => {
+              handleSetError(null);
+            }, 2500);
           }
         }
       } else {
@@ -93,33 +109,46 @@ const BudgetForm = () => {
   };
 
   return (
-    <Card>
-      <Card.Body>
-        <Card.Title className="text-center">
+    <Card style={{ border: "none", backgroundColor: "hsl(0, 0%, 97%, 0.5)" }}>
+      {error !== null && <Error />}
+      <Card.Header style={{ border: "none" }}>
+        <Card.Title className="text-center fs-3">
           {!isEditing && "Nuevo presupuesto"}
           {isEditing && "Modificar presupuesto"}
         </Card.Title>
+      </Card.Header>
+      <Card.Body className="p-4">
         <Form onSubmit={handleAddBudget}>
-          <Form.Group className="mb-3" controlId="formBasicNombre">
-            <Form.Label>Nombre</Form.Label>
-            <Form.Control
-              onChange={onChangeName}
-              name="name"
-              type="text"
-              placeholder="Ejemplo: Comida"
-              value={name}
-            />
+          <Form.Group className="mb-3" controlId="formBasicName">
+            <FloatingLabel
+              controlId="floatingName"
+              label="Nombre del presupuesto"
+            >
+              <Form.Control
+                name="name"
+                value={name}
+                onChange={onChangeName}
+                type="text"
+                placeholder="Comida"
+                // required
+              />
+            </FloatingLabel>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicMontoLimite">
-            <Form.Label>Monto límite</Form.Label>
-            <Form.Control
-              onChange={onChangeExpectedAmount}
-              name="expectedAmount"
-              type="number"
-              placeholder="Ejemplo: $15000.00"
-              value={expectedAmount}
-            />
+          <Form.Group className="mb-3" controlId="formBasicExpectedAmount">
+            <FloatingLabel
+              controlId="floatingExpectedAmount"
+              label="Monto previsto"
+            >
+              <Form.Control
+                name="expectedAmount"
+                value={expectedAmount}
+                onChange={onChangeExpectedAmount}
+                type="number"
+                placeholder="15000"
+                // required
+              />
+            </FloatingLabel>
           </Form.Group>
           <div className="d-grid gap-2">
             <Stack direction="horizontal" gap={3}>
