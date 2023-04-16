@@ -8,14 +8,22 @@ import budgetService from "../services/budget";
 
 import { BudgetContext } from "../context/BudgetContext";
 import { UserContext } from "../context/UserContext";
+import { MessageContext } from "../context/MessageContext";
+
+import {
+  MISSING_FIELDS_REQUIRED,
+  RECORD_CREATED_MESSAGE,
+  RECORD_UPDATED_MESSAGE,
+} from "../labels/labels";
 
 const BudgetForm = () => {
-  const { user, logout, error, handleSetError } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
+  const { message, handleSetMessage, type, handleSetType } =
+    useContext(MessageContext);
   const {
     handleUpdateBudgets,
     handleShowBudgetForm,
     handleShowBudgetList,
-    handleSetMessageBudget,
     budgetToUpdate,
     isEditing,
     handleIsEditing,
@@ -47,7 +55,8 @@ const BudgetForm = () => {
           handleUpdateBudgets(data.data);
           handleShowBudgetForm(false);
           handleShowBudgetList(true);
-          handleSetMessageBudget("Nuevo presupuesto creado exitosamente!");
+          handleSetMessage(RECORD_CREATED_MESSAGE);
+          handleSetType("success");
         } catch (error) {
           if (
             error.response.data.status === 400 &&
@@ -57,14 +66,10 @@ const BudgetForm = () => {
           }
           if (
             error.response.data.status === 400 &&
-            error.response.data.message ===
-              "The name and expectedAmount are required"
+            error.response.data.message === "MISSING_FIELDS_REQUIRED"
           ) {
-            console.log("Hay campos requeridos");
-            handleSetError(error.response.data);
-            setTimeout(() => {
-              handleSetError(null);
-            }, 2500);
+            handleSetMessage(MISSING_FIELDS_REQUIRED);
+            handleSetType("error");
           }
         }
       } else {
@@ -84,7 +89,8 @@ const BudgetForm = () => {
           handleUpdateBudgets(data.data);
           handleShowBudgetForm(false);
           handleShowBudgetList(true);
-          handleSetMessageBudget("Presupuesto editado exitosamente!");
+          handleSetMessage(RECORD_UPDATED_MESSAGE);
+          handleSetType("success");
         } catch (error) {
           if (error.response.data.message === "Token no válido") {
             logout();
@@ -110,7 +116,7 @@ const BudgetForm = () => {
 
   return (
     <Card style={{ border: "none", backgroundColor: "hsl(0, 0%, 97%, 0.5)" }}>
-      {error !== null && <Error />}
+      {message !== null && type === "error" && <Error />}
       <Card.Header style={{ border: "none" }}>
         <Card.Title className="text-center fs-3">
           {!isEditing && "Nuevo presupuesto"}

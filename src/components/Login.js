@@ -5,13 +5,16 @@ import { Form, Button, Card, Row, Col, FloatingLabel } from "react-bootstrap";
 import Error from "./Error";
 
 import { UserContext } from "../context/UserContext";
+import { MessageContext } from "../context/MessageContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginEnabledBtn, setLoginEnabledBtn] = useState(false);
 
-  const { login, error, handleShowRegisterForm, handleShowLoginForm } =
+  const { message } = useContext(MessageContext);
+
+  const { login, handleShowRegisterForm, handleShowLoginForm } =
     useContext(UserContext);
 
   const handleLogin = (event) => {
@@ -42,7 +45,7 @@ const Login = () => {
 
   return (
     <>
-      {error !== null && <Error />}
+      {message !== null && <Error />}
       <Card style={{ borderRadius: 0 }}>
         <Card.Body>
           <Card.Title className="text-center fs-1 mb-4">

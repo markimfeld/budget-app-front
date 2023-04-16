@@ -5,6 +5,7 @@ import { Form, Button, Card, Col, Row, FloatingLabel } from "react-bootstrap";
 import Error from "./Error";
 
 import { UserContext } from "../context/UserContext";
+import { MessageContext } from "../context/MessageContext";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +15,9 @@ const Register = () => {
   const [username, setUserName] = useState("");
   const [registerEnabledBtn, setRegisterEnabledBtn] = useState(false);
 
-  const { error, register, handleShowLoginForm, handleShowRegisterForm } =
+  const { message } = useContext(MessageContext);
+
+  const { register, handleShowLoginForm, handleShowRegisterForm } =
     useContext(UserContext);
 
   const handleRegister = (event) => {
@@ -65,7 +68,7 @@ const Register = () => {
 
   return (
     <>
-      {error !== null && <Error />}
+      {message !== null && <Error />}
       <Card style={{ borderRadius: 0 }}>
         <Card.Body>
           <Card.Title className="text-center fs-1 mb-4">
@@ -81,7 +84,7 @@ const Register = () => {
                     onChange={onChangeFirstName}
                     type="text"
                     placeholder="Ej: Lionel"
-                    required
+                    // required
                   />
                 </FloatingLabel>
               </Col>
@@ -93,7 +96,7 @@ const Register = () => {
                     onChange={onChangeLastName}
                     type="text"
                     placeholder="Ej: Messi"
-                    required
+                    // required
                   />
                 </FloatingLabel>
               </Col>
@@ -108,7 +111,7 @@ const Register = () => {
                     onChange={onChangeUsername}
                     type="text"
                     placeholder="Ej: lionelmessi"
-                    required
+                    // required
                   />
                 </FloatingLabel>
               </Col>
@@ -122,7 +125,7 @@ const Register = () => {
                     onChange={onChangeEmail}
                     type="email"
                     placeholder="lionelmessi@gmail.com"
-                    required
+                    // required
                   />
                 </FloatingLabel>
               </Col>
@@ -134,7 +137,7 @@ const Register = () => {
                     onChange={onChangePassword}
                     type="password"
                     placeholder="password"
-                    required
+                    // required
                   />
                 </FloatingLabel>
               </Col>

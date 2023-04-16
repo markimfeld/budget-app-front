@@ -8,6 +8,7 @@ import Expense from "./Expense";
 
 import { ExpenseContext } from "../context/ExpenseContext";
 import { BudgetContext } from "../context/BudgetContext";
+import { MessageContext } from "../context/MessageContext";
 
 const ExpensesList = () => {
   const {
@@ -18,10 +19,11 @@ const ExpensesList = () => {
     showExpenseForm,
     showExpensesList,
     handleSelectedBudget,
-    messageExpense,
   } = useContext(ExpenseContext);
 
   const { handleShowBudgetList } = useContext(BudgetContext);
+
+  const { message, type } = useContext(MessageContext);
 
   const expensesList = expenses.map((expense, i) => {
     if (i === expenses.length - 1) {
@@ -54,6 +56,7 @@ const ExpensesList = () => {
 
   return (
     <>
+      {message !== null && type === "success" && <Success />}
       <div>
         {showExpensesList && (
           <Card
@@ -99,7 +102,6 @@ const ExpensesList = () => {
         )}
       </div>
       <div className="mt-3">
-        {messageExpense !== null && <Success />}
         {expenses.length > 0 && showExpensesList && (
           <div>
             <p

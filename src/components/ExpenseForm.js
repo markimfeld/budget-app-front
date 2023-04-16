@@ -8,6 +8,11 @@ import { ExpenseContext } from "../context/ExpenseContext";
 import { UserContext } from "../context/UserContext";
 import { BudgetContext } from "../context/BudgetContext";
 import budgetService from "../services/budget";
+import { MessageContext } from "../context/MessageContext";
+import {
+  RECORD_CREATED_MESSAGE,
+  RECORD_UPDATED_MESSAGE,
+} from "../labels/labels";
 
 const ExpenseForm = () => {
   const {
@@ -15,7 +20,6 @@ const ExpenseForm = () => {
     handleShowExpenseForm,
     selectedBudget,
     handleUpdateExpenses,
-    handleSetMessageExpense,
     handleUpdateSelectedBudget,
     isEditing,
     handleIsEditing,
@@ -23,6 +27,7 @@ const ExpenseForm = () => {
   } = useContext(ExpenseContext);
   const { user } = useContext(UserContext);
   const { getBudgets } = useContext(BudgetContext);
+  const { handleSetMessage, handleSetType } = useContext(MessageContext);
 
   const [name, setName] = useState(
     isEditing && expenseToUpdate.name ? expenseToUpdate.name : ""
@@ -63,7 +68,8 @@ const ExpenseForm = () => {
           handleShowExpenseList(true);
           handleShowExpenseForm(false);
           handleUpdateExpenses(data);
-          handleSetMessageExpense("Nuevo gasto creado exitosamente!");
+          handleSetMessage(RECORD_CREATED_MESSAGE);
+          handleSetType("sucess");
           handleUpdateSelectedBudget(selectedBudget._id);
           getBudgets();
         } catch (error) {
@@ -95,7 +101,8 @@ const ExpenseForm = () => {
           handleShowExpenseList(true);
           handleShowExpenseForm(false);
           handleUpdateExpenses(data);
-          handleSetMessageExpense("Gasto modificado exitosamente!");
+          handleSetMessage(RECORD_UPDATED_MESSAGE);
+          handleSetType("success");
           handleUpdateSelectedBudget(selectedBudget._id);
           getBudgets();
         } catch (error) {

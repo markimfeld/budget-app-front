@@ -8,13 +8,14 @@ import Success from "../components/Success";
 import Budget from "./Budget";
 
 import { BudgetContext } from "../context/BudgetContext";
+import { MessageContext } from "../context/MessageContext";
 
 const BudgetList = () => {
+  const { message, type } = useContext(MessageContext);
   const {
     budgets,
     showBudgetForm,
     showBudgetList,
-    messageBudget,
     handleShowBudgetForm,
     handleShowBudgetList,
     isLoading,
@@ -31,7 +32,7 @@ const BudgetList = () => {
 
   return (
     <>
-      {messageBudget !== null && <Success />}
+      {message !== null && type === "success" && <Success />}
       <div>
         {!showBudgetList && (
           <div>

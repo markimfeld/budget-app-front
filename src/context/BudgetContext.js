@@ -5,6 +5,9 @@ import { useState } from "react";
 import budgetService from "../services/budget";
 
 import { UserContext } from "./UserContext";
+import { MessageContext } from "./MessageContext";
+
+import { RECORD_DELETED_MESSAGE } from "../labels/labels";
 
 export const BudgetContext = createContext();
 
@@ -19,10 +22,11 @@ export const BudgetContextProvider = ({ children }) => {
   });
   const [showBudgetForm, setShowBudgetForm] = useState(false);
   const [showBudgetList, setShowBudgetList] = useState(true);
-  const [messageBudget, setMessageBudget] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [budgetToUpdate, setBudgetToUpdate] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+
+  const { handleSetMessage, handleSetType } = useContext(MessageContext);
 
   const getBudgets = async () => {
     if (user !== null) {
@@ -122,13 +126,6 @@ export const BudgetContextProvider = ({ children }) => {
     setBudgetToUpdate(budget);
   };
 
-  const handleSetMessageBudget = (message) => {
-    setMessageBudget(message);
-    setTimeout(() => {
-      setMessageBudget(null);
-    }, 2500);
-  };
-
   const handleIsEditing = (isEditing) => {
     setIsEditing(isEditing);
 
@@ -145,6 +142,8 @@ export const BudgetContextProvider = ({ children }) => {
       try {
         await budgetService.delete(budget._id, config);
         setBudgets(budgets.filter((b) => b._id !== budget._id));
+        handleSetMessage(RECORD_DELETED_MESSAGE);
+        handleSetType("success");
       } catch (error) {
         if (
           error.response.data.status === 400 &&
@@ -169,8 +168,6 @@ export const BudgetContextProvider = ({ children }) => {
         showBudgetList,
         handleUpdateBudgets,
         handleShowBudgetList,
-        handleSetMessageBudget,
-        messageBudget,
         getBudgets,
         handleDeleteBudget,
         isLoading,

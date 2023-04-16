@@ -1,15 +1,24 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 
 import { useState } from "react";
 
 // services
 import loginService from "../services/login";
+import { MessageContext } from "./MessageContext";
+import {
+  DUPLICATE_RECORD,
+  INVALID_CREDENTIALS,
+  NOT_FOUND,
+  INVALID_PASSWORD_LENGTH,
+  MISSING_FIELDS_REQUIRED,
+} from "../labels/labels";
 
 export const UserContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
+  const { handleSetMessage } = useContext(MessageContext);
+
   const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
 
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [showLoginForm, setshowLoginForm] = useState(true);
@@ -26,11 +35,18 @@ export const UserContextProvider = ({ children }) => {
         handleShowLoginForm(false);
         setIsLoading(false);
       }
-    } catch (err) {
-      setError(err.response.data);
-      setTimeout(() => {
-        setError(null);
-      }, 5000);
+    } catch (error) {
+      if (
+        error.response.data.status === 404 &&
+        error.response.data.message === "INVALID_CREDENTIALS"
+      ) {
+        handleSetMessage(INVALID_CREDENTIALS);
+      } else if (
+        error.response.data.status === 404 &&
+        error.response.data.message === "NOT_FOUND"
+      ) {
+        handleSetMessage(NOT_FOUND);
+      }
     }
   };
 
@@ -60,11 +76,23 @@ export const UserContextProvider = ({ children }) => {
         handleShowLoginForm(false);
         setIsLoading(false);
       }
-    } catch (err) {
-      setError(err.response.data);
-      setTimeout(() => {
-        setError(null);
-      }, 5000);
+    } catch (error) {
+      if (
+        error.response.data.status === 400 &&
+        error.response.data.message === "DUPLICATE_RECORD"
+      ) {
+        handleSetMessage(DUPLICATE_RECORD);
+      } else if (
+        error.response.data.status === 400 &&
+        error.response.data.message === "INVALID_PASSWORD_LENGTH"
+      ) {
+        handleSetMessage(INVALID_PASSWORD_LENGTH);
+      } else if (
+        error.response.data.status === 400 &&
+        error.response.data.message === "MISSING_FIELDS_REQUIRED"
+      ) {
+        handleSetMessage(MISSING_FIELDS_REQUIRED);
+      }
     }
   };
 
@@ -84,17 +112,12 @@ export const UserContextProvider = ({ children }) => {
     }
   };
 
-  const handleSetError = (error) => {
-    setError(error);
-  };
-
   return (
     <UserContext.Provider
       value={{
         user,
         login,
         logout,
-        error,
         loadUserFromStorage,
         register,
         showRegisterForm,
@@ -102,7 +125,6 @@ export const UserContextProvider = ({ children }) => {
         handleShowLoginForm,
         handleShowRegisterForm,
         isLoading,
-        handleSetError,
       }}
     >
       {children}

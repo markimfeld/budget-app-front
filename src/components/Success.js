@@ -1,25 +1,21 @@
 import React, { useContext } from "react";
 import { Alert } from "react-bootstrap";
 
-import { BudgetContext } from "../context/BudgetContext";
-import { ExpenseContext } from "../context/ExpenseContext";
+import { MessageContext } from "../context/MessageContext";
 
 const Success = () => {
-  const { messageBudget } = useContext(BudgetContext);
-  const { messageExpense } = useContext(ExpenseContext);
+  const { message, handleSetMessage } = useContext(MessageContext);
 
   return (
     <>
-      {messageBudget !== null && (
-        <Alert key="success" variant="success">
-          {messageBudget}
-        </Alert>
-      )}
-      {messageExpense !== null && (
-        <Alert key="success" variant="success">
-          {messageExpense}
-        </Alert>
-      )}
+      <Alert
+        key="success"
+        variant="success"
+        onClose={() => handleSetMessage(null)}
+        dismissible
+      >
+        {message}
+      </Alert>
     </>
   );
 };
