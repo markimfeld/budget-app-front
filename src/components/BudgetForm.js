@@ -2,8 +2,6 @@ import React, { useContext } from "react";
 import { useState } from "react";
 import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
 
-import Error from "./Error";
-
 import budgetService from "../services/budget";
 
 import { BudgetContext } from "../context/BudgetContext";
@@ -18,8 +16,12 @@ import {
 
 const BudgetForm = () => {
   const { user, logout } = useContext(UserContext);
-  const { message, handleSetMessage, type, handleSetType } =
-    useContext(MessageContext);
+  const {
+    handleSetMessage,
+    handleSetType,
+    handleSetRecordType,
+    clearMessages,
+  } = useContext(MessageContext);
   const {
     handleUpdateBudgets,
     handleShowBudgetForm,
@@ -57,6 +59,7 @@ const BudgetForm = () => {
           handleShowBudgetList(true);
           handleSetMessage(RECORD_CREATED_MESSAGE);
           handleSetType("success");
+          handleSetRecordType("budget");
         } catch (error) {
           if (
             error.response.data.status === 400 &&
@@ -69,7 +72,8 @@ const BudgetForm = () => {
             error.response.data.message === "MISSING_FIELDS_REQUIRED"
           ) {
             handleSetMessage(MISSING_FIELDS_REQUIRED);
-            handleSetType("error");
+            handleSetType("danger");
+            handleSetRecordType("budget");
           }
         }
       } else {
@@ -91,6 +95,7 @@ const BudgetForm = () => {
           handleShowBudgetList(true);
           handleSetMessage(RECORD_UPDATED_MESSAGE);
           handleSetType("success");
+          handleSetRecordType("budget");
         } catch (error) {
           if (error.response.data.message === "Token no válido") {
             logout();
@@ -112,11 +117,11 @@ const BudgetForm = () => {
     handleShowBudgetForm(false);
     handleShowBudgetList(true);
     handleIsEditing(false);
+    clearMessages();
   };
 
   return (
     <Card style={{ border: "none", backgroundColor: "hsl(0, 0%, 97%, 0.5)" }}>
-      {message !== null && type === "error" && <Error />}
       <Card.Header style={{ border: "none" }}>
         <Card.Title className="text-center fs-3">
           {!isEditing && "Nuevo presupuesto"}

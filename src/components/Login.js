@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useContext } from "react";
 import { Form, Button, Card, Row, Col, FloatingLabel } from "react-bootstrap";
 
-import Error from "./Error";
+import Message from "./Message";
 
 import { UserContext } from "../context/UserContext";
 import { MessageContext } from "../context/MessageContext";
@@ -12,7 +12,13 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loginEnabledBtn, setLoginEnabledBtn] = useState(false);
 
-  const { message } = useContext(MessageContext);
+  const {
+    message,
+    recordType,
+    handleSetMessage,
+    handleSetType,
+    handleSetRecordType,
+  } = useContext(MessageContext);
 
   const { login, handleShowRegisterForm, handleShowLoginForm } =
     useContext(UserContext);
@@ -41,11 +47,18 @@ const Login = () => {
   const handleShowRegister = () => {
     handleShowRegisterForm(true);
     handleShowLoginForm(false);
+    handleSetMessage(null);
+    handleSetType(null);
+    handleSetRecordType(null);
+  };
+
+  const showMessage = () => {
+    return message !== null && recordType === "user";
   };
 
   return (
     <>
-      {message !== null && <Error />}
+      {showMessage() && <Message />}
       <Card style={{ borderRadius: 0 }}>
         <Card.Body>
           <Card.Title className="text-center fs-1 mb-4">

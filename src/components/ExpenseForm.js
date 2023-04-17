@@ -27,7 +27,8 @@ const ExpenseForm = () => {
   } = useContext(ExpenseContext);
   const { user } = useContext(UserContext);
   const { getBudgets } = useContext(BudgetContext);
-  const { handleSetMessage, handleSetType } = useContext(MessageContext);
+  const { handleSetMessage, handleSetType, handleSetRecordType } =
+    useContext(MessageContext);
 
   const [name, setName] = useState(
     isEditing && expenseToUpdate.name ? expenseToUpdate.name : ""
@@ -69,7 +70,8 @@ const ExpenseForm = () => {
           handleShowExpenseForm(false);
           handleUpdateExpenses(data);
           handleSetMessage(RECORD_CREATED_MESSAGE);
-          handleSetType("sucess");
+          handleSetType("success");
+          handleSetRecordType("expense");
           handleUpdateSelectedBudget(selectedBudget._id);
           getBudgets();
         } catch (error) {
@@ -103,6 +105,7 @@ const ExpenseForm = () => {
           handleUpdateExpenses(data);
           handleSetMessage(RECORD_UPDATED_MESSAGE);
           handleSetType("success");
+          handleSetRecordType("expense");
           handleUpdateSelectedBudget(selectedBudget._id);
           getBudgets();
         } catch (error) {

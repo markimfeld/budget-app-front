@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useContext } from "react";
 import { Form, Button, Card, Col, Row, FloatingLabel } from "react-bootstrap";
 
-import Error from "./Error";
+import Message from "./Message";
 
 import { UserContext } from "../context/UserContext";
 import { MessageContext } from "../context/MessageContext";
@@ -15,7 +15,8 @@ const Register = () => {
   const [username, setUserName] = useState("");
   const [registerEnabledBtn, setRegisterEnabledBtn] = useState(false);
 
-  const { message } = useContext(MessageContext);
+  const { message, handleSetMessage, handleSetType, handleSetRecordType } =
+    useContext(MessageContext);
 
   const { register, handleShowLoginForm, handleShowRegisterForm } =
     useContext(UserContext);
@@ -61,14 +62,17 @@ const Register = () => {
     }
   };
 
-  const handleCancel = () => {
+  const handleLogin = () => {
     handleShowRegisterForm(false);
     handleShowLoginForm(true);
+    handleSetMessage(null);
+    handleSetType(null);
+    handleSetRecordType(null);
   };
 
   return (
     <>
-      {message !== null && <Error />}
+      {message !== null && <Message />}
       <Card style={{ borderRadius: 0 }}>
         <Card.Body>
           <Card.Title className="text-center fs-1 mb-4">
@@ -165,7 +169,7 @@ const Register = () => {
             <Button
               variant="link"
               className="m-0 p-0"
-              onClick={() => handleCancel()}
+              onClick={() => handleLogin()}
             >
               Iniciar sesión
             </Button>

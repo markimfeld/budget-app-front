@@ -4,14 +4,13 @@ import { Card, Button, Spinner } from "react-bootstrap";
 
 import ExpensesList from "./ExpensesList";
 import BudgetForm from "./BudgetForm";
-import Success from "../components/Success";
 import Budget from "./Budget";
 
 import { BudgetContext } from "../context/BudgetContext";
 import { MessageContext } from "../context/MessageContext";
 
 const BudgetList = () => {
-  const { message, type } = useContext(MessageContext);
+  const { clearMessages } = useContext(MessageContext);
   const {
     budgets,
     showBudgetForm,
@@ -19,6 +18,7 @@ const BudgetList = () => {
     handleShowBudgetForm,
     handleShowBudgetList,
     isLoading,
+    handleIsEditing,
   } = useContext(BudgetContext);
 
   const budgetList = budgets.map((budget) => {
@@ -28,11 +28,12 @@ const BudgetList = () => {
   const handleShowBudgetFormOrList = (showForm) => {
     handleShowBudgetForm(showForm);
     handleShowBudgetList(!showForm);
+    handleIsEditing(false);
+    clearMessages();
   };
 
   return (
     <>
-      {message !== null && type === "success" && <Success />}
       <div>
         {!showBudgetList && (
           <div>

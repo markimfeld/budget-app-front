@@ -16,7 +16,8 @@ import {
 export const UserContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
-  const { handleSetMessage } = useContext(MessageContext);
+  const { handleSetMessage, handleSetType, handleSetRecordType } =
+    useContext(MessageContext);
 
   const [user, setUser] = useState(null);
 
@@ -41,11 +42,15 @@ export const UserContextProvider = ({ children }) => {
         error.response.data.message === "INVALID_CREDENTIALS"
       ) {
         handleSetMessage(INVALID_CREDENTIALS);
+        handleSetType("danger");
+        handleSetRecordType("user");
       } else if (
         error.response.data.status === 404 &&
         error.response.data.message === "NOT_FOUND"
       ) {
         handleSetMessage(NOT_FOUND);
+        handleSetType("danger");
+        handleSetRecordType("user");
       }
     }
   };
@@ -82,16 +87,22 @@ export const UserContextProvider = ({ children }) => {
         error.response.data.message === "DUPLICATE_RECORD"
       ) {
         handleSetMessage(DUPLICATE_RECORD);
+        handleSetType("danger");
+        handleSetRecordType("user");
       } else if (
         error.response.data.status === 400 &&
         error.response.data.message === "INVALID_PASSWORD_LENGTH"
       ) {
         handleSetMessage(INVALID_PASSWORD_LENGTH);
+        handleSetType("danger");
+        handleSetRecordType("user");
       } else if (
         error.response.data.status === 400 &&
         error.response.data.message === "MISSING_FIELDS_REQUIRED"
       ) {
         handleSetMessage(MISSING_FIELDS_REQUIRED);
+        handleSetType("danger");
+        handleSetRecordType("user");
       }
     }
   };

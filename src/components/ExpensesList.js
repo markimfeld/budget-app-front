@@ -3,12 +3,10 @@ import { useContext } from "react";
 import { Card, Button, Stack, DropdownButton, Dropdown } from "react-bootstrap";
 
 import ExpenseForm from "./ExpenseForm";
-import Success from "../components/Success";
 import Expense from "./Expense";
 
 import { ExpenseContext } from "../context/ExpenseContext";
 import { BudgetContext } from "../context/BudgetContext";
-import { MessageContext } from "../context/MessageContext";
 
 const ExpensesList = () => {
   const {
@@ -22,8 +20,6 @@ const ExpensesList = () => {
   } = useContext(ExpenseContext);
 
   const { handleShowBudgetList } = useContext(BudgetContext);
-
-  const { message, type } = useContext(MessageContext);
 
   const expensesList = expenses.map((expense, i) => {
     if (i === expenses.length - 1) {
@@ -56,13 +52,11 @@ const ExpensesList = () => {
 
   return (
     <>
-      {message !== null && type === "success" && <Success />}
       <div>
         {showExpensesList && (
           <Card
             border="light"
             className="mb-3"
-            // bg="light"
             style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
           >
             <Card.Body>

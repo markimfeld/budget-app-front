@@ -5,10 +5,12 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import MainLayout from "./components/MainLayout";
 import Header from "./components/Header";
+import Message from "./components/Message";
 
 import { UserContext } from "./context/UserContext";
 
 import { ExpenseContextProvider } from "./context/ExpenseContext";
+import { MessageContext } from "./context/MessageContext";
 
 function App() {
   const {
@@ -18,6 +20,8 @@ function App() {
     showLoginForm,
     isLoading,
   } = useContext(UserContext);
+
+  const { message } = useContext(MessageContext);
 
   useEffect(() => {
     loadUserFromStorage();
@@ -55,6 +59,8 @@ function App() {
 
       {user !== null && !isLoading && (
         <Container>
+          {message && <Message />}
+
           <Row className="mt-4">
             <Col>
               <ExpenseContextProvider>

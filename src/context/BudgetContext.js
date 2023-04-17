@@ -26,7 +26,8 @@ export const BudgetContextProvider = ({ children }) => {
   const [budgetToUpdate, setBudgetToUpdate] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { handleSetMessage, handleSetType } = useContext(MessageContext);
+  const { handleSetMessage, handleSetType, handleSetRecordType } =
+    useContext(MessageContext);
 
   const getBudgets = async () => {
     if (user !== null) {
@@ -144,6 +145,7 @@ export const BudgetContextProvider = ({ children }) => {
         setBudgets(budgets.filter((b) => b._id !== budget._id));
         handleSetMessage(RECORD_DELETED_MESSAGE);
         handleSetType("success");
+        handleSetRecordType("budget");
       } catch (error) {
         if (
           error.response.data.status === 400 &&

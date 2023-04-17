@@ -4,9 +4,11 @@ import { Card, Stack, DropdownButton, Dropdown } from "react-bootstrap";
 
 import { BudgetContext } from "../context/BudgetContext";
 import { ExpenseContext } from "../context/ExpenseContext";
+import { MessageContext } from "../context/MessageContext";
 
 const Budget = ({ budget }) => {
   const { getExpenses } = useContext(ExpenseContext);
+  const { clearMessages } = useContext(MessageContext);
   const {
     handleDeleteBudget,
     handleBudgetToUpdate,
@@ -24,6 +26,7 @@ const Budget = ({ budget }) => {
     handleShowBudgetForm(true);
     handleShowBudgetList(false);
     handleIsEditing(true);
+    clearMessages();
   };
 
   return (
