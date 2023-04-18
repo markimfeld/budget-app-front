@@ -141,7 +141,7 @@ const BudgetForm = () => {
                 onChange={onChangeName}
                 type="text"
                 placeholder="Comida"
-                // required
+                required
               />
             </FloatingLabel>
           </Form.Group>
@@ -157,7 +157,7 @@ const BudgetForm = () => {
                 onChange={onChangeExpectedAmount}
                 type="number"
                 placeholder="15000"
-                // required
+                required
               />
             </FloatingLabel>
           </Form.Group>

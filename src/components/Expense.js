@@ -48,6 +48,7 @@ const Expense = ({ expense }) => {
                 }
                 id="bg-vertical-dropdown-2"
                 variant="link"
+                align="end"
               >
                 <Dropdown.Item eventKey="1" onClick={() => handleEdit(expense)}>
                   Editar

@@ -19,6 +19,7 @@ const Budget = ({ budget }) => {
 
   const handleGetExpenses = (budget) => {
     getExpenses(budget);
+    clearMessages();
   };
 
   const handleEdit = (budget) => {
@@ -43,6 +44,7 @@ const Budget = ({ budget }) => {
               id="bg-vertical-dropdown-2"
               variant="link"
               className="ms-auto"
+              align="end"
             >
               <Dropdown.Item
                 eventKey="1"

@@ -3,10 +3,13 @@ import { createContext, useContext, useState } from "react";
 // context
 import { UserContext } from "./UserContext";
 import { BudgetContext } from "./BudgetContext";
+import { MessageContext } from "./MessageContext";
 
 // services
 import expenseService from "../services/expense";
 import budgetService from "../services/budget";
+
+import { RECORD_DELETED_MESSAGE } from "../labels/labels";
 
 export const ExpenseContext = createContext();
 
@@ -22,6 +25,9 @@ export const ExpenseContextProvider = ({ children }) => {
   const { user, logout } = useContext(UserContext);
 
   const { handleShowBudgetList, getBudgets } = useContext(BudgetContext);
+
+  const { handleSetMessage, handleSetType, handleSetRecordType } =
+    useContext(MessageContext);
 
   const getExpenses = async (budget) => {
     if (user !== null) {
@@ -138,6 +144,9 @@ export const ExpenseContextProvider = ({ children }) => {
         setExpenses(expenses.filter((e) => e._id !== expense._id));
 
         handleUpdateSelectedBudget(selectedBudget._id);
+        handleSetMessage(RECORD_DELETED_MESSAGE);
+        handleSetType("success");
+        handleSetRecordType("expense");
 
         getBudgets();
       } catch (error) {

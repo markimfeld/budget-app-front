@@ -7,6 +7,7 @@ import Expense from "./Expense";
 
 import { ExpenseContext } from "../context/ExpenseContext";
 import { BudgetContext } from "../context/BudgetContext";
+import { MessageContext } from "../context/MessageContext";
 
 const ExpensesList = () => {
   const {
@@ -17,9 +18,12 @@ const ExpensesList = () => {
     showExpenseForm,
     showExpensesList,
     handleSelectedBudget,
+    handleIsEditing,
   } = useContext(ExpenseContext);
 
   const { handleShowBudgetList } = useContext(BudgetContext);
+
+  const { clearMessages } = useContext(MessageContext);
 
   const expensesList = expenses.map((expense, i) => {
     if (i === expenses.length - 1) {
@@ -42,12 +46,15 @@ const ExpensesList = () => {
     handleShowExpenseList(!showForm);
     handleShowBudgetList(!showForm);
     handleSelectedBudget(selectedBudget);
+    handleIsEditing(false);
+    clearMessages();
   };
 
   const handleVolver = (showList) => {
     handleShowExpenseList(!showList);
     handleShowExpenseForm(!showList);
     handleShowBudgetList(showList);
+    clearMessages();
   };
 
   return (

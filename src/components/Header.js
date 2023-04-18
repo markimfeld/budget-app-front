@@ -40,29 +40,38 @@ const Header = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-          <Nav>
+          <Nav role="menu">
             <Nav.Link onClick={() => handleShowBudgetFormOrList(true)}>
               Nuevo presupuesto
             </Nav.Link>
             <NavDropdown
               title={<i className="fa-solid fa-circle-user fa-xl"></i>}
               id="collasible-nav-dropdown"
+              align={"end"}
             >
-              <NavDropdown.Item onClick={() => handleSettings()}>
-                <i className="fa-solid fa-circle-user fa-xl"></i>{" "}
-                {user.firstName}
+              <NavDropdown.Item
+                onClick={() => handleSettings()}
+                className="text-wrap"
+              >
+                Iniciado como{" "}
+                <span style={{ fontWeight: "bold", color: "#606060" }}>
+                  {user.username}
+                </span>
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={() => handleSettings()}>
-                <i className="fa-solid fa-gear"></i> Preferencias
+                Tu perfil
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={() => handleTheme()}>
+                Configuración
               </NavDropdown.Item>
               <NavDropdown.Item onClick={() => handleTheme()}>
-                <i className="fa-solid fa-moon"></i> Tema
+                Tema
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={() => handleLogout()}>
-                <i className="fa-solid fa-arrow-right-from-bracket"></i> Cerrar
-                sesión
+                Cerrar sesión
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>

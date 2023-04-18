@@ -58,17 +58,18 @@ function App() {
       )}
 
       {user !== null && !isLoading && (
-        <Container>
-          {message && <Message />}
-
-          <Row className="mt-4">
-            <Col>
-              <ExpenseContextProvider>
-                <MainLayout />
-              </ExpenseContextProvider>
-            </Col>
-          </Row>
-        </Container>
+        <>
+          <div>{message && <Message />}</div>
+          <Container>
+            <Row className="mt-4">
+              <Col>
+                <ExpenseContextProvider>
+                  <MainLayout />
+                </ExpenseContextProvider>
+              </Col>
+            </Row>
+          </Container>
+        </>
       )}
     </>
   );

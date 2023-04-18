@@ -59,7 +59,7 @@ const Login = () => {
   return (
     <>
       {showMessage() && <Message />}
-      <Card style={{ borderRadius: 0 }}>
+      <Card style={{ borderRadius: 0, backgroundColor: "hsl(0, 0%, 97%)" }}>
         <Card.Body>
           <Card.Title className="text-center fs-1 mb-4">
             <i className="fa-solid fa-coins"></i> Finance Pro

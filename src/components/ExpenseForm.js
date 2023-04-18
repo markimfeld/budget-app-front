@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useContext } from "react";
-import { Form, Button, Stack, Card } from "react-bootstrap";
+import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
 
 import expenseService from "../services/expense";
 
@@ -10,6 +10,7 @@ import { BudgetContext } from "../context/BudgetContext";
 import budgetService from "../services/budget";
 import { MessageContext } from "../context/MessageContext";
 import {
+  MISSING_FIELDS_REQUIRED,
   RECORD_CREATED_MESSAGE,
   RECORD_UPDATED_MESSAGE,
 } from "../labels/labels";
@@ -25,10 +26,14 @@ const ExpenseForm = () => {
     handleIsEditing,
     expenseToUpdate,
   } = useContext(ExpenseContext);
-  const { user } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
   const { getBudgets } = useContext(BudgetContext);
-  const { handleSetMessage, handleSetType, handleSetRecordType } =
-    useContext(MessageContext);
+  const {
+    handleSetMessage,
+    handleSetType,
+    handleSetRecordType,
+    clearMessages,
+  } = useContext(MessageContext);
 
   const [name, setName] = useState(
     isEditing && expenseToUpdate.name ? expenseToUpdate.name : ""
@@ -75,7 +80,20 @@ const ExpenseForm = () => {
           handleUpdateSelectedBudget(selectedBudget._id);
           getBudgets();
         } catch (error) {
-          console.log(error);
+          if (
+            error.response.data.status === 400 &&
+            error.response.data.message === "Token no válido"
+          ) {
+            logout();
+          }
+          if (
+            error.response.data.status === 400 &&
+            error.response.data.message === "MISSING_FIELDS_REQUIRED"
+          ) {
+            handleSetMessage(MISSING_FIELDS_REQUIRED);
+            handleSetType("danger");
+            handleSetRecordType("expense");
+          }
         }
       } else {
         let updatedBudget = { ...selectedBudget };
@@ -110,6 +128,21 @@ const ExpenseForm = () => {
           getBudgets();
         } catch (error) {
           console.log(error);
+          //Todo: corregir en el backend la devolución de errores, ahora no tiene
+          if (
+            error.response.data.status === 400 &&
+            error.response.data.message === "Token no válido"
+          ) {
+            logout();
+          }
+          if (
+            error.response.data.status === 400 &&
+            error.response.data.message === "MISSING_FIELDS_REQUIRED"
+          ) {
+            handleSetMessage(MISSING_FIELDS_REQUIRED);
+            handleSetType("danger");
+            handleSetRecordType("expense");
+          }
         }
       }
     }
@@ -131,47 +164,55 @@ const ExpenseForm = () => {
     handleShowExpenseForm(!showList);
     handleShowExpenseList(showList);
     handleIsEditing(false);
+    clearMessages();
   };
 
   return (
-    <Card>
-      <Card.Body>
-        <Card.Title className="text-center">
+    <Card style={{ border: "none", backgroundColor: "hsl(0, 0%, 97%, 0.5)" }}>
+      <Card.Header style={{ border: "none" }}>
+        <Card.Title className="text-center fs-3">
           {!isEditing && "Nuevo gasto"}
           {isEditing && "Modificar gasto"}
         </Card.Title>
+      </Card.Header>
+      <Card.Body>
         <Form onSubmit={onSubmitExpense}>
-          <Form.Group className="mb-3" controlId="formBasicNombre">
-            <Form.Label>Nombre</Form.Label>
-            <Form.Control
-              onChange={onChangeName}
-              name="name"
-              type="text"
-              placeholder="Ejemplo: Horeb"
-              value={name}
-            />
+          <Form.Group className="mb-3" controlId="formBasicName">
+            <FloatingLabel controlId="floatingName" label="Nombre del gasto">
+              <Form.Control
+                name="name"
+                value={name}
+                onChange={onChangeName}
+                type="text"
+                placeholder="Horeb"
+                required
+              />
+            </FloatingLabel>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicDescripcion">
-            <Form.Label>Descripción</Form.Label>
-            <Form.Control
-              onChange={onChangeDescription}
-              name="description"
-              type="text"
-              placeholder="Ejemplo: Alfajor"
-              value={description}
-            />
+            <FloatingLabel controlId="floatingDescription" label="Descripción">
+              <Form.Control
+                name="description"
+                value={description}
+                onChange={onChangeDescription}
+                type="text"
+                placeholder="Alfajor"
+              />
+            </FloatingLabel>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicMontoLimite">
-            <Form.Label>Monto límite</Form.Label>
-            <Form.Control
-              onChange={onChangeAmount}
-              name="amount"
-              type="number"
-              placeholder="Ejemplo: $5333.00"
-              value={amount}
-            />
+          <Form.Group className="mb-3" controlId="formBasicMonto">
+            <FloatingLabel controlId="floatingAmount" label="Monto">
+              <Form.Control
+                name="amount"
+                value={amount}
+                onChange={onChangeAmount}
+                type="number"
+                placeholder="15000"
+                required
+              />
+            </FloatingLabel>
           </Form.Group>
 
           <Stack direction="horizontal" gap={3}>

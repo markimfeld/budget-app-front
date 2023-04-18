@@ -20,7 +20,13 @@ const Message = () => {
 
   return (
     <>
-      <Alert key="success" variant={type} onClose={handleClose} dismissible>
+      <Alert
+        style={{ borderRadius: 0 }}
+        key={type}
+        variant={type}
+        onClose={handleClose}
+        dismissible
+      >
         {message}
       </Alert>
     </>
