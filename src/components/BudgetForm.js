@@ -63,7 +63,7 @@ const BudgetForm = () => {
         } catch (error) {
           if (
             error.response.data.status === 400 &&
-            error.response.data.message === "Token no válido"
+            error.response.data.message === "INVALID_TOKEN"
           ) {
             logout();
           }
@@ -97,8 +97,18 @@ const BudgetForm = () => {
           handleSetType("success");
           handleSetRecordType("budget");
         } catch (error) {
-          if (error.response.data.message === "Token no válido") {
+          if (
+            error.response.data.status === 400 &&
+            error.response.data.message === "INVALID_TOKEN"
+          ) {
             logout();
+          } else if (
+            error.response.data.status === 400 &&
+            error.response.data.message === "MISSING_FIELDS_REQUIRED"
+          ) {
+            handleSetMessage(MISSING_FIELDS_REQUIRED);
+            handleSetType("danger");
+            handleSetRecordType("budget");
           }
         }
       }

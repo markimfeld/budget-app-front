@@ -7,14 +7,14 @@ import { ExpenseContext } from "../context/ExpenseContext";
 const Expense = ({ expense }) => {
   const {
     handleDeleteExpense,
-    handleIsEditing,
+    handleIsExpenseEditing,
     handleExpenseToUpdate,
     handleShowExpenseForm,
     handleShowExpenseList,
   } = useContext(ExpenseContext);
 
   const handleEdit = (expense) => {
-    handleIsEditing(true);
+    handleIsExpenseEditing(true);
     handleExpenseToUpdate(expense);
     handleShowExpenseForm(true);
     handleShowExpenseList(false);
@@ -43,9 +43,7 @@ const Expense = ({ expense }) => {
               <span className="fs-4">${expense.amount}</span>
 
               <DropdownButton
-                title={
-                  <i className="fa-solid fa-ellipsis-vertical text-dark"></i>
-                }
+                title={<i className="fa-sharp fa-solid fa-plus gray-color"></i>}
                 id="bg-vertical-dropdown-2"
                 variant="link"
                 align="end"

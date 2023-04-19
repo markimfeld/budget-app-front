@@ -20,7 +20,7 @@ export const ExpenseContextProvider = ({ children }) => {
   const [selectedBudget, setSelectedBudget] = useState(null);
   const [messageExpense, setMessageExpense] = useState(null);
   const [expenseToUpdate, setExpenseToUpdate] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isExpenseEditing, setIsExpenseEditing] = useState(false);
 
   const { user, logout } = useContext(UserContext);
 
@@ -49,7 +49,7 @@ export const ExpenseContextProvider = ({ children }) => {
       } catch (error) {
         if (
           error.response.data.status === 400 &&
-          error.response.data.message === "Token no válido"
+          error.response.data.message === "INVALID_TOKEN"
         ) {
           logout();
         }
@@ -105,7 +105,7 @@ export const ExpenseContextProvider = ({ children }) => {
       } catch (error) {
         if (
           error.response.data.status === 400 &&
-          error.response.data.message === "Token no válido"
+          error.response.data.message === "INVALID_TOKEN"
         ) {
           logout();
         }
@@ -113,8 +113,8 @@ export const ExpenseContextProvider = ({ children }) => {
     }
   };
 
-  const handleIsEditing = (isEditing) => {
-    setIsEditing(isEditing);
+  const handleIsExpenseEditing = (isEditing) => {
+    setIsExpenseEditing(isEditing);
   };
 
   const handleExpenseToUpdate = (expense) => {
@@ -152,7 +152,7 @@ export const ExpenseContextProvider = ({ children }) => {
       } catch (error) {
         if (
           error.response.data.status === 400 &&
-          error.response.data.message === "Token no válido"
+          error.response.data.message === "INVALID_TOKEN"
         ) {
           logout();
         }
@@ -177,8 +177,8 @@ export const ExpenseContextProvider = ({ children }) => {
         handleUpdateSelectedBudget,
         handleDeleteExpense,
         expenseToUpdate,
-        isEditing,
-        handleIsEditing,
+        isExpenseEditing,
+        handleIsExpenseEditing,
         handleExpenseToUpdate,
       }}
     >

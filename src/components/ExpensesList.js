@@ -18,10 +18,11 @@ const ExpensesList = () => {
     showExpenseForm,
     showExpensesList,
     handleSelectedBudget,
-    handleIsEditing,
+    handleIsExpenseEditing,
   } = useContext(ExpenseContext);
 
-  const { handleShowBudgetList } = useContext(BudgetContext);
+  const { handleShowBudgetList, handleIsBudgetCreating } =
+    useContext(BudgetContext);
 
   const { clearMessages } = useContext(MessageContext);
 
@@ -46,7 +47,7 @@ const ExpensesList = () => {
     handleShowExpenseList(!showForm);
     handleShowBudgetList(!showForm);
     handleSelectedBudget(selectedBudget);
-    handleIsEditing(false);
+    handleIsExpenseEditing(false);
     clearMessages();
   };
 
@@ -55,6 +56,7 @@ const ExpensesList = () => {
     handleShowExpenseForm(!showList);
     handleShowBudgetList(showList);
     clearMessages();
+    handleIsBudgetCreating(true);
   };
 
   return (
@@ -77,11 +79,12 @@ const ExpensesList = () => {
                 <Stack direction="horizontal" gap={3} className="ms-auto">
                   <DropdownButton
                     title={
-                      <i className="fa-solid fa-ellipsis-vertical text-dark"></i>
+                      <i className="fa-sharp fa-solid fa-plus gray-color"></i>
                     }
                     id="bg-vertical-dropdown-2"
                     variant="link"
                     className="ms-auto"
+                    align="end"
                   >
                     <Dropdown.Item
                       eventKey="1"

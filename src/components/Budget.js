@@ -15,11 +15,13 @@ const Budget = ({ budget }) => {
     handleShowBudgetForm,
     handleShowBudgetList,
     handleIsEditing,
+    handleIsBudgetCreating,
   } = useContext(BudgetContext);
 
   const handleGetExpenses = (budget) => {
     getExpenses(budget);
     clearMessages();
+    handleIsBudgetCreating(false);
   };
 
   const handleEdit = (budget) => {
@@ -38,9 +40,7 @@ const Budget = ({ budget }) => {
             <span>{budget.name}</span>
 
             <DropdownButton
-              title={
-                <i className="fa-solid fa-ellipsis-vertical text-dark"></i>
-              }
+              title={<i className="fa-sharp fa-solid fa-plus gray-color"></i>}
               id="bg-vertical-dropdown-2"
               variant="link"
               className="ms-auto"

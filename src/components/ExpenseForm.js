@@ -22,8 +22,8 @@ const ExpenseForm = () => {
     selectedBudget,
     handleUpdateExpenses,
     handleUpdateSelectedBudget,
-    isEditing,
-    handleIsEditing,
+    isExpenseEditing,
+    handleIsExpenseEditing,
     expenseToUpdate,
   } = useContext(ExpenseContext);
   const { user, logout } = useContext(UserContext);
@@ -36,13 +36,15 @@ const ExpenseForm = () => {
   } = useContext(MessageContext);
 
   const [name, setName] = useState(
-    isEditing && expenseToUpdate.name ? expenseToUpdate.name : ""
+    isExpenseEditing && expenseToUpdate.name ? expenseToUpdate.name : ""
   );
   const [description, setDescription] = useState(
-    isEditing && expenseToUpdate.description ? expenseToUpdate.description : ""
+    isExpenseEditing && expenseToUpdate.description
+      ? expenseToUpdate.description
+      : ""
   );
   const [amount, setAmount] = useState(
-    isEditing && expenseToUpdate.amount ? expenseToUpdate.amount : ""
+    isExpenseEditing && expenseToUpdate.amount ? expenseToUpdate.amount : ""
   );
 
   const onSubmitExpense = async (event) => {
@@ -57,7 +59,7 @@ const ExpenseForm = () => {
 
       const newExpense = { name, amount, description, budget: selectedBudget };
 
-      if (!isEditing) {
+      if (!isExpenseEditing) {
         let updatedBudget = { ...selectedBudget };
 
         updatedBudget.spentAmount =
@@ -82,7 +84,7 @@ const ExpenseForm = () => {
         } catch (error) {
           if (
             error.response.data.status === 400 &&
-            error.response.data.message === "Token no válido"
+            error.response.data.message === "INVALID_TOKEN"
           ) {
             logout();
           }
@@ -97,6 +99,8 @@ const ExpenseForm = () => {
         }
       } else {
         let updatedBudget = { ...selectedBudget };
+
+        // TODO: revisar los calculos porque se marea con decimales
 
         updatedBudget.spentAmount =
           Number.parseFloat(updatedBudget.spentAmount) -
@@ -127,11 +131,9 @@ const ExpenseForm = () => {
           handleUpdateSelectedBudget(selectedBudget._id);
           getBudgets();
         } catch (error) {
-          console.log(error);
-          //Todo: corregir en el backend la devolución de errores, ahora no tiene
           if (
             error.response.data.status === 400 &&
-            error.response.data.message === "Token no válido"
+            error.response.data.message === "INVALID_TOKEN"
           ) {
             logout();
           }
@@ -163,7 +165,7 @@ const ExpenseForm = () => {
   const onCancelOperation = (showList) => {
     handleShowExpenseForm(!showList);
     handleShowExpenseList(showList);
-    handleIsEditing(false);
+    handleIsExpenseEditing(false);
     clearMessages();
   };
 
@@ -171,8 +173,8 @@ const ExpenseForm = () => {
     <Card style={{ border: "none", backgroundColor: "hsl(0, 0%, 97%, 0.5)" }}>
       <Card.Header style={{ border: "none" }}>
         <Card.Title className="text-center fs-3">
-          {!isEditing && "Nuevo gasto"}
-          {isEditing && "Modificar gasto"}
+          {!isExpenseEditing && "Nuevo gasto"}
+          {isExpenseEditing && "Modificar gasto"}
         </Card.Title>
       </Card.Header>
       <Card.Body>
@@ -216,12 +218,12 @@ const ExpenseForm = () => {
           </Form.Group>
 
           <Stack direction="horizontal" gap={3}>
-            {!isEditing && (
+            {!isExpenseEditing && (
               <Button className="ms-auto" variant="success" type="submit">
                 Guardar
               </Button>
             )}
-            {isEditing && (
+            {isExpenseEditing && (
               <Button className="ms-auto" variant="success" type="submit">
                 Modificar
               </Button>

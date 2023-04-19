@@ -1,13 +1,14 @@
 import React from "react";
-import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { Container, Navbar, Nav, NavDropdown, Image } from "react-bootstrap";
 import { useContext } from "react";
 
 import { UserContext } from "../context/UserContext";
 import { BudgetContext } from "../context/BudgetContext";
 import { MessageContext } from "../context/MessageContext";
+import { ExpenseContext } from "../context/ExpenseContext";
 
 const Header = () => {
-  const { handleSetMessage } = useContext(MessageContext);
+  const { clearMessages } = useContext(MessageContext);
   const { user, logout } = useContext(UserContext);
 
   const { handleShowBudgetForm, handleShowBudgetList, handleIsEditing } =
@@ -16,7 +17,7 @@ const Header = () => {
   const handleShowBudgetFormOrList = (showForm) => {
     handleShowBudgetForm(showForm);
     handleShowBudgetList(!showForm);
-    handleSetMessage(null);
+    clearMessages();
     handleIsEditing(false);
   };
 
@@ -41,11 +42,25 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
           <Nav role="menu">
-            <Nav.Link onClick={() => handleShowBudgetFormOrList(true)}>
-              Nuevo presupuesto
-            </Nav.Link>
             <NavDropdown
-              title={<i className="fa-solid fa-circle-user fa-xl"></i>}
+              title={<i className="fa-sharp fa-solid fa-plus"></i>}
+              id="collasible-nav-dropdown"
+              align={"end"}
+            >
+              <NavDropdown.Item
+                onClick={() => handleShowBudgetFormOrList(true)}
+              >
+                Nuevo presupuesto
+              </NavDropdown.Item>
+            </NavDropdown>
+            <NavDropdown
+              title={
+                <Image
+                  src="../avatar.jpeg"
+                  roundedCircle
+                  style={{ width: "20px", height: "20px" }}
+                />
+              }
               id="collasible-nav-dropdown"
               align={"end"}
             >

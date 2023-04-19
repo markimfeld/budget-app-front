@@ -1,3 +1,6 @@
 .dropdown-toggle::after {
-    display: none;
+    color: gray;
+}
+.gray-color {
+    color: gray
 }

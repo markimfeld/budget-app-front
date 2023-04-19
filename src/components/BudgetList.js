@@ -1,6 +1,12 @@
 import React from "react";
 import { useContext } from "react";
-import { Card, Button, Spinner } from "react-bootstrap";
+import {
+  Card,
+  Button,
+  Placeholder,
+  Stack,
+  DropdownButton,
+} from "react-bootstrap";
 
 import ExpensesList from "./ExpensesList";
 import BudgetForm from "./BudgetForm";
@@ -43,18 +49,46 @@ const BudgetList = () => {
       </div>
       <div>
         {isLoading && (
-          <div className="text-center">
-            <Card className="mb-4" style={{ border: "none", height: "150px" }}>
-              <Card.Body
-                style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
-                className="d-flex justify-content-center align-items-center"
+          <Card
+            className="mb-4"
+            style={{ backgroundColor: "hsl(0, 0%, 97%, 0.5)", border: "none" }}
+          >
+            <Card.Body className="p-0">
+              <Card.Header style={{ border: "none" }} className="py-2">
+                <Placeholder
+                  as={Card.Title}
+                  animation="wave"
+                  className="justify-content-between"
+                >
+                  <Stack direction="horizontal" gap={3}>
+                    <Placeholder xs={3} />
+                    <Placeholder.Button
+                      as={DropdownButton}
+                      variant="link"
+                      className="ms-auto"
+                      animation="wave"
+                    >
+                      <i className="fa-sharp fa-solid fa-plus gray-color"></i>
+                    </Placeholder.Button>
+                  </Stack>
+                </Placeholder>
+              </Card.Header>
+
+              <Placeholder
+                className="mt-3 px-3"
+                as={Card.Text}
+                animation="wave"
               >
-                <Spinner animation="border" role="status">
-                  <span className="visually-hidden">Cargando...</span>
-                </Spinner>
-              </Card.Body>
-            </Card>
-          </div>
+                <Placeholder xs={1} />
+              </Placeholder>
+              <Placeholder className="px-3" as={Card.Text} animation="wave">
+                <Placeholder xs={2} />
+              </Placeholder>
+              <Placeholder className="px-3" as={Card.Text} animation="wave">
+                <Placeholder xs={1} />
+              </Placeholder>
+            </Card.Body>
+          </Card>
         )}
 
         {showBudgetList && (

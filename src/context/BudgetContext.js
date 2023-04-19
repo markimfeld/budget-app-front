@@ -25,6 +25,7 @@ export const BudgetContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [budgetToUpdate, setBudgetToUpdate] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isBudgetCreating, setIsBudgetCreating] = useState(true);
 
   const { handleSetMessage, handleSetType, handleSetRecordType } =
     useContext(MessageContext);
@@ -46,7 +47,7 @@ export const BudgetContextProvider = ({ children }) => {
       } catch (err) {
         if (
           err.response.data.status === 400 &&
-          err.response.data.message === "Token no válido"
+          err.response.data.message === "INVALID_TOKEN"
         ) {
           logout();
         }
@@ -149,12 +150,16 @@ export const BudgetContextProvider = ({ children }) => {
       } catch (error) {
         if (
           error.response.data.status === 400 &&
-          error.response.data.message === "Token no válido"
+          error.response.data.message === "INVALID_TOKEN"
         ) {
           logout();
         }
       }
     }
+  };
+
+  const handleIsBudgetCreating = (creatingBudget) => {
+    setIsBudgetCreating(creatingBudget);
   };
 
   return (
@@ -177,6 +182,8 @@ export const BudgetContextProvider = ({ children }) => {
         isEditing,
         handleBudgetToUpdate,
         budgetToUpdate,
+        handleIsBudgetCreating,
+        isBudgetCreating,
       }}
     >
       {children}
