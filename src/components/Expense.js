@@ -3,6 +3,7 @@ import { Card, Stack, DropdownButton, Dropdown } from "react-bootstrap";
 import "../components/Expense.css";
 import { format } from "date-fns";
 import { ExpenseContext } from "../context/ExpenseContext";
+import { MessageContext } from "../context/MessageContext";
 
 const Expense = ({ expense }) => {
   const {
@@ -13,11 +14,14 @@ const Expense = ({ expense }) => {
     handleShowExpenseList,
   } = useContext(ExpenseContext);
 
+  const { clearMessages } = useContext(MessageContext);
+
   const handleEdit = (expense) => {
     handleIsExpenseEditing(true);
     handleExpenseToUpdate(expense);
     handleShowExpenseForm(true);
     handleShowExpenseList(false);
+    clearMessages();
   };
 
   return (
@@ -40,7 +44,7 @@ const Expense = ({ expense }) => {
           </span>
           <Card.Title className="ms-auto mb-0">
             <Stack direction="horizontal" gap={3}>
-              <span className="fs-4">${expense.amount}</span>
+              <span className="fs-4">${expense.amount.toFixed(2)}</span>
 
               <DropdownButton
                 title={<i className="fa-sharp fa-solid fa-plus gray-color"></i>}

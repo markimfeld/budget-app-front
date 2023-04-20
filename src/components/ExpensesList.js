@@ -73,7 +73,7 @@ const ExpensesList = () => {
                 <div>
                   <Card.Title>{selectedBudget.name}</Card.Title>
                   <Card.Text className="text-muted">
-                    Disponible: ${selectedBudget.leftAmount}
+                    Disponible: ${selectedBudget.leftAmount.toFixed(2)}
                   </Card.Text>
                 </div>
                 <Stack direction="horizontal" gap={3} className="ms-auto">

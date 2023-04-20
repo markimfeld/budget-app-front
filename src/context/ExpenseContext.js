@@ -133,11 +133,14 @@ export const ExpenseContextProvider = ({ children }) => {
 
         let updatedBudget = { ...selectedBudget };
 
-        updatedBudget.spentAmount =
+        updatedBudget.spentAmount = (
           Number.parseFloat(updatedBudget.spentAmount) -
-          Number.parseFloat(expense.amount);
-        updatedBudget.leftAmount =
-          updatedBudget.expectedAmount - updatedBudget.spentAmount;
+          Number.parseFloat(expense.amount)
+        ).toFixed(2);
+        updatedBudget.leftAmount = (
+          Number.parseFloat(updatedBudget.expectedAmount) -
+          Number.parseFloat(updatedBudget.spentAmount)
+        ).toFixed(2);
 
         await budgetService.update(selectedBudget._id, updatedBudget, config);
 

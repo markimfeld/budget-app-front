@@ -66,7 +66,8 @@ const ExpenseForm = () => {
           Number.parseFloat(updatedBudget.spentAmount) +
           Number.parseFloat(newExpense.amount);
         updatedBudget.leftAmount =
-          updatedBudget.expectedAmount - updatedBudget.spentAmount;
+          Number.parseFloat(updatedBudget.expectedAmount) -
+          Number.parseFloat(updatedBudget.spentAmount);
 
         try {
           const { data } = await expenseService.store(newExpense, config);
@@ -100,8 +101,6 @@ const ExpenseForm = () => {
       } else {
         let updatedBudget = { ...selectedBudget };
 
-        // TODO: revisar los calculos porque se marea con decimales
-
         updatedBudget.spentAmount =
           Number.parseFloat(updatedBudget.spentAmount) -
           Number.parseFloat(expenseToUpdate.amount);
@@ -111,7 +110,8 @@ const ExpenseForm = () => {
           Number.parseFloat(newExpense.amount);
 
         updatedBudget.leftAmount =
-          updatedBudget.expectedAmount - updatedBudget.spentAmount;
+          Number.parseFloat(updatedBudget.expectedAmount) -
+          Number.parseFloat(updatedBudget.spentAmount);
 
         try {
           const { data } = await expenseService.edit(

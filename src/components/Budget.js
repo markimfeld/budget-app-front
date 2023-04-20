@@ -65,12 +65,12 @@ const Budget = ({ budget }) => {
           </Stack>
         </Card.Header>
         <Card.Body style={{ backgroundColor: "hsl(0, 0%, 97%, 0.5)" }}>
-          <Card.Title>${budget.spentAmount} </Card.Title>
+          <Card.Title>${budget.spentAmount.toFixed(2)} </Card.Title>
           <Card.Text className="text-muted m-0 p-0">
-            Monto disponible ${budget.leftAmount}
+            Monto disponible ${budget.leftAmount.toFixed(2)}
           </Card.Text>
           <Card.Text className="text-muted">
-            Monto límite ${budget.expectedAmount}
+            Monto límite ${budget.expectedAmount.toFixed(2)}
           </Card.Text>
         </Card.Body>
       </Card>

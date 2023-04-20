@@ -50,15 +50,13 @@ const Dashboard = () => {
 
   const expectedTotal = budgets.map((budget) => budget.expectedAmount);
 
-  const spentTotals = spentTotal.reduce(
-    (acc, currentValue) => acc + currentValue,
-    0
-  );
+  const spentTotals = spentTotal
+    .reduce((acc, currentValue) => acc + currentValue, 0)
+    .toFixed(2);
 
-  const expectedTotals = expectedTotal.reduce(
-    (acc, currentValue) => acc + currentValue,
-    0
-  );
+  const expectedTotals = expectedTotal
+    .reduce((acc, currentValue) => acc + currentValue, 0)
+    .toFixed(2);
 
   const handleShowBudgetFormOrList = (showForm) => {
     if (isBudgetCreating) {
@@ -238,7 +236,9 @@ const Dashboard = () => {
             >
               <Card.Body>
                 <p className="m-0 mb-1">Balance</p>
-                <h3 className="ms-auto">${expectedTotals - spentTotals}</h3>
+                <h3 className="ms-auto">
+                  ${(expectedTotals - spentTotals).toFixed(2)}
+                </h3>
               </Card.Body>
             </Card>
           )}
