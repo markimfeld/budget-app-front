@@ -62,12 +62,14 @@ const ExpenseForm = () => {
       if (!isExpenseEditing) {
         let updatedBudget = { ...selectedBudget };
 
-        updatedBudget.spentAmount =
+        updatedBudget.spentAmount = (
           Number.parseFloat(updatedBudget.spentAmount) +
-          Number.parseFloat(newExpense.amount);
-        updatedBudget.leftAmount =
+          Number.parseFloat(newExpense.amount)
+        ).toFixed(2);
+        updatedBudget.leftAmount = (
           Number.parseFloat(updatedBudget.expectedAmount) -
-          Number.parseFloat(updatedBudget.spentAmount);
+          Number.parseFloat(updatedBudget.spentAmount)
+        ).toFixed(2);
 
         try {
           const { data } = await expenseService.store(newExpense, config);
@@ -101,17 +103,20 @@ const ExpenseForm = () => {
       } else {
         let updatedBudget = { ...selectedBudget };
 
-        updatedBudget.spentAmount =
+        updatedBudget.spentAmount = (
           Number.parseFloat(updatedBudget.spentAmount) -
-          Number.parseFloat(expenseToUpdate.amount);
+          Number.parseFloat(expenseToUpdate.amount)
+        ).toFixed(2);
 
-        updatedBudget.spentAmount =
+        updatedBudget.spentAmount = (
           Number.parseFloat(updatedBudget.spentAmount) +
-          Number.parseFloat(newExpense.amount);
+          Number.parseFloat(newExpense.amount)
+        ).toFixed(2);
 
-        updatedBudget.leftAmount =
+        updatedBudget.leftAmount = (
           Number.parseFloat(updatedBudget.expectedAmount) -
-          Number.parseFloat(updatedBudget.spentAmount);
+          Number.parseFloat(updatedBudget.spentAmount)
+        ).toFixed(2);
 
         try {
           const { data } = await expenseService.edit(
