@@ -1,6 +1,13 @@
 import React from "react";
-import { useContext } from "react";
-import { Card, Stack, DropdownButton, Dropdown } from "react-bootstrap";
+import { useContext, useState } from "react";
+import {
+  Card,
+  Stack,
+  DropdownButton,
+  Dropdown,
+  Button,
+  Modal,
+} from "react-bootstrap";
 
 import { BudgetContext } from "../context/BudgetContext";
 import { ExpenseContext } from "../context/ExpenseContext";
@@ -32,6 +39,11 @@ const Budget = ({ budget }) => {
     clearMessages();
   };
 
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <>
       <Card className="mb-4" style={{ border: "none" }}>
@@ -55,10 +67,7 @@ const Budget = ({ budget }) => {
               <Dropdown.Item eventKey="2" onClick={() => handleEdit(budget)}>
                 Editar
               </Dropdown.Item>
-              <Dropdown.Item
-                eventKey="3"
-                onClick={() => handleDeleteBudget(budget)}
-              >
+              <Dropdown.Item eventKey="3" onClick={handleShow}>
                 Borrar
               </Dropdown.Item>
             </DropdownButton>
@@ -74,6 +83,24 @@ const Budget = ({ budget }) => {
           </Card.Text>
         </Card.Body>
       </Card>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Borrar Presupuesto</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          ¿Estás seguro de eliminar el presupuesto{" "}
+          <span style={{ fontWeight: 500 }}>{budget.name}</span>?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancelar
+          </Button>
+          <Button variant="danger" onClick={() => handleDeleteBudget(budget)}>
+            Sí, estoy seguro
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

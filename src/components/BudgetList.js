@@ -6,6 +6,8 @@ import {
   Placeholder,
   Stack,
   DropdownButton,
+  Row,
+  Col,
 } from "react-bootstrap";
 
 import ExpensesList from "./ExpensesList";

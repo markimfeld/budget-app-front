@@ -1,5 +1,12 @@
-import React, { useContext } from "react";
-import { Card, Stack, DropdownButton, Dropdown } from "react-bootstrap";
+import React, { useContext, useState } from "react";
+import {
+  Card,
+  Stack,
+  DropdownButton,
+  Dropdown,
+  Modal,
+  Button,
+} from "react-bootstrap";
 import "../components/Expense.css";
 import { format } from "date-fns";
 import { ExpenseContext } from "../context/ExpenseContext";
@@ -24,53 +31,79 @@ const Expense = ({ expense }) => {
     clearMessages();
   };
 
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
-    <Card
-      key={expense._id}
-      border="light"
-      // bg="light"
-      style={{ backgroundColor: "hsla(0, 0%, 94%, 1)" }}
-    >
-      <Card.Body>
-        <Stack direction="horizontal" gap={3}>
-          <span>
-            <Card.Title className="mb-0">{expense.name}</Card.Title>
-            {/* <Card.Text className="text-muted mb-0">
+    <>
+      <Card
+        key={expense._id}
+        border="light"
+        // bg="light"
+        style={{ backgroundColor: "hsla(0, 0%, 94%, 1)" }}
+      >
+        <Card.Body>
+          <Stack direction="horizontal" gap={3}>
+            <span>
+              <Card.Title className="mb-0">{expense.name}</Card.Title>
+              {/* <Card.Text className="text-muted mb-0">
               {expense.description}
             </Card.Text> */}
-            <Card.Text className="text-muted">
-              {format(new Date(expense.createdAt), "dd/MM/yyyy kk:mm")}
-            </Card.Text>
-          </span>
-          <Card.Title className="ms-auto mb-0">
-            <Stack direction="horizontal" gap={3}>
-              <span className="fs-4">${expense.amount.toFixed(2)}</span>
+              <Card.Text className="text-muted">
+                {format(new Date(expense.createdAt), "dd/MM/yyyy kk:mm")}
+              </Card.Text>
+            </span>
+            <Card.Title className="ms-auto mb-0">
+              <Stack direction="horizontal" gap={3}>
+                <span className="fs-4">${expense.amount.toFixed(2)}</span>
 
-              <DropdownButton
-                title={<i className="fa-sharp fa-solid fa-plus gray-color"></i>}
-                id="bg-vertical-dropdown-2"
-                variant="link"
-                align="end"
-              >
-                <Dropdown.Item eventKey="1" onClick={() => handleEdit(expense)}>
-                  Editar
-                </Dropdown.Item>
-                <Dropdown.Item
-                  eventKey="2"
-                  onClick={() => handleDeleteExpense(expense)}
+                <DropdownButton
+                  title={
+                    <i className="fa-sharp fa-solid fa-plus gray-color"></i>
+                  }
+                  id="bg-vertical-dropdown-2"
+                  variant="link"
+                  align="end"
                 >
-                  Borrar
-                </Dropdown.Item>
-              </DropdownButton>
-            </Stack>
-          </Card.Title>
-        </Stack>
-      </Card.Body>
-      {/* <Card.Footer className="text-muted">
+                  <Dropdown.Item
+                    eventKey="1"
+                    onClick={() => handleEdit(expense)}
+                  >
+                    Editar
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="2" onClick={handleShow}>
+                    Borrar
+                  </Dropdown.Item>
+                </DropdownButton>
+              </Stack>
+            </Card.Title>
+          </Stack>
+        </Card.Body>
+        {/* <Card.Footer className="text-muted">
             Realizado el{" "}
             
           </Card.Footer> */}
-    </Card>
+      </Card>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Borrar Gasto</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          ¿Estás seguro de eliminar el gasto{" "}
+          <span style={{ fontWeight: 500 }}>{expense.name}</span>?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancelar
+          </Button>
+          <Button variant="danger" onClick={() => handleDeleteExpense(expense)}>
+            Sí, estoy seguro
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 };
 
