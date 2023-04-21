@@ -1,6 +1,14 @@
 import React from "react";
 import { useState, useContext } from "react";
-import { Form, Button, Card, Row, Col, FloatingLabel } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Card,
+  Row,
+  Col,
+  FloatingLabel,
+  Container,
+} from "react-bootstrap";
 
 import Message from "./Message";
 
@@ -18,6 +26,7 @@ const Login = () => {
     handleSetMessage,
     handleSetType,
     handleSetRecordType,
+    clearMessages,
   } = useContext(MessageContext);
 
   const { login, handleShowRegisterForm, handleShowLoginForm } =
@@ -27,6 +36,7 @@ const Login = () => {
     event.preventDefault();
 
     login(email, password);
+    clearMessages();
   };
 
   const onChangeEmail = (e) => {
@@ -57,73 +67,83 @@ const Login = () => {
   };
 
   return (
-    <>
-      {showMessage() && <Message />}
-      <Card style={{ borderRadius: 0, backgroundColor: "hsl(0, 0%, 97%)" }}>
-        <Card.Body>
-          <Card.Title className="text-center fs-1 mb-4">
-            <i className="fa-solid fa-coins"></i> Finance Pro
-          </Card.Title>
-          <Form onSubmit={handleLogin}>
-            <Row className="g-2 mb-2">
-              <Col md>
-                <FloatingLabel controlId="floatingEmail" label="Email">
-                  <Form.Control
-                    name="email"
-                    value={email}
-                    onChange={onChangeEmail}
-                    type="email"
-                    placeholder="lionelmessi@gmail.com"
-                    required
-                  />
-                </FloatingLabel>
-              </Col>
-            </Row>
-            <Row className="g-2 mb-2">
-              <Col md>
-                <FloatingLabel controlId="floatingPassword" label="Contraseña">
-                  <Form.Control
-                    password={password}
-                    value={password}
-                    onChange={onChangePassword}
-                    type="password"
-                    placeholder="Ingresá tu contraseña"
-                    required
-                  />
-                </FloatingLabel>
-              </Col>
-            </Row>
+    <Container>
+      <Row
+        className="justify-content-md-center align-items-center"
+        style={{ height: "97vh" }}
+      >
+        <Col md="6">
+          {showMessage() && <Message />}
+          <Card style={{ borderRadius: 0, backgroundColor: "hsl(0, 0%, 97%)" }}>
+            <Card.Body>
+              <Card.Title className="text-center fs-1 mb-4">
+                <i className="fa-solid fa-coins"></i> Finance Pro
+              </Card.Title>
+              <Form onSubmit={handleLogin}>
+                <Row className="g-2 mb-2">
+                  <Col md>
+                    <FloatingLabel controlId="floatingEmail" label="Email">
+                      <Form.Control
+                        name="email"
+                        value={email}
+                        onChange={onChangeEmail}
+                        type="email"
+                        placeholder="lionelmessi@gmail.com"
+                        required
+                      />
+                    </FloatingLabel>
+                  </Col>
+                </Row>
+                <Row className="g-2 mb-2">
+                  <Col md>
+                    <FloatingLabel
+                      controlId="floatingPassword"
+                      label="Contraseña"
+                    >
+                      <Form.Control
+                        password={password}
+                        value={password}
+                        onChange={onChangePassword}
+                        type="password"
+                        placeholder="Ingresá tu contraseña"
+                        required
+                      />
+                    </FloatingLabel>
+                  </Col>
+                </Row>
 
-            <div className="d-grid gap-2">
-              {loginEnabledBtn && (
-                <Button variant="success" type="submit">
-                  Iniciar sesión
+                <div className="d-grid gap-2">
+                  {loginEnabledBtn && (
+                    <Button variant="success" type="submit">
+                      Iniciar sesión
+                    </Button>
+                  )}
+                  {!loginEnabledBtn && (
+                    <Button variant="success" type="submit" disabled>
+                      Iniciar sesión
+                    </Button>
+                  )}
+                </div>
+              </Form>
+            </Card.Body>
+          </Card>
+          <Card className="mt-3" style={{ borderRadius: 0 }}>
+            <Card.Body>
+              <Card.Text className="text-center">
+                ¿No tenes cuenta?{" "}
+                <Button
+                  variant="link"
+                  className="m-0 p-0"
+                  onClick={() => handleShowRegister()}
+                >
+                  Crear una cuenta
                 </Button>
-              )}
-              {!loginEnabledBtn && (
-                <Button variant="success" type="submit" disabled>
-                  Iniciar sesión
-                </Button>
-              )}
-            </div>
-          </Form>
-        </Card.Body>
-      </Card>
-      <Card className="mt-3" style={{ borderRadius: 0 }}>
-        <Card.Body>
-          <Card.Text className="text-center">
-            ¿No tenes cuenta?{" "}
-            <Button
-              variant="link"
-              className="m-0 p-0"
-              onClick={() => handleShowRegister()}
-            >
-              Crear una cuenta
-            </Button>
-          </Card.Text>
-        </Card.Body>
-      </Card>
-    </>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

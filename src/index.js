@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 
+import { BrowserRouter } from "react-router-dom";
+
 import { UserContextProvider } from "./context/UserContext";
 import { BudgetContextProvider } from "./context/BudgetContext";
 import { MessageContextProvider } from "./context/MessageContext";
@@ -12,7 +14,9 @@ root.render(
   <MessageContextProvider>
     <UserContextProvider>
       <BudgetContextProvider>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </BudgetContextProvider>
     </UserContextProvider>
   </MessageContextProvider>
