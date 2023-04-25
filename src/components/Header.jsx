@@ -1,11 +1,9 @@
-import React from "react";
 import { Container, Navbar, Nav, NavDropdown, Image } from "react-bootstrap";
 import { useContext } from "react";
 
 import { UserContext } from "../context/UserContext";
 import { BudgetContext } from "../context/BudgetContext";
 import { MessageContext } from "../context/MessageContext";
-import { ExpenseContext } from "../context/ExpenseContext";
 
 const Header = () => {
   const { clearMessages } = useContext(MessageContext);

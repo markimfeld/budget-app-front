@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Alert } from "react-bootstrap";
 
 import { MessageContext } from "../context/MessageContext";

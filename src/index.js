@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { UserContextProvider } from "./context/UserContext";
 import { BudgetContextProvider } from "./context/BudgetContext";
@@ -15,7 +15,9 @@ root.render(
     <UserContextProvider>
       <BudgetContextProvider>
         <BrowserRouter>
-          <App />
+          <Routes>
+            <Route path="/*" element={<App />} />
+          </Routes>
         </BrowserRouter>
       </BudgetContextProvider>
     </UserContextProvider>

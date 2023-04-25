@@ -1,4 +1,3 @@
-import React from "react";
 import { useContext } from "react";
 
 import { Container, Row, Col } from "react-bootstrap";
@@ -10,12 +9,12 @@ import Header from "./Header";
 
 import { ExpenseContextProvider } from "../context/ExpenseContext";
 import { MessageContext } from "../context/MessageContext";
-import { UserContext } from "../context/UserContext";
+import { useAuthContext } from "../context/UserContext";
 
 const MainLayout = () => {
   const { message } = useContext(MessageContext);
 
-  const { user } = useContext(UserContext);
+  const { user } = useAuthContext();
 
   return (
     <>

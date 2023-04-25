@@ -1,5 +1,3 @@
-import React from "react";
-
 import { useContext } from "react";
 
 import { Card, Button, Stack, Row, Col, Placeholder } from "react-bootstrap";

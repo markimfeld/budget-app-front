@@ -19,7 +19,9 @@ export const UserContextProvider = ({ children }) => {
   const { handleSetMessage, handleSetType, handleSetRecordType } =
     useContext(MessageContext);
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(
+    JSON.parse(window.localStorage.getItem("user"))
+  );
 
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [showLoginForm, setshowLoginForm] = useState(true);
@@ -63,7 +65,7 @@ export const UserContextProvider = ({ children }) => {
 
   const loadUserFromStorage = () => {
     const userLogged = window.localStorage.getItem("user");
-    if (userLogged) {
+    if (userLogged !== null || userLogged !== undefined) {
       const user = JSON.parse(userLogged);
       setUser(user);
     }
@@ -142,3 +144,7 @@ export const UserContextProvider = ({ children }) => {
     </UserContext.Provider>
   );
 };
+
+export function useAuthContext() {
+  return useContext(UserContext);
+}
