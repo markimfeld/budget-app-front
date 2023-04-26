@@ -4,7 +4,7 @@ import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
 import budgetService from "../services/budget";
 
 import { BudgetContext } from "../context/BudgetContext";
-import { UserContext } from "../context/UserContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 import { MessageContext } from "../context/MessageContext";
 
 import {
@@ -14,7 +14,7 @@ import {
 } from "../labels/labels";
 
 const BudgetForm = () => {
-  const { user, logout } = useContext(UserContext);
+  const { user, logout } = useAuthContext();
   const {
     handleSetMessage,
     handleSetType,

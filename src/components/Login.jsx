@@ -11,7 +11,7 @@ import {
 
 import Message from "./Message";
 
-import { useAuthContext } from "../context/UserContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 import { MessageContext } from "../context/MessageContext";
 import { useNavigate, useLocation } from "react-router-dom";
 

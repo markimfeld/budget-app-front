@@ -77,11 +77,10 @@ export const UserContextProvider = ({ children }) => {
       const response = await loginService.register(newUser);
 
       if (response.isStored) {
-        login(newUser.email, newUser.password);
-
-        handleShowRegisterForm(false);
-        handleShowLoginForm(false);
-        setIsLoading(false);
+        // login(newUser.email, newUser.password);
+        // handleShowRegisterForm(false);
+        // handleShowLoginForm(false);
+        // setIsLoading(false);
       }
     } catch (error) {
       if (
@@ -144,7 +143,3 @@ export const UserContextProvider = ({ children }) => {
     </UserContext.Provider>
   );
 };
-
-export function useAuthContext() {
-  return useContext(UserContext);
-}

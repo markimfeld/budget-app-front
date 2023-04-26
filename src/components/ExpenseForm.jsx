@@ -3,8 +3,8 @@ import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
 
 import expenseService from "../services/expense";
 
+import { useAuthContext } from "../hooks/useAuthContext";
 import { ExpenseContext } from "../context/ExpenseContext";
-import { UserContext } from "../context/UserContext";
 import { BudgetContext } from "../context/BudgetContext";
 import budgetService from "../services/budget";
 import { MessageContext } from "../context/MessageContext";
@@ -25,7 +25,7 @@ const ExpenseForm = () => {
     handleIsExpenseEditing,
     expenseToUpdate,
   } = useContext(ExpenseContext);
-  const { user, logout } = useContext(UserContext);
+  const { user, logout } = useAuthContext();
   const { getBudgets } = useContext(BudgetContext);
   const {
     handleSetMessage,

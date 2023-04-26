@@ -9,7 +9,7 @@ import Header from "./Header";
 
 import { ExpenseContextProvider } from "../context/ExpenseContext";
 import { MessageContext } from "../context/MessageContext";
-import { useAuthContext } from "../context/UserContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const MainLayout = () => {
   const { message } = useContext(MessageContext);

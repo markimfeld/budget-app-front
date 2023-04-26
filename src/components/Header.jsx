@@ -1,13 +1,13 @@
 import { Container, Navbar, Nav, NavDropdown, Image } from "react-bootstrap";
 import { useContext } from "react";
 
-import { UserContext } from "../context/UserContext";
 import { BudgetContext } from "../context/BudgetContext";
 import { MessageContext } from "../context/MessageContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Header = () => {
   const { clearMessages } = useContext(MessageContext);
-  const { user, logout } = useContext(UserContext);
+  const { user, logout } = useAuthContext();
 
   const { handleShowBudgetForm, handleShowBudgetList, handleIsEditing } =
     useContext(BudgetContext);
