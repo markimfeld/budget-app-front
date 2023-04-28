@@ -8,6 +8,8 @@ import {
   Modal,
 } from "react-bootstrap";
 
+import { useNavigate } from "react-router-dom";
+
 // custom hooks
 import { useBudgetContext } from "../hooks/useBudgetContext";
 import { useExpenseContext } from "../hooks/useExpenseContext";
@@ -25,10 +27,13 @@ const Budget = ({ budget }) => {
     handleIsBudgetCreating,
   } = useBudgetContext();
 
+  const navigate = useNavigate();
+
   const handleGetExpenses = (budget) => {
     getExpenses(budget);
     clearMessages();
     handleIsBudgetCreating(false);
+    navigate(`/budgets/${budget._id}/expenses`);
   };
 
   const handleEdit = (budget) => {
