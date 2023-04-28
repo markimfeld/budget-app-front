@@ -1,18 +1,17 @@
-import { useContext } from "react";
-
 import { Container, Row, Col } from "react-bootstrap";
 
+// components
 import BudgetList from "./BudgetList";
 import Dashboard from "./Dashboard";
 import Message from "./Message";
 import Header from "./Header";
 
-import { ExpenseContextProvider } from "../context/ExpenseContext";
-import { MessageContext } from "../context/MessageContext";
+// custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useMessageContext } from "../hooks/useMessageContext";
 
 const MainLayout = () => {
-  const { message } = useContext(MessageContext);
+  const { message } = useMessageContext();
 
   const { user } = useAuthContext();
 
@@ -23,10 +22,8 @@ const MainLayout = () => {
       <Container>
         <Row className="mt-4">
           <Col>
-            <ExpenseContextProvider>
-              <Dashboard />
-              <BudgetList />
-            </ExpenseContextProvider>
+            <Dashboard />
+            <BudgetList />
           </Col>
         </Row>
       </Container>

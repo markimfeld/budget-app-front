@@ -1,11 +1,13 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
 
+// services
 import budgetService from "../services/budget";
 
-import { BudgetContext } from "../context/BudgetContext";
+// custom hooks
+import { useMessageContext } from "../hooks/useMessageContext";
+import { useBudgetContext } from "../hooks/useBudgetContext";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { MessageContext } from "../context/MessageContext";
 
 import {
   MISSING_FIELDS_REQUIRED,
@@ -20,7 +22,7 @@ const BudgetForm = () => {
     handleSetType,
     handleSetRecordType,
     clearMessages,
-  } = useContext(MessageContext);
+  } = useMessageContext();
   const {
     handleUpdateBudgets,
     handleShowBudgetForm,
@@ -28,7 +30,7 @@ const BudgetForm = () => {
     budgetToUpdate,
     isEditing,
     handleIsEditing,
-  } = useContext(BudgetContext);
+  } = useBudgetContext();
 
   const [name, setName] = useState(
     isEditing && budgetToUpdate.name ? budgetToUpdate.name : ""

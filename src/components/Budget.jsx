@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
   Card,
   Stack,
@@ -8,13 +8,14 @@ import {
   Modal,
 } from "react-bootstrap";
 
-import { BudgetContext } from "../context/BudgetContext";
-import { ExpenseContext } from "../context/ExpenseContext";
-import { MessageContext } from "../context/MessageContext";
+// custom hooks
+import { useBudgetContext } from "../hooks/useBudgetContext";
+import { useExpenseContext } from "../hooks/useExpenseContext";
+import { useMessageContext } from "../hooks/useMessageContext";
 
 const Budget = ({ budget }) => {
-  const { getExpenses } = useContext(ExpenseContext);
-  const { clearMessages } = useContext(MessageContext);
+  const { getExpenses } = useExpenseContext();
+  const { clearMessages } = useMessageContext();
   const {
     handleDeleteBudget,
     handleBudgetToUpdate,
@@ -22,7 +23,7 @@ const Budget = ({ budget }) => {
     handleShowBudgetList,
     handleIsEditing,
     handleIsBudgetCreating,
-  } = useContext(BudgetContext);
+  } = useBudgetContext();
 
   const handleGetExpenses = (budget) => {
     getExpenses(budget);

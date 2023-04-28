@@ -1,16 +1,16 @@
 import { Container, Navbar, Nav, NavDropdown, Image } from "react-bootstrap";
-import { useContext } from "react";
 
-import { BudgetContext } from "../context/BudgetContext";
-import { MessageContext } from "../context/MessageContext";
+// custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useMessageContext } from "../hooks/useMessageContext";
+import { useBudgetContext } from "../hooks/useBudgetContext";
 
 const Header = () => {
-  const { clearMessages } = useContext(MessageContext);
+  const { clearMessages } = useMessageContext();
   const { user, logout } = useAuthContext();
 
   const { handleShowBudgetForm, handleShowBudgetList, handleIsEditing } =
-    useContext(BudgetContext);
+    useBudgetContext();
 
   const handleShowBudgetFormOrList = (showForm) => {
     handleShowBudgetForm(showForm);

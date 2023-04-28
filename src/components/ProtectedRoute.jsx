@@ -1,7 +1,9 @@
 import { useLocation, Navigate, Outlet } from "react-router-dom";
+
+// custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = () => {
   const { user } = useAuthContext();
   const location = useLocation();
 

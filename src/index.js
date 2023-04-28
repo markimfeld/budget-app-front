@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserContextProvider } from "./context/UserContext";
 import { BudgetContextProvider } from "./context/BudgetContext";
 import { MessageContextProvider } from "./context/MessageContext";
+import { ExpenseContextProvider } from "./context/ExpenseContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -14,11 +15,13 @@ root.render(
   <MessageContextProvider>
     <UserContextProvider>
       <BudgetContextProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/*" element={<App />} />
-          </Routes>
-        </BrowserRouter>
+        <ExpenseContextProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/*" element={<App />} />
+            </Routes>
+          </BrowserRouter>
+        </ExpenseContextProvider>
       </BudgetContextProvider>
     </UserContextProvider>
   </MessageContextProvider>

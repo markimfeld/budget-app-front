@@ -1,7 +1,7 @@
-import { useContext } from "react";
 import { Alert } from "react-bootstrap";
 
-import { MessageContext } from "../context/MessageContext";
+// custom hooks
+import { useMessageContext } from "../hooks/useMessageContext";
 
 const Message = () => {
   const {
@@ -10,7 +10,7 @@ const Message = () => {
     handleSetMessage,
     handleSetRecordType,
     handleSetType,
-  } = useContext(MessageContext);
+  } = useMessageContext();
 
   const handleClose = () => {
     handleSetMessage(null);

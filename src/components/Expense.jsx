@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
   Card,
   Stack,
@@ -9,8 +9,10 @@ import {
 } from "react-bootstrap";
 import "../components/Expense.css";
 import { format } from "date-fns";
-import { ExpenseContext } from "../context/ExpenseContext";
-import { MessageContext } from "../context/MessageContext";
+
+// custom hooks
+import { useExpenseContext } from "../hooks/useExpenseContext";
+import { useMessageContext } from "../hooks/useMessageContext";
 
 const Expense = ({ expense }) => {
   const {
@@ -19,9 +21,9 @@ const Expense = ({ expense }) => {
     handleExpenseToUpdate,
     handleShowExpenseForm,
     handleShowExpenseList,
-  } = useContext(ExpenseContext);
+  } = useExpenseContext();
 
-  const { clearMessages } = useContext(MessageContext);
+  const { clearMessages } = useMessageContext();
 
   const handleEdit = (expense) => {
     handleIsExpenseEditing(true);

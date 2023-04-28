@@ -1,12 +1,13 @@
-import { useContext } from "react";
 import { Card, Button, Stack, DropdownButton, Dropdown } from "react-bootstrap";
 
+// components
 import ExpenseForm from "./ExpenseForm";
 import Expense from "./Expense";
 
-import { ExpenseContext } from "../context/ExpenseContext";
-import { BudgetContext } from "../context/BudgetContext";
-import { MessageContext } from "../context/MessageContext";
+// custom hooks
+import { useExpenseContext } from "../hooks/useExpenseContext";
+import { useBudgetContext } from "../hooks/useBudgetContext";
+import { useMessageContext } from "../hooks/useMessageContext";
 
 const ExpensesList = () => {
   const {
@@ -18,12 +19,11 @@ const ExpensesList = () => {
     showExpensesList,
     handleSelectedBudget,
     handleIsExpenseEditing,
-  } = useContext(ExpenseContext);
+  } = useExpenseContext();
 
-  const { handleShowBudgetList, handleIsBudgetCreating } =
-    useContext(BudgetContext);
+  const { handleShowBudgetList, handleIsBudgetCreating } = useBudgetContext();
 
-  const { clearMessages } = useContext(MessageContext);
+  const { clearMessages } = useMessageContext();
 
   const expensesList = expenses.map((expense, i) => {
     if (i === expenses.length - 1) {

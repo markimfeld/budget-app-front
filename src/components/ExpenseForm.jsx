@@ -1,13 +1,17 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
 
+// services
 import expenseService from "../services/expense";
-
-import { useAuthContext } from "../hooks/useAuthContext";
-import { ExpenseContext } from "../context/ExpenseContext";
-import { BudgetContext } from "../context/BudgetContext";
 import budgetService from "../services/budget";
-import { MessageContext } from "../context/MessageContext";
+
+// custom hooks
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useExpenseContext } from "../hooks/useExpenseContext";
+import { useBudgetContext } from "../hooks/useBudgetContext";
+import { useMessageContext } from "../hooks/useMessageContext";
+
+// custom labels
 import {
   MISSING_FIELDS_REQUIRED,
   RECORD_CREATED_MESSAGE,
@@ -24,15 +28,15 @@ const ExpenseForm = () => {
     isExpenseEditing,
     handleIsExpenseEditing,
     expenseToUpdate,
-  } = useContext(ExpenseContext);
+  } = useExpenseContext();
   const { user, logout } = useAuthContext();
-  const { getBudgets } = useContext(BudgetContext);
+  const { getBudgets } = useBudgetContext();
   const {
     handleSetMessage,
     handleSetType,
     handleSetRecordType,
     clearMessages,
-  } = useContext(MessageContext);
+  } = useMessageContext();
 
   const [name, setName] = useState(
     isExpenseEditing && expenseToUpdate.name ? expenseToUpdate.name : ""

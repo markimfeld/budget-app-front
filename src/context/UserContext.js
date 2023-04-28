@@ -1,10 +1,11 @@
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 
 import { useState } from "react";
 
 // services
 import loginService from "../services/login";
-import { MessageContext } from "./MessageContext";
+
+// labels
 import {
   DUPLICATE_RECORD,
   INVALID_CREDENTIALS,
@@ -13,11 +14,14 @@ import {
   MISSING_FIELDS_REQUIRED,
 } from "../labels/labels";
 
+// custom hooks
+import { useMessageContext } from "../hooks/useMessageContext";
+
 export const UserContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
   const { handleSetMessage, handleSetType, handleSetRecordType } =
-    useContext(MessageContext);
+    useMessageContext();
 
   const [user, setUser] = useState(
     JSON.parse(window.localStorage.getItem("user"))
@@ -37,6 +41,8 @@ export const UserContextProvider = ({ children }) => {
         window.localStorage.setItem("user", JSON.stringify(response.user));
         handleShowLoginForm(false);
         setIsLoading(false);
+
+        return response;
       }
     } catch (error) {
       if (
@@ -76,12 +82,7 @@ export const UserContextProvider = ({ children }) => {
     try {
       const response = await loginService.register(newUser);
 
-      if (response.isStored) {
-        // login(newUser.email, newUser.password);
-        // handleShowRegisterForm(false);
-        // handleShowLoginForm(false);
-        // setIsLoading(false);
-      }
+      return response;
     } catch (error) {
       if (
         error.response.data.status === 400 &&

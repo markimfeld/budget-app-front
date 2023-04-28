@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import {
   Card,
   Button,
@@ -7,15 +6,17 @@ import {
   DropdownButton,
 } from "react-bootstrap";
 
+// components
 import ExpensesList from "./ExpensesList";
 import BudgetForm from "./BudgetForm";
 import Budget from "./Budget";
 
-import { BudgetContext } from "../context/BudgetContext";
-import { MessageContext } from "../context/MessageContext";
+// custom hooks
+import { useMessageContext } from "../hooks/useMessageContext";
+import { useBudgetContext } from "../hooks/useBudgetContext";
 
 const BudgetList = () => {
-  const { clearMessages } = useContext(MessageContext);
+  const { clearMessages } = useMessageContext();
   const {
     budgets,
     showBudgetForm,
@@ -24,7 +25,7 @@ const BudgetList = () => {
     handleShowBudgetList,
     isLoading,
     handleIsEditing,
-  } = useContext(BudgetContext);
+  } = useBudgetContext();
 
   const budgetList = budgets.map((budget) => {
     return <Budget key={budget._id} budget={budget} />;

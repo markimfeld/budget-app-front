@@ -1,14 +1,15 @@
-import { createContext, useContext, useState } from "react";
-
-// context
-import { UserContext } from "./UserContext";
-import { BudgetContext } from "./BudgetContext";
-import { MessageContext } from "./MessageContext";
+import { createContext, useState } from "react";
 
 // services
 import expenseService from "../services/expense";
 import budgetService from "../services/budget";
 
+// custom hooks
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useMessageContext } from "../hooks/useMessageContext";
+import { useBudgetContext } from "../hooks/useBudgetContext";
+
+// labels
 import { RECORD_DELETED_MESSAGE } from "../labels/labels";
 
 export const ExpenseContext = createContext();
@@ -22,12 +23,12 @@ export const ExpenseContextProvider = ({ children }) => {
   const [expenseToUpdate, setExpenseToUpdate] = useState(null);
   const [isExpenseEditing, setIsExpenseEditing] = useState(false);
 
-  const { user, logout } = useContext(UserContext);
+  const { user, logout } = useAuthContext();
 
-  const { handleShowBudgetList, getBudgets } = useContext(BudgetContext);
+  const { handleShowBudgetList, getBudgets } = useBudgetContext();
 
   const { handleSetMessage, handleSetType, handleSetRecordType } =
-    useContext(MessageContext);
+    useMessageContext();
 
   const getExpenses = async (budget) => {
     if (user !== null) {

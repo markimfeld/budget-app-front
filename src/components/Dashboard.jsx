@@ -1,10 +1,9 @@
-import { useContext } from "react";
-
 import { Card, Button, Stack, Row, Col, Placeholder } from "react-bootstrap";
 
-import { BudgetContext } from "../context/BudgetContext";
-import { ExpenseContext } from "../context/ExpenseContext";
-import { MessageContext } from "../context/MessageContext";
+// custom hooks
+import { useBudgetContext } from "../hooks/useBudgetContext";
+import { useMessageContext } from "../hooks/useMessageContext";
+import { useExpenseContext } from "../hooks/useExpenseContext";
 
 const months = [
   "Enero",
@@ -33,8 +32,8 @@ const Dashboard = () => {
     handleIsEditing,
     isBudgetCreating,
     isLoading,
-  } = useContext(BudgetContext);
-  const { clearMessages } = useContext(MessageContext);
+  } = useBudgetContext();
+  const { clearMessages } = useMessageContext();
 
   const {
     selectedBudget,
@@ -42,7 +41,7 @@ const Dashboard = () => {
     handleShowExpenseForm,
     handleSelectedBudget,
     handleIsExpenseEditing,
-  } = useContext(ExpenseContext);
+  } = useExpenseContext();
 
   const spentTotal = budgets.map((budget) => budget.spentAmount);
 
