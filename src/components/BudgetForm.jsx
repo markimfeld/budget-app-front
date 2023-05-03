@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
 
+import { useNavigate } from "react-router-dom";
+
 // services
 import budgetService from "../services/budget";
 
@@ -23,14 +25,8 @@ const BudgetForm = () => {
     handleSetRecordType,
     clearMessages,
   } = useMessageContext();
-  const {
-    handleUpdateBudgets,
-    handleShowBudgetForm,
-    handleShowBudgetList,
-    budgetToUpdate,
-    isEditing,
-    handleIsEditing,
-  } = useBudgetContext();
+  const { handleUpdateBudgets, budgetToUpdate, isEditing, handleIsEditing } =
+    useBudgetContext();
 
   const [name, setName] = useState(
     isEditing && budgetToUpdate.name ? budgetToUpdate.name : ""
@@ -40,6 +36,8 @@ const BudgetForm = () => {
       ? budgetToUpdate.expectedAmount
       : ""
   );
+
+  const navigate = useNavigate();
 
   const handleAddBudget = async (event) => {
     event.preventDefault();
@@ -56,11 +54,10 @@ const BudgetForm = () => {
         try {
           const data = await budgetService.store(newBudget, config);
           handleUpdateBudgets(data.data);
-          handleShowBudgetForm(false);
-          handleShowBudgetList(true);
           handleSetMessage(RECORD_CREATED_MESSAGE);
           handleSetType("success");
           handleSetRecordType("budget");
+          navigate("/budgets");
         } catch (error) {
           if (
             error.response.data.status === 400 &&
@@ -92,11 +89,10 @@ const BudgetForm = () => {
           );
 
           handleUpdateBudgets(data.data);
-          handleShowBudgetForm(false);
-          handleShowBudgetList(true);
           handleSetMessage(RECORD_UPDATED_MESSAGE);
           handleSetType("success");
           handleSetRecordType("budget");
+          navigate("/budgets");
         } catch (error) {
           if (
             error.response.data.status === 400 &&
@@ -125,10 +121,9 @@ const BudgetForm = () => {
   };
 
   const onCancelOperation = () => {
-    handleShowBudgetForm(false);
-    handleShowBudgetList(true);
     handleIsEditing(false);
     clearMessages();
+    navigate("/budgets");
   };
 
   return (

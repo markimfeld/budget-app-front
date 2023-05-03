@@ -1,5 +1,7 @@
 import { Container, Navbar, Nav, NavDropdown, Image } from "react-bootstrap";
 
+import { useNavigate } from "react-router-dom";
+
 // custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useMessageContext } from "../hooks/useMessageContext";
@@ -9,14 +11,14 @@ const Header = () => {
   const { clearMessages } = useMessageContext();
   const { user, logout } = useAuthContext();
 
-  const { handleShowBudgetForm, handleShowBudgetList, handleIsEditing } =
-    useBudgetContext();
+  const { handleIsEditing } = useBudgetContext();
+
+  const navigate = useNavigate();
 
   const handleShowBudgetFormOrList = (showForm) => {
-    handleShowBudgetForm(showForm);
-    handleShowBudgetList(!showForm);
     clearMessages();
     handleIsEditing(false);
+    navigate("/budgets/add");
   };
 
   const handleLogout = () => {

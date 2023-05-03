@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
 
+import { useNavigate, useParams } from "react-router-dom";
+
 // services
 import expenseService from "../services/expense";
 import budgetService from "../services/budget";
@@ -37,6 +39,9 @@ const ExpenseForm = () => {
     handleSetRecordType,
     clearMessages,
   } = useMessageContext();
+
+  const navigate = useNavigate();
+  const { budgetId } = useParams();
 
   const [name, setName] = useState(
     isExpenseEditing && expenseToUpdate.name ? expenseToUpdate.name : ""
@@ -79,14 +84,14 @@ const ExpenseForm = () => {
 
           await budgetService.update(selectedBudget._id, updatedBudget, config);
 
-          handleShowExpenseList(true);
-          handleShowExpenseForm(false);
           handleUpdateExpenses(data);
           handleSetMessage(RECORD_CREATED_MESSAGE);
           handleSetType("success");
           handleSetRecordType("expense");
           handleUpdateSelectedBudget(selectedBudget._id);
           getBudgets();
+
+          navigate(`/budgets/${budgetId}/expenses`);
         } catch (error) {
           if (
             error.response.data.status === 400 &&
@@ -130,14 +135,14 @@ const ExpenseForm = () => {
 
           await budgetService.update(selectedBudget._id, updatedBudget, config);
 
-          handleShowExpenseList(true);
-          handleShowExpenseForm(false);
           handleUpdateExpenses(data);
           handleSetMessage(RECORD_UPDATED_MESSAGE);
           handleSetType("success");
           handleSetRecordType("expense");
           handleUpdateSelectedBudget(selectedBudget._id);
           getBudgets();
+
+          navigate(`/budgets/${budgetId}/expenses`);
         } catch (error) {
           if (
             error.response.data.status === 400 &&
@@ -175,6 +180,7 @@ const ExpenseForm = () => {
     handleShowExpenseList(showList);
     handleIsExpenseEditing(false);
     clearMessages();
+    navigate(`/budgets/${budgetId}/expenses`);
   };
 
   return (

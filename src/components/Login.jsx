@@ -24,7 +24,7 @@ const Login = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/budgets";
 
   const {
     message,
@@ -44,7 +44,7 @@ const Login = () => {
 
     if (response && response.status === 200) {
       clearMessages();
-      navigate(from, { replace: true });
+      navigate("/budgets", { replace: true });
     }
   };
 

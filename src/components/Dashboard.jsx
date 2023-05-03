@@ -1,5 +1,7 @@
 import { Card, Button, Stack, Row, Col, Placeholder } from "react-bootstrap";
 
+import { useNavigate } from "react-router-dom";
+
 // custom hooks
 import { useBudgetContext } from "../hooks/useBudgetContext";
 import { useMessageContext } from "../hooks/useMessageContext";
@@ -27,7 +29,6 @@ const Dashboard = () => {
     getCurrentMonthBudgets,
     getNextMonthBudgets,
     getPreviuosMonthBudgets,
-    handleShowBudgetForm,
     handleShowBudgetList,
     handleIsEditing,
     isBudgetCreating,
@@ -43,6 +44,8 @@ const Dashboard = () => {
     handleIsExpenseEditing,
   } = useExpenseContext();
 
+  const navigate = useNavigate();
+
   const spentTotal = budgets.map((budget) => budget.spentAmount);
 
   const expectedTotal = budgets.map((budget) => budget.expectedAmount);
@@ -57,10 +60,9 @@ const Dashboard = () => {
 
   const handleShowBudgetFormOrList = (showForm) => {
     if (isBudgetCreating) {
-      handleShowBudgetForm(showForm);
-      handleShowBudgetList(!showForm);
       clearMessages();
       handleIsEditing(false);
+      navigate("/budgets/add");
     } else {
       handleShowExpenseForm(showForm);
       handleShowExpenseList(!showForm);

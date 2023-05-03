@@ -6,47 +6,33 @@ import {
   DropdownButton,
 } from "react-bootstrap";
 
+import { useNavigate } from "react-router-dom";
+
 // components
-import ExpensesList from "./ExpensesList";
-import BudgetForm from "./BudgetForm";
 import Budget from "./Budget";
 
 // custom hooks
 import { useMessageContext } from "../hooks/useMessageContext";
 import { useBudgetContext } from "../hooks/useBudgetContext";
 
-const BudgetList = () => {
+const Budgets = () => {
   const { clearMessages } = useMessageContext();
-  const {
-    budgets,
-    showBudgetForm,
-    showBudgetList,
-    handleShowBudgetForm,
-    handleShowBudgetList,
-    isLoading,
-    handleIsEditing,
-  } = useBudgetContext();
+  const { budgets, isLoading, handleIsEditing } = useBudgetContext();
+
+  const navigate = useNavigate();
 
   const budgetList = budgets.map((budget) => {
     return <Budget key={budget._id} budget={budget} />;
   });
 
   const handleShowBudgetFormOrList = (showForm) => {
-    handleShowBudgetForm(showForm);
-    handleShowBudgetList(!showForm);
     handleIsEditing(false);
     clearMessages();
+    navigate("add");
   };
 
   return (
     <>
-      <div>
-        {!showBudgetList && (
-          <div>
-            <ExpensesList />
-          </div>
-        )}
-      </div>
       <div>
         {isLoading && (
           <Card
@@ -90,41 +76,31 @@ const BudgetList = () => {
             </Card.Body>
           </Card>
         )}
-
-        {showBudgetList && (
-          <div>
-            {budgets.length > 0 && !isLoading && budgetList}
-            {budgets.length === 0 && !isLoading && (
-              <Card
-                className="mb-4"
-                border="light"
-                style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
-              >
-                <Card.Body>
-                  <Card.Text>
-                    No hay presupuestos creados aun 😄.{" "}
-                    <Button
-                      onClick={() => handleShowBudgetFormOrList(true)}
-                      variant="link"
-                    >
-                      Crear nuevo presupuesto
-                    </Button>
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            )}
-          </div>
-        )}
       </div>
       <div>
-        {showBudgetForm && (
-          <div>
-            <BudgetForm />
-          </div>
+        {budgets.length > 0 && !isLoading && budgetList}
+        {budgets.length === 0 && !isLoading && (
+          <Card
+            className="mb-4"
+            border="light"
+            style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+          >
+            <Card.Body>
+              <Card.Text>
+                No hay presupuestos creados aun 😄.{" "}
+                <Button
+                  onClick={() => handleShowBudgetFormOrList(true)}
+                  variant="link"
+                >
+                  Crear nuevo presupuesto
+                </Button>
+              </Card.Text>
+            </Card.Body>
+          </Card>
         )}
       </div>
     </>
   );
 };
 
-export default BudgetList;
+export default Budgets;

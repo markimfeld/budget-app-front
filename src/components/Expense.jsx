@@ -10,27 +10,27 @@ import {
 import "../components/Expense.css";
 import { format } from "date-fns";
 
+import { useNavigate, useParams } from "react-router-dom";
+
 // custom hooks
 import { useExpenseContext } from "../hooks/useExpenseContext";
 import { useMessageContext } from "../hooks/useMessageContext";
 
 const Expense = ({ expense }) => {
-  const {
-    handleDeleteExpense,
-    handleIsExpenseEditing,
-    handleExpenseToUpdate,
-    handleShowExpenseForm,
-    handleShowExpenseList,
-  } = useExpenseContext();
+  const { handleDeleteExpense, handleIsExpenseEditing, handleExpenseToUpdate } =
+    useExpenseContext();
 
   const { clearMessages } = useMessageContext();
+  const navigate = useNavigate();
+  const { expenseId } = useParams();
 
   const handleEdit = (expense) => {
     handleIsExpenseEditing(true);
     handleExpenseToUpdate(expense);
-    handleShowExpenseForm(true);
-    handleShowExpenseList(false);
+    // handleShowExpenseForm(true);
+    // handleShowExpenseList(false);
     clearMessages();
+    navigate(`${expense._id}/edit`);
   };
 
   const [show, setShow] = useState(false);

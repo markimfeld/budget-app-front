@@ -22,15 +22,16 @@ export const ExpenseContextProvider = ({ children }) => {
   const [messageExpense, setMessageExpense] = useState(null);
   const [expenseToUpdate, setExpenseToUpdate] = useState(null);
   const [isExpenseEditing, setIsExpenseEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { user, logout } = useAuthContext();
 
-  const { handleShowBudgetList, getBudgets } = useBudgetContext();
+  const { getBudgets } = useBudgetContext();
 
   const { handleSetMessage, handleSetType, handleSetRecordType } =
     useMessageContext();
 
-  const getExpenses = async (budget) => {
+  const getExpenses = async (budgetId) => {
     if (user !== null) {
       const config = {
         headers: {
@@ -40,13 +41,10 @@ export const ExpenseContextProvider = ({ children }) => {
       try {
         const { data } = await expenseService.getAll(config);
         const expensesByBudgetId = data.filter(
-          (expense) => expense.budget._id === budget._id
+          (expense) => expense.budget._id === budgetId
         );
         setExpenses(expensesByBudgetId);
-
-        handleShowExpenseList(true);
-        setSelectedBudget(budget);
-        handleShowBudgetList(false);
+        handleSetIsLoading(false);
       } catch (error) {
         if (
           error.response.data.status === 400 &&
@@ -55,6 +53,14 @@ export const ExpenseContextProvider = ({ children }) => {
           logout();
         }
       }
+    }
+  };
+
+  const handleSetIsLoading = (loading) => {
+    if (loading) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
     }
   };
 
@@ -74,8 +80,25 @@ export const ExpenseContextProvider = ({ children }) => {
     }
   };
 
-  const handleSelectedBudget = (budget) => {
-    setSelectedBudget(budget);
+  const handleSelectedBudget = async (budgetId) => {
+    if (user !== null) {
+      const config = {
+        headers: {
+          Authorization: `${user.accessToken}`,
+        },
+      };
+      try {
+        const response = await budgetService.getOne(config, budgetId);
+        setSelectedBudget(response.data);
+      } catch (error) {
+        if (
+          error.response.data.status === 400 &&
+          error.response.data.message === "INVALID_TOKEN"
+        ) {
+          logout();
+        }
+      }
+    }
   };
 
   const handleUpdateExpenses = (newExpense) => {
@@ -184,6 +207,8 @@ export const ExpenseContextProvider = ({ children }) => {
         isExpenseEditing,
         handleIsExpenseEditing,
         handleExpenseToUpdate,
+        handleSetIsLoading,
+        isLoading,
       }}
     >
       {children}

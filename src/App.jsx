@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 // components
 import Login from "./components/Login";
 import Register from "./components/Register";
-import MainLayout from "./components/MainLayout";
+import Home from "./components/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         {/* private routes */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<MainLayout />} />
+          <Route path="/*" element={<Home />} />
         </Route>
       </Routes>
     </>

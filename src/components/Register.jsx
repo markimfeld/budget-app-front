@@ -37,7 +37,7 @@ const Register = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/budgets";
 
   const handleRegister = async (event) => {
     event.preventDefault();
@@ -53,7 +53,7 @@ const Register = () => {
     if (response && response.isStored && response.status === 201) {
       await login(email, password);
       clearMessages();
-      navigate(from, { replace: true });
+      navigate("/budgets", { replace: true });
     }
   };
 

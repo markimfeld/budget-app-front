@@ -1,7 +1,9 @@
+import { useEffect } from "react";
 import { Card, Button, Stack, DropdownButton, Dropdown } from "react-bootstrap";
 
+import { useNavigate, useParams } from "react-router-dom";
+
 // components
-import ExpenseForm from "./ExpenseForm";
 import Expense from "./Expense";
 
 // custom hooks
@@ -12,18 +14,27 @@ import { useMessageContext } from "../hooks/useMessageContext";
 const ExpensesList = () => {
   const {
     expenses,
+    getExpenses,
     selectedBudget,
-    handleShowExpenseList,
-    handleShowExpenseForm,
-    showExpenseForm,
-    showExpensesList,
     handleSelectedBudget,
     handleIsExpenseEditing,
+    isLoading,
   } = useExpenseContext();
 
-  const { handleShowBudgetList, handleIsBudgetCreating } = useBudgetContext();
+  const { handleIsBudgetCreating } = useBudgetContext();
 
   const { clearMessages } = useMessageContext();
+
+  const { budgetId } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (budgetId) {
+      getExpenses(budgetId);
+      handleSelectedBudget(budgetId);
+    }
+    // eslint-disable-next-line
+  }, [budgetId]);
 
   const expensesList = expenses.map((expense, i) => {
     if (i === expenses.length - 1) {
@@ -42,26 +53,21 @@ const ExpensesList = () => {
   });
 
   const handleNewExpense = (showForm) => {
-    handleShowExpenseForm(showForm);
-    handleShowExpenseList(!showForm);
-    handleShowBudgetList(!showForm);
-    handleSelectedBudget(selectedBudget);
     handleIsExpenseEditing(false);
     clearMessages();
+    navigate("add");
   };
 
   const handleVolver = (showList) => {
-    handleShowExpenseList(!showList);
-    handleShowExpenseForm(!showList);
-    handleShowBudgetList(showList);
     clearMessages();
     handleIsBudgetCreating(true);
+    navigate("/budgets");
   };
 
   return (
     <>
       <div>
-        {showExpensesList && (
+        {selectedBudget && (
           <Card
             border="light"
             className="mb-3"
@@ -105,7 +111,7 @@ const ExpensesList = () => {
         )}
       </div>
       <div className="mt-3">
-        {expenses.length > 0 && showExpensesList && (
+        {expenses.length > 0 && (
           <div>
             <p
               className="text-muted"
@@ -126,7 +132,7 @@ const ExpensesList = () => {
             </Card>
           </div>
         )}
-        {expenses.length === 0 && showExpensesList && (
+        {expenses.length === 0 && !isLoading && (
           <Card
             className="mb-4"
             border="light"
@@ -143,7 +149,6 @@ const ExpensesList = () => {
           </Card>
         )}
       </div>
-      <div>{showExpenseForm && <ExpenseForm />}</div>
     </>
   );
 };

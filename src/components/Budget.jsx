@@ -8,35 +8,35 @@ import {
   Modal,
 } from "react-bootstrap";
 
+import { useNavigate } from "react-router-dom";
+
 // custom hooks
 import { useBudgetContext } from "../hooks/useBudgetContext";
-import { useExpenseContext } from "../hooks/useExpenseContext";
 import { useMessageContext } from "../hooks/useMessageContext";
 
 const Budget = ({ budget }) => {
-  const { getExpenses } = useExpenseContext();
   const { clearMessages } = useMessageContext();
   const {
     handleDeleteBudget,
     handleBudgetToUpdate,
-    handleShowBudgetForm,
-    handleShowBudgetList,
     handleIsEditing,
     handleIsBudgetCreating,
   } = useBudgetContext();
 
+  const navigate = useNavigate();
+
   const handleGetExpenses = (budget) => {
-    getExpenses(budget);
     clearMessages();
     handleIsBudgetCreating(false);
+    navigate(`/budgets/${budget._id}/expenses`);
   };
 
   const handleEdit = (budget) => {
     handleBudgetToUpdate(budget);
-    handleShowBudgetForm(true);
-    handleShowBudgetList(false);
     handleIsEditing(true);
     clearMessages();
+
+    navigate(`/budgets/${budget._id}/edit`);
   };
 
   const [show, setShow] = useState(false);
