@@ -29,7 +29,8 @@ const ExpenseForm = () => {
     handleUpdateSelectedBudget,
     isExpenseEditing,
     handleIsExpenseEditing,
-    expenseToUpdate,
+    expenses,
+    handleGetOneExpense,
   } = useExpenseContext();
   const { user, logout } = useAuthContext();
   const { getBudgets } = useBudgetContext();
@@ -41,19 +42,14 @@ const ExpenseForm = () => {
   } = useMessageContext();
 
   const navigate = useNavigate();
-  const { budgetId } = useParams();
+  const { budgetId, expenseId } = useParams();
+  let expenseToUpdate = expenses.filter(
+    (expense) => expense._id === expenseId
+  )[0];
 
-  const [name, setName] = useState(
-    isExpenseEditing && expenseToUpdate.name ? expenseToUpdate.name : ""
-  );
-  const [description, setDescription] = useState(
-    isExpenseEditing && expenseToUpdate.description
-      ? expenseToUpdate.description
-      : ""
-  );
-  const [amount, setAmount] = useState(
-    isExpenseEditing && expenseToUpdate.amount ? expenseToUpdate.amount : ""
-  );
+  const [name, setName] = useState(expenseToUpdate?.name);
+  const [description, setDescription] = useState(expenseToUpdate?.description);
+  const [amount, setAmount] = useState(expenseToUpdate?.amount);
 
   const onSubmitExpense = async (event) => {
     event.preventDefault();

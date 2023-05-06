@@ -44,7 +44,7 @@ const Login = () => {
 
     if (response && response.status === 200) {
       clearMessages();
-      navigate("/budgets", { replace: true });
+      navigate(from, { replace: true });
     }
   };
 

@@ -53,7 +53,7 @@ const Register = () => {
     if (response && response.isStored && response.status === 201) {
       await login(email, password);
       clearMessages();
-      navigate("/budgets", { replace: true });
+      navigate(from, { replace: true });
     }
   };
 

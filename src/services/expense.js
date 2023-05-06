@@ -7,6 +7,10 @@ const expenseService = {
     const { data } = await axios.get(baseUrl, config);
     return data;
   },
+  getOne: async (config, id) => {
+    const { data } = await axios.get(`${baseUrl}/${id}`, config);
+    return data;
+  },
   store: async (newExpense, config) => {
     const { data } = await axios.post(baseUrl, newExpense, config);
     return data;

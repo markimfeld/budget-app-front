@@ -145,6 +145,30 @@ export const ExpenseContextProvider = ({ children }) => {
     setExpenseToUpdate(expense);
   };
 
+  const handleGetOneExpense = async (expenseId) => {
+    if (user !== null) {
+      const config = {
+        headers: {
+          Authorization: `${user.accessToken}`,
+        },
+      };
+      try {
+        const response = await expenseService.getOne(config, expenseId);
+        if (response.status === 200) {
+          setExpenseToUpdate(response.data);
+          return response.data;
+        }
+      } catch (error) {
+        if (
+          error.response.data.status === 400 &&
+          error.response.data.message === "INVALID_TOKEN"
+        ) {
+          logout();
+        }
+      }
+    }
+  };
+
   const handleDeleteExpense = async (expense) => {
     if (user !== null) {
       const config = {
@@ -209,6 +233,7 @@ export const ExpenseContextProvider = ({ children }) => {
         handleExpenseToUpdate,
         handleSetIsLoading,
         isLoading,
+        handleGetOneExpense,
       }}
     >
       {children}
