@@ -1,7 +1,9 @@
-import { useState } from "react";
 import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
 
 import { useNavigate, useParams } from "react-router-dom";
+
+// formik
+import { useFormik } from "formik";
 
 // services
 import expenseService from "../services/expense";
@@ -19,6 +21,7 @@ import {
   RECORD_CREATED_MESSAGE,
   RECORD_UPDATED_MESSAGE,
 } from "../labels/labels";
+import { useEffect } from "react";
 
 const ExpenseForm = () => {
   const {
@@ -31,29 +34,21 @@ const ExpenseForm = () => {
     handleIsExpenseEditing,
     expenses,
     handleGetOneExpense,
+    expenseToUpdate,
   } = useExpenseContext();
-  const { user, logout } = useAuthContext();
-  const { getBudgets } = useBudgetContext();
-  const {
-    handleSetMessage,
-    handleSetType,
-    handleSetRecordType,
-    clearMessages,
-  } = useMessageContext();
 
-  const navigate = useNavigate();
   const { budgetId, expenseId } = useParams();
-  let expenseToUpdate = expenses.filter(
-    (expense) => expense._id === expenseId
-  )[0];
 
-  const [name, setName] = useState(expenseToUpdate?.name);
-  const [description, setDescription] = useState(expenseToUpdate?.description);
-  const [amount, setAmount] = useState(expenseToUpdate?.amount);
+  let expense = expenses.filter((expense) => expense._id === expenseId)[0];
 
-  const onSubmitExpense = async (event) => {
-    event.preventDefault();
+  useEffect(() => {
+    handleGetOneExpense(expenseId);
+  }, [expenseId]);
 
+  console.log(expenseToUpdate);
+
+  const onSubmit = async (data) => {
+    console.log(data);
     if (user !== null) {
       const config = {
         headers: {
@@ -61,7 +56,12 @@ const ExpenseForm = () => {
         },
       };
 
-      const newExpense = { name, amount, description, budget: selectedBudget };
+      const newExpense = {
+        name: values.name,
+        amount: values.amount,
+        description: values.description,
+        budget: selectedBudget,
+      };
 
       if (!isExpenseEditing) {
         let updatedBudget = { ...selectedBudget };
@@ -159,17 +159,16 @@ const ExpenseForm = () => {
     }
   };
 
-  const onChangeName = (event) => {
-    setName(event.target.value);
-  };
+  const { user, logout } = useAuthContext();
+  const { getBudgets } = useBudgetContext();
+  const {
+    handleSetMessage,
+    handleSetType,
+    handleSetRecordType,
+    clearMessages,
+  } = useMessageContext();
 
-  const onChangeDescription = (event) => {
-    setDescription(event.target.value);
-  };
-
-  const onChangeAmount = (event) => {
-    setAmount(event.target.value);
-  };
+  const navigate = useNavigate();
 
   const onCancelOperation = (showList) => {
     handleShowExpenseForm(!showList);
@@ -178,6 +177,15 @@ const ExpenseForm = () => {
     clearMessages();
     navigate(`/budgets/${budgetId}/expenses`);
   };
+
+  const { handleSubmit, handleChange, values } = useFormik({
+    initialValues: {
+      name: expense?.name || expenseToUpdate?.name,
+      description: expense?.description || expenseToUpdate?.description,
+      amount: expense?.amount || expenseToUpdate?.amount,
+    },
+    onSubmit,
+  });
 
   return (
     <Card style={{ border: "none", backgroundColor: "hsl(0, 0%, 97%, 0.5)" }}>
@@ -188,13 +196,13 @@ const ExpenseForm = () => {
         </Card.Title>
       </Card.Header>
       <Card.Body>
-        <Form onSubmit={onSubmitExpense}>
+        <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicName">
             <FloatingLabel controlId="floatingName" label="Nombre del gasto">
               <Form.Control
                 name="name"
-                value={name}
-                onChange={onChangeName}
+                value={values.name}
+                onChange={handleChange}
                 type="text"
                 placeholder="Horeb"
                 required
@@ -206,8 +214,8 @@ const ExpenseForm = () => {
             <FloatingLabel controlId="floatingDescription" label="Descripción">
               <Form.Control
                 name="description"
-                value={description}
-                onChange={onChangeDescription}
+                value={values.description}
+                onChange={handleChange}
                 type="text"
                 placeholder="Alfajor"
               />
@@ -218,8 +226,8 @@ const ExpenseForm = () => {
             <FloatingLabel controlId="floatingAmount" label="Monto">
               <Form.Control
                 name="amount"
-                value={amount}
-                onChange={onChangeAmount}
+                value={values.amount}
+                onChange={handleChange}
                 type="number"
                 placeholder="15000"
                 required
