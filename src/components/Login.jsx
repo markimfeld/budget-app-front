@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Form,
   Button,
@@ -10,6 +9,9 @@ import {
 } from "react-bootstrap";
 import { useNavigate, useLocation, Navigate } from "react-router-dom";
 
+// formik
+import { useFormik } from "formik";
+
 // components
 import Message from "./Message";
 
@@ -18,10 +20,6 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useMessageContext } from "../hooks/useMessageContext";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loginEnabledBtn, setLoginEnabledBtn] = useState(false);
-
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/budgets";
@@ -37,9 +35,7 @@ const Login = () => {
 
   const { login, user } = useAuthContext();
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-
+  const onSubmit = async ({ email, password }) => {
     const response = await login(email, password);
 
     if (response && response.status === 200) {
@@ -48,18 +44,26 @@ const Login = () => {
     }
   };
 
+  const { handleSubmit, values, setFieldValue } = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      loginEnabledBtn: false,
+    },
+    onSubmit,
+  });
+
   const onChangeEmail = (e) => {
-    setEmail(e.target.value);
-    if (email && password) {
-      setLoginEnabledBtn(true);
+    setFieldValue("email", e.target.value);
+    if (values.email && values.password) {
+      setFieldValue("loginEnabledBtn", true);
     }
   };
 
   const onChangePassword = (e) => {
-    setPassword(e.target.value);
-
-    if (email && password) {
-      setLoginEnabledBtn(true);
+    setFieldValue("password", e.target.value);
+    if (values.email && values.password) {
+      setFieldValue("loginEnabledBtn", true);
     }
   };
 
@@ -92,13 +96,13 @@ const Login = () => {
                   <Card.Title className="text-center fs-1 mb-4">
                     <i className="fa-solid fa-coins"></i> Finance Pro
                   </Card.Title>
-                  <Form onSubmit={handleLogin}>
+                  <Form onSubmit={handleSubmit}>
                     <Row className="g-2 mb-2">
                       <Col md>
                         <FloatingLabel controlId="floatingEmail" label="Email">
                           <Form.Control
                             name="email"
-                            value={email}
+                            value={values.email}
                             onChange={onChangeEmail}
                             type="email"
                             placeholder="lionelmessi@gmail.com"
@@ -114,8 +118,8 @@ const Login = () => {
                           label="Contraseña"
                         >
                           <Form.Control
-                            password={password}
-                            value={password}
+                            name="password"
+                            value={values.password}
                             onChange={onChangePassword}
                             type="password"
                             placeholder="Ingresá tu contraseña"
@@ -126,12 +130,12 @@ const Login = () => {
                     </Row>
 
                     <div className="d-grid gap-2">
-                      {loginEnabledBtn && (
+                      {values.loginEnabledBtn && (
                         <Button variant="success" type="submit">
                           Iniciar sesión
                         </Button>
                       )}
-                      {!loginEnabledBtn && (
+                      {!values.loginEnabledBtn && (
                         <Button variant="success" type="submit" disabled>
                           Iniciar sesión
                         </Button>

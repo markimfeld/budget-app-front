@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Form,
   Button,
@@ -10,6 +9,9 @@ import {
 } from "react-bootstrap";
 import { useNavigate, useLocation, Navigate } from "react-router-dom";
 
+// formik
+import { useFormik } from "formik";
+
 // components
 import Message from "./Message";
 
@@ -18,13 +20,6 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useMessageContext } from "../hooks/useMessageContext";
 
 const Register = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUserName] = useState("");
-  const [registerEnabledBtn, setRegisterEnabledBtn] = useState(false);
-
   const {
     message,
     handleSetMessage,
@@ -39,9 +34,13 @@ const Register = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/budgets";
 
-  const handleRegister = async (event) => {
-    event.preventDefault();
-
+  const onSubmit = async ({
+    firstName,
+    lastName,
+    username,
+    email,
+    password,
+  }) => {
     const response = await register({
       firstName,
       lastName,
@@ -57,38 +56,80 @@ const Register = () => {
     }
   };
 
+  const { handleSubmit, values, setFieldValue } = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      firstName: "",
+      lastName: "",
+      username: "",
+      registerEnabledBtn: false,
+    },
+    onSubmit,
+  });
+
   const onChangeEmail = (e) => {
-    setEmail(e.target.value);
-    if (email && password && firstName && lastName && username) {
-      setRegisterEnabledBtn(true);
+    setFieldValue("email", e.target.value);
+    if (
+      values.email &&
+      values.password &&
+      values.firstName &&
+      values.lastName &&
+      values.username
+    ) {
+      setFieldValue("registerEnabledBtn", true);
     }
   };
 
   const onChangePassword = (e) => {
-    setPassword(e.target.value);
-    if (email && password && firstName && lastName && username) {
-      setRegisterEnabledBtn(true);
+    setFieldValue("password", e.target.value);
+    if (
+      values.email &&
+      values.password &&
+      values.firstName &&
+      values.lastName &&
+      values.username
+    ) {
+      setFieldValue("registerEnabledBtn", true);
     }
   };
 
   const onChangeFirstName = (e) => {
-    setFirstName(e.target.value);
-    if (email && password && firstName && lastName && username) {
-      setRegisterEnabledBtn(true);
+    setFieldValue("firstName", e.target.value);
+    if (
+      values.email &&
+      values.password &&
+      values.firstName &&
+      values.lastName &&
+      values.username
+    ) {
+      setFieldValue("registerEnabledBtn", true);
     }
   };
 
   const onChangeLastName = (e) => {
-    setLastName(e.target.value);
-    if (email && password && firstName && lastName && username) {
-      setRegisterEnabledBtn(true);
+    setFieldValue("lastName", e.target.value);
+    if (
+      values.email &&
+      values.password &&
+      values.firstName &&
+      values.lastName &&
+      values.username
+    ) {
+      setFieldValue("registerEnabledBtn", true);
     }
   };
 
   const onChangeUsername = (e) => {
-    setUserName(e.target.value);
-    if (email && password && firstName && lastName && username) {
-      setRegisterEnabledBtn(true);
+    setFieldValue("username", e.target.value);
+    if (
+      values.email &&
+      values.password &&
+      values.firstName &&
+      values.lastName &&
+      values.username
+    ) {
+      setFieldValue("registerEnabledBtn", true);
     }
   };
 
@@ -117,7 +158,7 @@ const Register = () => {
                   <Card.Title className="text-center fs-1 mb-4">
                     <i className="fa-solid fa-coins"></i> Finance Pro
                   </Card.Title>
-                  <Form onSubmit={handleRegister}>
+                  <Form onSubmit={handleSubmit}>
                     <Row className="g-2 mb-2">
                       <Col md>
                         <FloatingLabel
@@ -125,12 +166,12 @@ const Register = () => {
                           label="Nombre"
                         >
                           <Form.Control
-                            name={firstName}
-                            value={firstName}
+                            name="firstName"
+                            value={values.firstName}
                             onChange={onChangeFirstName}
                             type="text"
                             placeholder="Ej: Lionel"
-                            // required
+                            required
                           />
                         </FloatingLabel>
                       </Col>
@@ -140,12 +181,12 @@ const Register = () => {
                           label="Apellido"
                         >
                           <Form.Control
-                            name={lastName}
-                            value={lastName}
+                            name="lastName"
+                            value={values.lastName}
                             onChange={onChangeLastName}
                             type="text"
                             placeholder="Ej: Messi"
-                            // required
+                            required
                           />
                         </FloatingLabel>
                       </Col>
@@ -158,12 +199,12 @@ const Register = () => {
                           label="Usuario"
                         >
                           <Form.Control
-                            name={username}
-                            value={username}
+                            name="username"
+                            value={values.username}
                             onChange={onChangeUsername}
                             type="text"
                             placeholder="Ej: lionelmessi"
-                            // required
+                            required
                           />
                         </FloatingLabel>
                       </Col>
@@ -173,11 +214,11 @@ const Register = () => {
                         <FloatingLabel controlId="floatingEmail" label="Email">
                           <Form.Control
                             name="email"
-                            value={email}
+                            value={values.email}
                             onChange={onChangeEmail}
                             type="email"
                             placeholder="lionelmessi@gmail.com"
-                            // required
+                            required
                           />
                         </FloatingLabel>
                       </Col>
@@ -188,23 +229,23 @@ const Register = () => {
                         >
                           <Form.Control
                             name="password"
-                            value={password}
+                            value={values.password}
                             onChange={onChangePassword}
                             type="password"
                             placeholder="password"
-                            // required
+                            required
                           />
                         </FloatingLabel>
                       </Col>
                     </Row>
 
                     <div className="d-grid gap-2">
-                      {registerEnabledBtn && (
+                      {values.registerEnabledBtn && (
                         <Button variant="success" type="submit">
                           Inscribir
                         </Button>
                       )}
-                      {!registerEnabledBtn && (
+                      {!values.registerEnabledBtn && (
                         <Button variant="success" type="submit" disabled>
                           Inscribir
                         </Button>

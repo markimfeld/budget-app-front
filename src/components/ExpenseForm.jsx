@@ -47,8 +47,7 @@ const ExpenseForm = () => {
 
   console.log(expenseToUpdate);
 
-  const onSubmit = async (data) => {
-    console.log(data);
+  const onSubmit = async ({ name, amount, description }) => {
     if (user !== null) {
       const config = {
         headers: {
@@ -57,9 +56,9 @@ const ExpenseForm = () => {
       };
 
       const newExpense = {
-        name: values.name,
-        amount: values.amount,
-        description: values.description,
+        name,
+        amount,
+        description,
         budget: selectedBudget,
       };
 

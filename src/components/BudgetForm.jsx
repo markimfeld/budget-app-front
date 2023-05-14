@@ -1,7 +1,9 @@
-import { useState } from "react";
 import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
 
 import { useNavigate } from "react-router-dom";
+
+// formik
+import { useFormik } from "formik";
 
 // services
 import budgetService from "../services/budget";
@@ -28,19 +30,9 @@ const BudgetForm = () => {
   const { handleUpdateBudgets, budgetToUpdate, isEditing, handleIsEditing } =
     useBudgetContext();
 
-  const [name, setName] = useState(
-    isEditing && budgetToUpdate.name ? budgetToUpdate.name : ""
-  );
-  const [expectedAmount, setExpectedAmount] = useState(
-    isEditing && budgetToUpdate.expectedAmount
-      ? budgetToUpdate.expectedAmount
-      : ""
-  );
-
   const navigate = useNavigate();
 
-  const handleAddBudget = async (event) => {
-    event.preventDefault();
+  const onSubmit = async ({ name, expectedAmount }) => {
     if (user !== null) {
       const config = {
         headers: {
@@ -48,7 +40,10 @@ const BudgetForm = () => {
         },
       };
 
-      const newBudget = { name, expectedAmount };
+      const newBudget = {
+        name,
+        expectedAmount,
+      };
 
       if (!isEditing) {
         try {
@@ -112,19 +107,21 @@ const BudgetForm = () => {
     }
   };
 
-  const onChangeName = (e) => {
-    setName(e.target.value);
-  };
-
-  const onChangeExpectedAmount = (e) => {
-    setExpectedAmount(e.target.value);
-  };
-
   const onCancelOperation = () => {
     handleIsEditing(false);
     clearMessages();
     navigate("/budgets");
   };
+
+  const { handleSubmit, handleChange, values } = useFormik({
+    initialValues: {
+      name: budgetToUpdate?.name ? budgetToUpdate?.name : "",
+      expectedAmount: budgetToUpdate?.expectedAmount
+        ? budgetToUpdate?.expectedAmount
+        : "",
+    },
+    onSubmit,
+  });
 
   return (
     <Card style={{ border: "none", backgroundColor: "hsl(0, 0%, 97%, 0.5)" }}>
@@ -135,7 +132,7 @@ const BudgetForm = () => {
         </Card.Title>
       </Card.Header>
       <Card.Body className="p-4">
-        <Form onSubmit={handleAddBudget}>
+        <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicName">
             <FloatingLabel
               controlId="floatingName"
@@ -143,8 +140,8 @@ const BudgetForm = () => {
             >
               <Form.Control
                 name="name"
-                value={name}
-                onChange={onChangeName}
+                value={values.name}
+                onChange={handleChange}
                 type="text"
                 placeholder="Comida"
                 required
@@ -159,8 +156,8 @@ const BudgetForm = () => {
             >
               <Form.Control
                 name="expectedAmount"
-                value={expectedAmount}
-                onChange={onChangeExpectedAmount}
+                value={values.expectedAmount}
+                onChange={handleChange}
                 type="number"
                 placeholder="15000"
                 required
