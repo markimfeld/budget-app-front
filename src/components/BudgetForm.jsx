@@ -1,9 +1,10 @@
-import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
-
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // formik
 import { useFormik } from "formik";
+
+// components
+import BudgetFormAdd from "./BudgetFormAdd";
 
 // services
 import budgetService from "../services/budget";
@@ -13,11 +14,14 @@ import { useMessageContext } from "../hooks/useMessageContext";
 import { useBudgetContext } from "../hooks/useBudgetContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
+// labels
 import {
   MISSING_FIELDS_REQUIRED,
   RECORD_CREATED_MESSAGE,
   RECORD_UPDATED_MESSAGE,
 } from "../labels/labels";
+import { useEffect } from "react";
+import BudgetFormEdit from "./BudgetFormEdit";
 
 const BudgetForm = () => {
   const { user, logout } = useAuthContext();
@@ -27,10 +31,22 @@ const BudgetForm = () => {
     handleSetRecordType,
     clearMessages,
   } = useMessageContext();
-  const { handleUpdateBudgets, budgetToUpdate, isEditing, handleIsEditing } =
-    useBudgetContext();
+  const {
+    handleUpdateBudgets,
+    budgetToUpdate,
+    handleIsEditing,
+    handleGetOneBudget,
+  } = useBudgetContext();
 
   const navigate = useNavigate();
+
+  const { budgetId } = useParams();
+
+  useEffect(() => {
+    if (budgetId) {
+      handleGetOneBudget(budgetId);
+    }
+  }, []);
 
   const onSubmit = async ({ name, expectedAmount }) => {
     if (user !== null) {
@@ -45,7 +61,7 @@ const BudgetForm = () => {
         expectedAmount,
       };
 
-      if (!isEditing) {
+      if (!budgetId) {
         try {
           const data = await budgetService.store(newBudget, config);
           handleUpdateBudgets(data.data);
@@ -113,80 +129,22 @@ const BudgetForm = () => {
     navigate("/budgets");
   };
 
-  const { handleSubmit, handleChange, values } = useFormik({
-    initialValues: {
-      name: budgetToUpdate?.name ? budgetToUpdate?.name : "",
-      expectedAmount: budgetToUpdate?.expectedAmount
-        ? budgetToUpdate?.expectedAmount
-        : "",
-    },
-    onSubmit,
-  });
-
   return (
-    <Card style={{ border: "none", backgroundColor: "hsl(0, 0%, 97%, 0.5)" }}>
-      <Card.Header style={{ border: "none" }}>
-        <Card.Title className="text-center fs-3">
-          {!isEditing && "Nuevo presupuesto"}
-          {isEditing && "Modificar presupuesto"}
-        </Card.Title>
-      </Card.Header>
-      <Card.Body className="p-4">
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="formBasicName">
-            <FloatingLabel
-              controlId="floatingName"
-              label="Nombre del presupuesto"
-            >
-              <Form.Control
-                name="name"
-                value={values.name}
-                onChange={handleChange}
-                type="text"
-                placeholder="Comida"
-                required
-              />
-            </FloatingLabel>
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicExpectedAmount">
-            <FloatingLabel
-              controlId="floatingExpectedAmount"
-              label="Monto previsto"
-            >
-              <Form.Control
-                name="expectedAmount"
-                value={values.expectedAmount}
-                onChange={handleChange}
-                type="number"
-                placeholder="15000"
-                required
-              />
-            </FloatingLabel>
-          </Form.Group>
-          <div className="d-grid gap-2">
-            <Stack direction="horizontal" gap={3}>
-              {!isEditing && (
-                <Button className="ms-auto" variant="success" type="submit">
-                  Guardar
-                </Button>
-              )}
-              {isEditing && (
-                <Button className="ms-auto" variant="success" type="submit">
-                  Modificar
-                </Button>
-              )}
-              <Button
-                variant="outline-secondary"
-                onClick={() => onCancelOperation()}
-              >
-                Cancelar
-              </Button>
-            </Stack>
-          </div>
-        </Form>
-      </Card.Body>
-    </Card>
+    <>
+      {budgetToUpdate && budgetId && (
+        <BudgetFormEdit
+          onSubmit={onSubmit}
+          onCancelOperation={onCancelOperation}
+          budgetToUpdate={budgetToUpdate}
+        />
+      )}
+      {!budgetId && (
+        <BudgetFormAdd
+          onSubmit={onSubmit}
+          onCancelOperation={onCancelOperation}
+        />
+      )}
+    </>
   );
 };
 

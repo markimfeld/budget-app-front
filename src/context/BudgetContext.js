@@ -163,6 +163,29 @@ export const BudgetContextProvider = ({ children }) => {
     setIsBudgetCreating(creatingBudget);
   };
 
+  const handleGetOneBudget = async (budgetId) => {
+    if (user !== null) {
+      const config = {
+        headers: {
+          Authorization: `${user.accessToken}`,
+        },
+      };
+      try {
+        const response = await budgetService.getOne(config, budgetId);
+        if (response.status === 200) {
+          handleBudgetToUpdate(response.data);
+        }
+      } catch (error) {
+        if (
+          error.response.data.status === 400 &&
+          error.response.data.message === "INVALID_TOKEN"
+        ) {
+          logout();
+        }
+      }
+    }
+  };
+
   return (
     <BudgetContext.Provider
       value={{
@@ -185,6 +208,7 @@ export const BudgetContextProvider = ({ children }) => {
         budgetToUpdate,
         handleIsBudgetCreating,
         isBudgetCreating,
+        handleGetOneBudget,
       }}
     >
       {children}

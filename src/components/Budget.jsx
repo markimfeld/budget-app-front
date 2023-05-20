@@ -32,7 +32,7 @@ const Budget = ({ budget }) => {
   };
 
   const handleEdit = (budget) => {
-    handleBudgetToUpdate(budget);
+    // handleBudgetToUpdate(budget);
     handleIsEditing(true);
     clearMessages();
 
