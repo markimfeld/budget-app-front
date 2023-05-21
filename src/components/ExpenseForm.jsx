@@ -1,9 +1,10 @@
-import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
+import { useEffect } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
 
-// formik
-import { useFormik } from "formik";
+// components
+import ExpenseFormAdd from "./ExpenseFormAdd";
+import ExpenseFormEdit from "./ExpenseFormEdit";
 
 // services
 import expenseService from "../services/expense";
@@ -21,7 +22,6 @@ import {
   RECORD_CREATED_MESSAGE,
   RECORD_UPDATED_MESSAGE,
 } from "../labels/labels";
-import { useEffect } from "react";
 
 const ExpenseForm = () => {
   const {
@@ -30,22 +30,23 @@ const ExpenseForm = () => {
     selectedBudget,
     handleUpdateExpenses,
     handleUpdateSelectedBudget,
-    isExpenseEditing,
     handleIsExpenseEditing,
-    expenses,
     handleGetOneExpense,
     expenseToUpdate,
+    handleSelectedBudget,
   } = useExpenseContext();
 
   const { budgetId, expenseId } = useParams();
 
-  let expense = expenses.filter((expense) => expense._id === expenseId)[0];
-
   useEffect(() => {
-    handleGetOneExpense(expenseId);
-  }, [expenseId]);
+    if (expenseId) {
+      handleGetOneExpense(expenseId);
+      handleSelectedBudget(budgetId);
+    }
+    // eslint-disable-next-line
+  }, []);
 
-  console.log(expenseToUpdate);
+  // TODO: REVISAR EL SELECTEDBUDGET PORQUE NO ANDA CUANDO ACUTALIZAS, QUEDA EN NULL
 
   const onSubmit = async ({ name, amount, description }) => {
     if (user !== null) {
@@ -59,10 +60,12 @@ const ExpenseForm = () => {
         name,
         amount,
         description,
-        budget: selectedBudget,
+        budget: selectedBudget._id,
       };
 
-      if (!isExpenseEditing) {
+      console.log(newExpense);
+
+      if (!expenseId) {
         let updatedBudget = { ...selectedBudget };
 
         updatedBudget.spentAmount = (
@@ -128,7 +131,7 @@ const ExpenseForm = () => {
             config
           );
 
-          await budgetService.update(selectedBudget._id, updatedBudget, config);
+          await budgetService.update(budgetId, updatedBudget, config);
 
           handleUpdateExpenses(data);
           handleSetMessage(RECORD_UPDATED_MESSAGE);
@@ -137,7 +140,7 @@ const ExpenseForm = () => {
           handleUpdateSelectedBudget(selectedBudget._id);
           getBudgets();
 
-          navigate(`/budgets/${budgetId}/expenses`);
+          navigate(`/budgets/${selectedBudget._id}/expenses`);
         } catch (error) {
           if (
             error.response.data.status === 400 &&
@@ -177,84 +180,22 @@ const ExpenseForm = () => {
     navigate(`/budgets/${budgetId}/expenses`);
   };
 
-  const { handleSubmit, handleChange, values } = useFormik({
-    initialValues: {
-      name: expense?.name || expenseToUpdate?.name,
-      description: expense?.description || expenseToUpdate?.description,
-      amount: expense?.amount || expenseToUpdate?.amount,
-    },
-    onSubmit,
-  });
-
   return (
-    <Card style={{ border: "none", backgroundColor: "hsl(0, 0%, 97%, 0.5)" }}>
-      <Card.Header style={{ border: "none" }}>
-        <Card.Title className="text-center fs-3">
-          {!isExpenseEditing && "Nuevo gasto"}
-          {isExpenseEditing && "Modificar gasto"}
-        </Card.Title>
-      </Card.Header>
-      <Card.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="formBasicName">
-            <FloatingLabel controlId="floatingName" label="Nombre del gasto">
-              <Form.Control
-                name="name"
-                value={values.name}
-                onChange={handleChange}
-                type="text"
-                placeholder="Horeb"
-                required
-              />
-            </FloatingLabel>
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicDescripcion">
-            <FloatingLabel controlId="floatingDescription" label="Descripción">
-              <Form.Control
-                name="description"
-                value={values.description}
-                onChange={handleChange}
-                type="text"
-                placeholder="Alfajor"
-              />
-            </FloatingLabel>
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicMonto">
-            <FloatingLabel controlId="floatingAmount" label="Monto">
-              <Form.Control
-                name="amount"
-                value={values.amount}
-                onChange={handleChange}
-                type="number"
-                placeholder="15000"
-                required
-              />
-            </FloatingLabel>
-          </Form.Group>
-
-          <Stack direction="horizontal" gap={3}>
-            {!isExpenseEditing && (
-              <Button className="ms-auto" variant="success" type="submit">
-                Guardar
-              </Button>
-            )}
-            {isExpenseEditing && (
-              <Button className="ms-auto" variant="success" type="submit">
-                Modificar
-              </Button>
-            )}
-            <Button
-              variant="outline-secondary"
-              onClick={() => onCancelOperation(true)}
-            >
-              Cancelar
-            </Button>
-          </Stack>
-        </Form>
-      </Card.Body>
-    </Card>
+    <>
+      {!expenseId && (
+        <ExpenseFormAdd
+          onSubmit={onSubmit}
+          onCancelOperation={onCancelOperation}
+        />
+      )}
+      {expenseId && expenseToUpdate && (
+        <ExpenseFormEdit
+          onSubmit={onSubmit}
+          onCancelOperation={onCancelOperation}
+          expenseToUpdate={expenseToUpdate}
+        />
+      )}
+    </>
   );
 };
 
