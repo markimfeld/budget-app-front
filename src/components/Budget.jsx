@@ -16,12 +16,8 @@ import { useMessageContext } from "../hooks/useMessageContext";
 
 const Budget = ({ budget }) => {
   const { clearMessages } = useMessageContext();
-  const {
-    handleDeleteBudget,
-    handleBudgetToUpdate,
-    handleIsEditing,
-    handleIsBudgetCreating,
-  } = useBudgetContext();
+  const { handleDeleteBudget, handleIsEditing, handleIsBudgetCreating } =
+    useBudgetContext();
 
   const navigate = useNavigate();
 
@@ -32,10 +28,8 @@ const Budget = ({ budget }) => {
   };
 
   const handleEdit = (budget) => {
-    // handleBudgetToUpdate(budget);
     handleIsEditing(true);
     clearMessages();
-
     navigate(`/budgets/${budget._id}/edit`);
   };
 

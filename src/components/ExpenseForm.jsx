@@ -34,6 +34,7 @@ const ExpenseForm = () => {
     handleGetOneExpense,
     expenseToUpdate,
     handleSelectedBudget,
+    handleExpenseToUpdate,
   } = useExpenseContext();
 
   const { budgetId, expenseId } = useParams();
@@ -44,9 +45,7 @@ const ExpenseForm = () => {
       handleSelectedBudget(budgetId);
     }
     // eslint-disable-next-line
-  }, []);
-
-  // TODO: REVISAR EL SELECTEDBUDGET PORQUE NO ANDA CUANDO ACUTALIZAS, QUEDA EN NULL
+  }, [expenseId]);
 
   const onSubmit = async ({ name, amount, description }) => {
     if (user !== null) {
@@ -88,7 +87,7 @@ const ExpenseForm = () => {
           handleSetRecordType("expense");
           handleUpdateSelectedBudget(selectedBudget._id);
           getBudgets();
-
+          handleExpenseToUpdate(null);
           navigate(`/budgets/${budgetId}/expenses`);
         } catch (error) {
           if (
@@ -138,6 +137,7 @@ const ExpenseForm = () => {
           handleSetType("success");
           handleSetRecordType("expense");
           handleUpdateSelectedBudget(selectedBudget._id);
+          handleExpenseToUpdate(null);
           getBudgets();
 
           navigate(`/budgets/${selectedBudget._id}/expenses`);
@@ -177,6 +177,7 @@ const ExpenseForm = () => {
     handleShowExpenseList(showList);
     handleIsExpenseEditing(false);
     clearMessages();
+    handleExpenseToUpdate(null);
     navigate(`/budgets/${budgetId}/expenses`);
   };
 

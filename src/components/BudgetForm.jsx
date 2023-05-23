@@ -1,8 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
 
-// formik
-import { useFormik } from "formik";
-
 // components
 import BudgetFormAdd from "./BudgetFormAdd";
 
@@ -36,6 +33,7 @@ const BudgetForm = () => {
     budgetToUpdate,
     handleIsEditing,
     handleGetOneBudget,
+    handleBudgetToUpdate,
   } = useBudgetContext();
 
   const navigate = useNavigate();
@@ -46,7 +44,8 @@ const BudgetForm = () => {
     if (budgetId) {
       handleGetOneBudget(budgetId);
     }
-  }, []);
+    // eslint-disable-next-line
+  }, [budgetId]);
 
   const onSubmit = async ({ name, expectedAmount }) => {
     if (user !== null) {
@@ -68,6 +67,7 @@ const BudgetForm = () => {
           handleSetMessage(RECORD_CREATED_MESSAGE);
           handleSetType("success");
           handleSetRecordType("budget");
+          handleBudgetToUpdate(null);
           navigate("/budgets");
         } catch (error) {
           if (
@@ -103,6 +103,7 @@ const BudgetForm = () => {
           handleSetMessage(RECORD_UPDATED_MESSAGE);
           handleSetType("success");
           handleSetRecordType("budget");
+          handleBudgetToUpdate(null);
           navigate("/budgets");
         } catch (error) {
           if (
@@ -126,6 +127,7 @@ const BudgetForm = () => {
   const onCancelOperation = () => {
     handleIsEditing(false);
     clearMessages();
+    handleBudgetToUpdate(null);
     navigate("/budgets");
   };
 
