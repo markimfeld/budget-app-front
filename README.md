@@ -1,3 +1,3 @@
 ## Todos:
 
-- [ ] Agregar router
+- [ ] Clean up all contexts and components
