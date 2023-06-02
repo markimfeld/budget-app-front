@@ -27,9 +27,6 @@ export const UserContextProvider = ({ children }) => {
     JSON.parse(window.localStorage.getItem("user"))
   );
 
-  const [showRegisterForm, setShowRegisterForm] = useState(false);
-  const [showLoginForm, setshowLoginForm] = useState(true);
-
   const [isLoading, setIsLoading] = useState(true);
 
   const login = async (email, password) => {
@@ -39,7 +36,6 @@ export const UserContextProvider = ({ children }) => {
       if (response.status === 200) {
         setUser(response.user);
         window.localStorage.setItem("user", JSON.stringify(response.user));
-        handleShowLoginForm(false);
         setIsLoading(false);
 
         return response;
@@ -66,7 +62,6 @@ export const UserContextProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     window.localStorage.clear();
-    handleShowLoginForm(true);
   };
 
   const loadUserFromStorage = () => {
@@ -109,22 +104,6 @@ export const UserContextProvider = ({ children }) => {
     }
   };
 
-  const handleShowLoginForm = (showLogin) => {
-    if (showLogin) {
-      setshowLoginForm(true);
-    } else {
-      setshowLoginForm(false);
-    }
-  };
-
-  const handleShowRegisterForm = (showRegister) => {
-    if (showRegister) {
-      setShowRegisterForm(true);
-    } else {
-      setShowRegisterForm(false);
-    }
-  };
-
   return (
     <UserContext.Provider
       value={{
@@ -133,10 +112,6 @@ export const UserContextProvider = ({ children }) => {
         logout,
         loadUserFromStorage,
         register,
-        showRegisterForm,
-        showLoginForm,
-        handleShowLoginForm,
-        handleShowRegisterForm,
         isLoading,
       }}
     >

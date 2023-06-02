@@ -26,7 +26,6 @@ import {
 const ExpenseForm = () => {
   const {
     handleShowExpenseList,
-    handleShowExpenseForm,
     selectedBudget,
     handleUpdateExpenses,
     handleUpdateSelectedBudget,
@@ -173,7 +172,6 @@ const ExpenseForm = () => {
   const navigate = useNavigate();
 
   const onCancelOperation = (showList) => {
-    handleShowExpenseForm(!showList);
     handleShowExpenseList(showList);
     handleIsExpenseEditing(false);
     clearMessages();

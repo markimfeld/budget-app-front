@@ -29,20 +29,14 @@ const Dashboard = () => {
     getCurrentMonthBudgets,
     getNextMonthBudgets,
     getPreviuosMonthBudgets,
-    handleShowBudgetList,
     handleIsEditing,
     isBudgetCreating,
     isLoading,
   } = useBudgetContext();
   const { clearMessages } = useMessageContext();
 
-  const {
-    selectedBudget,
-    handleShowExpenseList,
-    handleShowExpenseForm,
-    handleSelectedBudget,
-    handleIsExpenseEditing,
-  } = useExpenseContext();
+  const { selectedBudget, handleSelectedBudget, handleIsExpenseEditing } =
+    useExpenseContext();
 
   const navigate = useNavigate();
 
@@ -64,9 +58,6 @@ const Dashboard = () => {
       handleIsEditing(false);
       navigate("/budgets/add");
     } else {
-      handleShowExpenseForm(showForm);
-      handleShowExpenseList(!showForm);
-      handleShowBudgetList(!showForm);
       handleSelectedBudget(selectedBudget);
       handleIsExpenseEditing(false);
       clearMessages();

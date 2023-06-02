@@ -21,8 +21,6 @@ export const BudgetContextProvider = ({ children }) => {
     month: currentMonth,
     year: currentYear,
   });
-  const [showBudgetForm, setShowBudgetForm] = useState(false);
-  const [showBudgetList, setShowBudgetList] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [budgetToUpdate, setBudgetToUpdate] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -99,22 +97,6 @@ export const BudgetContextProvider = ({ children }) => {
     setCurrentYear(prevYear);
 
     setFilters({ month: prevMonth, year: prevYear });
-  };
-
-  const handleShowBudgetForm = (showForm) => {
-    if (showForm) {
-      setShowBudgetForm(true);
-    } else {
-      setShowBudgetForm(false);
-    }
-  };
-
-  const handleShowBudgetList = (showList) => {
-    if (showList) {
-      setShowBudgetList(true);
-    } else {
-      setShowBudgetList(false);
-    }
   };
 
   const handleUpdateBudgets = (newBudget) => {
@@ -194,11 +176,7 @@ export const BudgetContextProvider = ({ children }) => {
         getCurrentMonthBudgets,
         getNextMonthBudgets,
         getPreviuosMonthBudgets,
-        handleShowBudgetForm,
-        showBudgetForm,
-        showBudgetList,
         handleUpdateBudgets,
-        handleShowBudgetList,
         getBudgets,
         handleDeleteBudget,
         isLoading,
