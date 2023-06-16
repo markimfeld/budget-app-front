@@ -37,7 +37,6 @@ const Login = () => {
 
   const onSubmit = async ({ email, password }) => {
     const response = await login(email, password);
-
     if (response && response.status === 200) {
       clearMessages();
       navigate(from, { replace: true });

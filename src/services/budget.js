@@ -12,7 +12,8 @@ const budgetService = {
       finalUrl = baseUrl;
     }
 
-    const { data } = await axios.get(finalUrl, config);
+    // const { data } = await axios.get(finalUrl, config);
+    const { data } = await axios.get(finalUrl, { withCredentials: true });
     return data;
   },
   getOne: async (config, id) => {
