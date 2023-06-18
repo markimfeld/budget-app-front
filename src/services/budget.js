@@ -17,23 +17,35 @@ const budgetService = {
     return data;
   },
   getOne: async (config, id) => {
-    const { data } = await axios.get(`${baseUrl}/${id}`, config);
+    // const { data } = await axios.get(`${baseUrl}/${id}`, config);
+    const { data } = await axios.get(`${baseUrl}/${id}`, {
+      withCredentials: true,
+    });
     return data;
   },
   store: async (newBudget, config) => {
-    const { data } = await axios.post(baseUrl, newBudget, config);
+    // const { data } = await axios.post(baseUrl, newBudget, config);
+    const { data } = await axios.post(baseUrl, newBudget, {
+      withCredentials: true,
+    });
     return data;
   },
   delete: async (id, config) => {
-    const { data } = await axios.delete(`${baseUrl}/${id}`, config);
+    // const { data } = await axios.delete(`${baseUrl}/${id}`, config);
+    const { data } = await axios.delete(`${baseUrl}/${id}`, {
+      withCredentials: true,
+    });
     return data;
   },
   update: async (id, budgetToUpdate, config) => {
-    const { data } = await axios.put(
-      `${baseUrl}/${id}`,
-      budgetToUpdate,
-      config
-    );
+    // const { data } = await axios.put(
+    //   `${baseUrl}/${id}`,
+    //   budgetToUpdate,
+    //   config
+    // );
+    const { data } = await axios.put(`${baseUrl}/${id}`, budgetToUpdate, {
+      withCredentials: true,
+    });
     return data;
   },
 };

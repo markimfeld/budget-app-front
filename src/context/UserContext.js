@@ -62,6 +62,7 @@ export const UserContextProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     window.localStorage.clear();
+    document.cookie = "jwt=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
   };
 
   const loadUserFromStorage = () => {

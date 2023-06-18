@@ -39,7 +39,7 @@ export const BudgetContextProvider = ({ children }) => {
       try {
         const response = await budgetService.getAll(config, {
           ...filters,
-          createdBy: user.id,
+          // createdBy: user.id,
         });
         setBudgets(response.data);
         setIsLoading(false);
