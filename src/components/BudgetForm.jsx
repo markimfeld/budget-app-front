@@ -49,12 +49,6 @@ const BudgetForm = () => {
 
   const onSubmit = async ({ name, expectedAmount }) => {
     if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
-
       const newBudget = {
         name,
         expectedAmount,
@@ -62,7 +56,7 @@ const BudgetForm = () => {
 
       if (!budgetId) {
         try {
-          const data = await budgetService.store(newBudget, config);
+          const data = await budgetService.store(newBudget);
           handleUpdateBudgets(data.data);
           handleSetMessage(RECORD_CREATED_MESSAGE);
           handleSetType("success");
@@ -95,8 +89,7 @@ const BudgetForm = () => {
         try {
           const data = await budgetService.update(
             budgetToUpdate._id,
-            budgetUpdated,
-            config
+            budgetUpdated
           );
 
           handleUpdateBudgets(data.data);

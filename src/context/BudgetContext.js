@@ -31,15 +31,9 @@ export const BudgetContextProvider = ({ children }) => {
 
   const getBudgets = async () => {
     if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
       try {
-        const response = await budgetService.getAll(config, {
+        const response = await budgetService.getAll({
           ...filters,
-          // createdBy: user.id,
         });
         setBudgets(response.data);
         setIsLoading(false);
@@ -119,13 +113,8 @@ export const BudgetContextProvider = ({ children }) => {
 
   const handleDeleteBudget = async (budget) => {
     if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
       try {
-        await budgetService.delete(budget._id, config);
+        await budgetService.delete(budget._id);
         setBudgets(budgets.filter((b) => b._id !== budget._id));
         handleSetMessage(RECORD_DELETED_MESSAGE);
         handleSetType("success");
@@ -147,13 +136,8 @@ export const BudgetContextProvider = ({ children }) => {
 
   const handleGetOneBudget = async (budgetId) => {
     if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
       try {
-        const response = await budgetService.getOne(config, budgetId);
+        const response = await budgetService.getOne(budgetId);
         if (response.status === 200) {
           handleBudgetToUpdate(response.data);
         }

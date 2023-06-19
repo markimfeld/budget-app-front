@@ -31,13 +31,8 @@ export const ExpenseContextProvider = ({ children }) => {
 
   const getExpenses = async (budgetId) => {
     if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
       try {
-        const { data } = await expenseService.getAll(config);
+        const { data } = await expenseService.getAll();
         const expensesByBudgetId = data.filter(
           (expense) => expense.budget._id === budgetId
         );
@@ -64,13 +59,8 @@ export const ExpenseContextProvider = ({ children }) => {
 
   const handleSelectedBudget = async (budgetId) => {
     if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
       try {
-        const response = await budgetService.getOne(config, budgetId);
+        const response = await budgetService.getOne(budgetId);
         setSelectedBudget(response.data);
       } catch (error) {
         if (
@@ -100,13 +90,8 @@ export const ExpenseContextProvider = ({ children }) => {
 
   const handleUpdateSelectedBudget = async (budgetId) => {
     if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
       try {
-        const response = await budgetService.getOne(config, budgetId);
+        const response = await budgetService.getOne(budgetId);
         setSelectedBudget(response.data);
       } catch (error) {
         if (
@@ -129,13 +114,8 @@ export const ExpenseContextProvider = ({ children }) => {
 
   const handleGetOneExpense = async (expenseId) => {
     if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
       try {
-        const response = await expenseService.getOne(config, expenseId);
+        const response = await expenseService.getOne(expenseId);
         if (response.status === 200) {
           setExpenseToUpdate(response.data);
           return response.data;
@@ -153,13 +133,8 @@ export const ExpenseContextProvider = ({ children }) => {
 
   const handleDeleteExpense = async (expense) => {
     if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
       try {
-        await expenseService.del(expense._id, config);
+        await expenseService.del(expense._id);
 
         let updatedBudget = { ...selectedBudget };
 
@@ -172,7 +147,7 @@ export const ExpenseContextProvider = ({ children }) => {
           Number.parseFloat(updatedBudget.spentAmount)
         ).toFixed(2);
 
-        await budgetService.update(selectedBudget._id, updatedBudget, config);
+        await budgetService.update(selectedBudget._id, updatedBudget);
 
         setExpenses(expenses.filter((e) => e._id !== expense._id));
 

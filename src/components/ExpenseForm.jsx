@@ -48,12 +48,6 @@ const ExpenseForm = () => {
 
   const onSubmit = async ({ name, amount, description }) => {
     if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
-
       const newExpense = {
         name,
         amount,
@@ -76,9 +70,9 @@ const ExpenseForm = () => {
         ).toFixed(2);
 
         try {
-          const { data } = await expenseService.store(newExpense, config);
+          const { data } = await expenseService.store(newExpense);
 
-          await budgetService.update(selectedBudget._id, updatedBudget, config);
+          await budgetService.update(selectedBudget._id, updatedBudget);
 
           handleUpdateExpenses(data);
           handleSetMessage(RECORD_CREATED_MESSAGE);
@@ -125,11 +119,10 @@ const ExpenseForm = () => {
         try {
           const { data } = await expenseService.edit(
             expenseToUpdate._id,
-            newExpense,
-            config
+            newExpense
           );
 
-          await budgetService.update(budgetId, updatedBudget, config);
+          await budgetService.update(budgetId, updatedBudget);
 
           handleUpdateExpenses(data);
           handleSetMessage(RECORD_UPDATED_MESSAGE);
