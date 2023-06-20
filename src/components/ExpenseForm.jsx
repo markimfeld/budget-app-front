@@ -165,7 +165,6 @@ const ExpenseForm = () => {
   const navigate = useNavigate();
 
   const onCancelOperation = (showList) => {
-    handleShowExpenseList(showList);
     handleIsExpenseEditing(false);
     clearMessages();
     handleExpenseToUpdate(null);

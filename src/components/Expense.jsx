@@ -17,8 +17,7 @@ import { useExpenseContext } from "../hooks/useExpenseContext";
 import { useMessageContext } from "../hooks/useMessageContext";
 
 const Expense = ({ expense }) => {
-  const { handleDeleteExpense, handleIsExpenseEditing, handleExpenseToUpdate } =
-    useExpenseContext();
+  const { handleDeleteExpense, handleIsExpenseEditing } = useExpenseContext();
 
   const { clearMessages } = useMessageContext();
   const navigate = useNavigate();

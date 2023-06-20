@@ -1,5 +1,8 @@
 import { Card, Button, Stack, Row, Col, Placeholder } from "react-bootstrap";
 
+import PieChart from "./PieChart";
+import BarChart from "./BarChart";
+
 import { useNavigate } from "react-router-dom";
 
 // custom hooks
@@ -250,6 +253,35 @@ const Dashboard = () => {
           )}
         </Col>
       </Row>
+      {budgets.length > 0 && (
+        <Row>
+          {/* <Col md={4}>
+            <Card
+              className="mb-3"
+              border="light"
+              style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+            >
+              <Card.Body>
+                <PieChart />
+              </Card.Body>
+            </Card>
+          </Col> */}
+          <Col>
+            <Card
+              className="mb-3"
+              border="light"
+              style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+            >
+              <Card.Body
+                style={{ height: "300px" }}
+                className="d-flex justify-content-center"
+              >
+                <BarChart />
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      )}
     </>
   );
 };

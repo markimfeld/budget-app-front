@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 // services
 import expenseService from "../services/expense";
@@ -16,6 +16,7 @@ export const ExpenseContext = createContext();
 
 export const ExpenseContextProvider = ({ children }) => {
   const [expenses, setExpenses] = useState([]);
+  const [allExpenses, setAllExpenses] = useState([]);
   const [selectedBudget, setSelectedBudget] = useState(null);
   const [messageExpense, setMessageExpense] = useState(null);
   const [expenseToUpdate, setExpenseToUpdate] = useState(null);
@@ -48,6 +49,29 @@ export const ExpenseContextProvider = ({ children }) => {
       }
     }
   };
+
+  const getAllExpenses = async () => {
+    if (user !== null) {
+      try {
+        const { data } = await expenseService.getAll();
+
+        setAllExpenses(data);
+        handleSetIsLoading(false);
+      } catch (error) {
+        if (
+          error.response.data.status === 400 &&
+          error.response.data.message === "INVALID_TOKEN"
+        ) {
+          logout();
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    getAllExpenses();
+    // eslint-disable-next-line
+  }, [user]);
 
   const handleSetIsLoading = (loading) => {
     if (loading) {
@@ -187,6 +211,8 @@ export const ExpenseContextProvider = ({ children }) => {
         handleSetIsLoading,
         isLoading,
         handleGetOneExpense,
+        getAllExpenses,
+        allExpenses,
       }}
     >
       {children}
