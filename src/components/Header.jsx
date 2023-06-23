@@ -1,6 +1,6 @@
 import { Container, Navbar, Nav, NavDropdown, Image } from "react-bootstrap";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 // custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -21,6 +21,11 @@ const Header = () => {
     navigate("/budgets/add");
   };
 
+  const handleShowBudgetList = () => {
+    clearMessages();
+    navigate("/budgets");
+  };
+
   const handleLogout = () => {
     logout();
   };
@@ -37,7 +42,9 @@ const Header = () => {
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
         <Navbar.Brand className="fs-4">
-          <i className="fa-solid fa-coins"></i> Finance Pro
+          <Link to="/" style={{ color: "white", textDecoration: "none" }}>
+            <i className="fa-solid fa-coins"></i> Finance Pro
+          </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
@@ -47,6 +54,12 @@ const Header = () => {
               id="collasible-nav-dropdown"
               align={"end"}
             >
+              <NavDropdown.Item onClick={() => navigate("/")}>
+                Inicio
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleShowBudgetList()}>
+                Presupuestos
+              </NavDropdown.Item>
               <NavDropdown.Item
                 onClick={() => handleShowBudgetFormOrList(true)}
               >

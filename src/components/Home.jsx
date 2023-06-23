@@ -10,6 +10,7 @@ import Header from "./Header";
 import BudgetForm from "./BudgetForm";
 import ExpenseList from "./ExpensesList";
 import ExpenseForm from "./ExpenseForm";
+import Expenses from "./Expenses";
 
 // custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -27,7 +28,16 @@ const Home = () => {
       <Container>
         <Row className="mt-4">
           <Col>
-            <Dashboard />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <Dashboard /> <Expenses />
+                  </>
+                }
+              />
+            </Routes>
             <Routes>
               <Route path="/budgets" element={<Budgets />} />
               <Route path="/budgets/add" element={<BudgetForm />} />

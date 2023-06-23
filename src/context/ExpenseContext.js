@@ -55,8 +55,9 @@ export const ExpenseContextProvider = ({ children }) => {
       try {
         const { data } = await expenseService.getAll();
 
-        setAllExpenses(data);
-        handleSetIsLoading(false);
+        return data;
+        // setAllExpenses(data);
+        // handleSetIsLoading(false);
       } catch (error) {
         if (
           error.response.data.status === 400 &&
@@ -68,10 +69,10 @@ export const ExpenseContextProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    getAllExpenses();
-    // eslint-disable-next-line
-  }, [user]);
+  // useEffect(() => {
+  //   getAllExpenses();
+  //   // eslint-disable-next-line
+  // }, [user]);
 
   const handleSetIsLoading = (loading) => {
     if (loading) {

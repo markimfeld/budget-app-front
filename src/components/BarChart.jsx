@@ -10,7 +10,6 @@ import {
 import { Bar } from "react-chartjs-2";
 
 // custom hooks
-import { useBudgetContext } from "../hooks/useBudgetContext";
 import { useExpenseContext } from "../hooks/useExpenseContext";
 
 ChartJS.register(
@@ -109,8 +108,6 @@ const BarChart = () => {
     })
     .reduce((acc, currentValue) => acc + currentValue, 0);
 
-  console.log(spentlastSixDay);
-
   const options = {
     responsive: true,
     plugins: {
@@ -119,19 +116,19 @@ const BarChart = () => {
       },
       title: {
         display: true,
-        text: "Últimos 7 días",
+        text: "Gastos - Últimos 7 días",
       },
     },
   };
 
   const labels = [
-    days[lastSixDay.getDay()],
-    days[lastFiveDay.getDay()],
-    days[lastFourDay.getDay()],
-    days[lastThreeDay.getDay()],
-    days[lastTwoDay.getDay()],
-    days[yesterday.getDay()],
-    days[today.getDay()],
+    `${days[lastSixDay.getDay()]} ${lastSixDay.getDate()}`,
+    `${days[lastFiveDay.getDay()]} ${lastFiveDay.getDate()}`,
+    `${days[lastFourDay.getDay()]} ${lastFourDay.getDate()}`,
+    `${days[lastThreeDay.getDay()]} ${lastThreeDay.getDate()}`,
+    `${days[lastTwoDay.getDay()]} ${lastTwoDay.getDate()}`,
+    `${days[yesterday.getDay()]} ${yesterday.getDate()}`,
+    `${days[today.getDay()]} ${today.getDate()}`,
   ];
 
   const data = {

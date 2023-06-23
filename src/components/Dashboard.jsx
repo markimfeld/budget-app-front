@@ -81,7 +81,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <Row>
+      {/* <Row>
         <Col>
           {!isLoading && (
             <Card
@@ -158,18 +158,21 @@ const Dashboard = () => {
             </Card>
           )}
         </Col>
-      </Row>
+      </Row> */}
       <Row>
         <Col md={4}>
           {!isLoading && (
             <Card
               className="mb-3"
-              border="light"
-              style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+              // style={{ backgroundColor: "rgba(255, 159, 64, 0.2)" }}
+              style={{
+                backgroundColor: "hsl(10, 79%, 65%)",
+                borderColor: "hsl(10, 79%, 65%)",
+              }}
             >
               <Card.Body>
-                <p className="m-0 mb-1">Presupuestado</p>
-                <h3 className="ms-auto">${expectedTotals}</h3>
+                <p className="m-0 mb-1 text-white">Presupuestado este mes</p>
+                <h3 className="ms-auto text-white">${expectedTotals}</h3>
               </Card.Body>
             </Card>
           )}
@@ -194,12 +197,14 @@ const Dashboard = () => {
           {!isLoading && (
             <Card
               className="mb-3"
-              border="light"
-              style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+              style={{
+                backgroundColor: "hsl(10, 79%, 65%)",
+                borderColor: "hsl(10, 79%, 65%)",
+              }}
             >
               <Card.Body>
-                <p className="m-0 mb-1">Gastado</p>
-                <h3 className="ms-auto">${spentTotals}</h3>
+                <p className="m-0 mb-1 text-white">Total este mes</p>
+                <h3 className="ms-auto text-white">${spentTotals}</h3>
               </Card.Body>
             </Card>
           )}
@@ -224,12 +229,14 @@ const Dashboard = () => {
           {!isLoading && (
             <Card
               className="mb-3"
-              border="light"
-              style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+              style={{
+                backgroundColor: "hsl(10, 79%, 65%)",
+                borderColor: "hsl(10, 79%, 65%)",
+              }}
             >
               <Card.Body>
-                <p className="m-0 mb-1">Balance</p>
-                <h3 className="ms-auto">
+                <p className="m-0 mb-1 text-white">Mi balance</p>
+                <h3 className="ms-auto text-white">
                   ${(expectedTotals - spentTotals).toFixed(2)}
                 </h3>
               </Card.Body>
@@ -255,26 +262,29 @@ const Dashboard = () => {
       </Row>
       {budgets.length > 0 && (
         <Row>
-          {/* <Col md={4}>
+          <Col md={6}>
             <Card
-              className="mb-3"
-              border="light"
-              style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
-            >
-              <Card.Body>
-                <PieChart />
-              </Card.Body>
-            </Card>
-          </Col> */}
-          <Col>
-            <Card
-              className="mb-3"
+              className="mb-3 mb-md-1"
               border="light"
               style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
             >
               <Card.Body
                 style={{ height: "300px" }}
-                className="d-flex justify-content-center"
+                className="d-flex justify-content-center align-items-center"
+              >
+                <PieChart />
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={6}>
+            <Card
+              className="mb-1"
+              border="light"
+              style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+            >
+              <Card.Body
+                style={{ height: "300px" }}
+                className="d-flex justify-content-center align-items-center"
               >
                 <BarChart />
               </Card.Body>

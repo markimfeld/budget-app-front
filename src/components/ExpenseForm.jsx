@@ -25,7 +25,7 @@ import {
 
 const ExpenseForm = () => {
   const {
-    handleShowExpenseList,
+    getAllExpenses,
     selectedBudget,
     handleUpdateExpenses,
     handleUpdateSelectedBudget,
@@ -80,6 +80,7 @@ const ExpenseForm = () => {
           handleSetRecordType("expense");
           handleUpdateSelectedBudget(selectedBudget._id);
           getBudgets();
+          getAllExpenses();
           handleExpenseToUpdate(null);
           navigate(`/budgets/${budgetId}/expenses`);
         } catch (error) {
@@ -131,6 +132,7 @@ const ExpenseForm = () => {
           handleUpdateSelectedBudget(selectedBudget._id);
           handleExpenseToUpdate(null);
           getBudgets();
+          getAllExpenses();
 
           navigate(`/budgets/${selectedBudget._id}/expenses`);
         } catch (error) {
