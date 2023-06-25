@@ -37,6 +37,8 @@ export const BudgetContextProvider = ({ children }) => {
         });
         setBudgets(response.data);
         setIsLoading(false);
+
+        return response.data;
       } catch (err) {
         if (
           err.response.data.status === 400 &&
@@ -48,10 +50,10 @@ export const BudgetContextProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    getBudgets();
-    // eslint-disable-next-line
-  }, [user, filters]);
+  // useEffect(() => {
+  //   getBudgets();
+  //   // eslint-disable-next-line
+  // }, [user, filters]);
 
   const getCurrentMonthBudgets = () => {
     const currentMonth = new Date().getMonth() + 1;
@@ -115,7 +117,7 @@ export const BudgetContextProvider = ({ children }) => {
     if (user !== null) {
       try {
         await budgetService.delete(budget._id);
-        setBudgets(budgets.filter((b) => b._id !== budget._id));
+        // setBudgets(budgets.filter((b) => b._id !== budget._id));
         handleSetMessage(RECORD_DELETED_MESSAGE);
         handleSetType("success");
         handleSetRecordType("budget");

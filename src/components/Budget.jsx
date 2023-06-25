@@ -33,6 +33,11 @@ const Budget = ({ budget }) => {
     navigate(`/budgets/${budget._id}/edit`);
   };
 
+  const handleDelete = (budget) => {
+    handleDeleteBudget(budget);
+    handleClose();
+  };
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -90,7 +95,7 @@ const Budget = ({ budget }) => {
           <Button variant="secondary" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button variant="danger" onClick={() => handleDeleteBudget(budget)}>
+          <Button variant="danger" onClick={() => handleDelete(budget)}>
             Sí, estoy seguro
           </Button>
         </Modal.Footer>

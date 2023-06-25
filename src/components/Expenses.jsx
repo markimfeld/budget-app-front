@@ -12,8 +12,10 @@ const Expenses = () => {
   const { getAllExpenses } = useExpenseContext();
 
   // Queries
-  const { data } = useQuery("allExpenses", getAllExpenses);
-  console.log(data);
+  const { data } = useQuery({
+    queryKey: ["allExpenses"],
+    queryFn: getAllExpenses,
+  });
 
   const expensesList = data?.map((expense, i) => {
     if (i === data.length - 1) {

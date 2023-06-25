@@ -55,8 +55,8 @@ export const ExpenseContextProvider = ({ children }) => {
       try {
         const { data } = await expenseService.getAll();
 
+        setAllExpenses(data);
         return data;
-        // setAllExpenses(data);
         // handleSetIsLoading(false);
       } catch (error) {
         if (

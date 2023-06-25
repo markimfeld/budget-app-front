@@ -57,7 +57,7 @@ const BudgetForm = () => {
       if (!budgetId) {
         try {
           const data = await budgetService.store(newBudget);
-          handleUpdateBudgets(data.data);
+          // handleUpdateBudgets(data.data);
           handleSetMessage(RECORD_CREATED_MESSAGE);
           handleSetType("success");
           handleSetRecordType("budget");

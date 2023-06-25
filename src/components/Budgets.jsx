@@ -14,14 +14,21 @@ import Budget from "./Budget";
 // custom hooks
 import { useMessageContext } from "../hooks/useMessageContext";
 import { useBudgetContext } from "../hooks/useBudgetContext";
+import { useQuery } from "react-query";
 
 const Budgets = () => {
   const { clearMessages } = useMessageContext();
-  const { budgets, isLoading, handleIsEditing } = useBudgetContext();
+  const { handleIsEditing, getBudgets } = useBudgetContext();
+
+  const { data, isLoading } = useQuery({
+    queryKey: "budgets",
+    queryFn: getBudgets,
+  });
+  console.log(data);
 
   const navigate = useNavigate();
 
-  const budgetList = budgets.map((budget) => {
+  const budgetList = data?.map((budget) => {
     return <Budget key={budget._id} budget={budget} />;
   });
 
@@ -78,8 +85,8 @@ const Budgets = () => {
         )}
       </div>
       <div>
-        {budgets.length > 0 && !isLoading && budgetList}
-        {budgets.length === 0 && !isLoading && (
+        {data?.length > 0 && !isLoading && budgetList}
+        {data?.length === 0 && !isLoading && (
           <Card
             className="mb-4"
             border="light"
