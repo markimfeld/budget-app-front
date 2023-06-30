@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useExpenseContext } from "../hooks/useExpenseContext";
 import { useMessageContext } from "../hooks/useMessageContext";
 
-const Expense = ({ expense }) => {
+const Expense = ({ expense, budget }) => {
   const { handleDeleteExpense, handleIsExpenseEditing } = useExpenseContext();
 
   const { clearMessages } = useMessageContext();
@@ -26,6 +26,11 @@ const Expense = ({ expense }) => {
     handleIsExpenseEditing(true);
     clearMessages();
     navigate(`${expense._id}/edit`);
+  };
+
+  const handleDelete = (expense, budget) => {
+    handleDeleteExpense(expense, budget);
+    handleClose();
   };
 
   const [show, setShow] = useState(false);
@@ -38,16 +43,13 @@ const Expense = ({ expense }) => {
       <Card
         key={expense._id}
         border="light"
-        // bg="light"
-        style={{ backgroundColor: "hsla(0, 0%, 94%, 1)" }}
+        style={{ backgroundColor: "white" }}
+        className="py-2"
       >
         <Card.Body>
           <Stack direction="horizontal" gap={3}>
             <span>
               <Card.Title className="mb-0">{expense.name}</Card.Title>
-              {/* <Card.Text className="text-muted mb-0">
-              {expense.description}
-            </Card.Text> */}
               <Card.Text className="text-muted">
                 {format(new Date(expense.createdAt), "dd/MM/yyyy kk:mm")}
               </Card.Text>
@@ -78,10 +80,6 @@ const Expense = ({ expense }) => {
             </Card.Title>
           </Stack>
         </Card.Body>
-        {/* <Card.Footer className="text-muted">
-            Realizado el{" "}
-            
-          </Card.Footer> */}
       </Card>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -95,7 +93,10 @@ const Expense = ({ expense }) => {
           <Button variant="secondary" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button variant="danger" onClick={() => handleDeleteExpense(expense)}>
+          <Button
+            variant="danger"
+            onClick={() => handleDelete(expense, budget)}
+          >
             Sí, estoy seguro
           </Button>
         </Modal.Footer>

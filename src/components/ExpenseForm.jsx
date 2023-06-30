@@ -23,6 +23,8 @@ import {
   RECORD_UPDATED_MESSAGE,
 } from "../labels/labels";
 
+import { useQuery } from "react-query";
+
 const ExpenseForm = () => {
   const {
     getAllExpenses,
@@ -36,53 +38,79 @@ const ExpenseForm = () => {
     handleExpenseToUpdate,
   } = useExpenseContext();
 
-  const { budgetId, expenseId } = useParams();
+  const { getBudgets } = useBudgetContext();
 
-  useEffect(() => {
-    if (expenseId) {
-      handleGetOneExpense(expenseId);
-      handleSelectedBudget(budgetId);
-    }
-    // eslint-disable-next-line
-  }, [expenseId]);
+  const { expenseId } = useParams();
 
-  const onSubmit = async ({ name, amount, description }) => {
+  const { data: budgets, isLoading } = useQuery({
+    queryKey: ["budgets"],
+    queryFn: getBudgets,
+  });
+
+  const { data: expenses } = useQuery({
+    queryKey: ["expenses"],
+    queryFn: getAllExpenses,
+  });
+
+  // useEffect(() => {
+  //   if (expenseId) {
+  //     handleGetOneExpense(expenseId);
+  //     handleSelectedBudget(budgetId);
+  //   }
+  //   // eslint-disable-next-line
+  // }, [expenseId]);
+
+  const onSubmit = async ({ name, amount, description, budget }) => {
     if (user !== null) {
       const newExpense = {
         name,
         amount,
         description,
-        budget: selectedBudget._id,
+        // budget: selectedBudget._id,
+        budget,
       };
 
-      console.log(newExpense);
+      if (expenseId === undefined) {
+        // let updatedBudget = { ...selectedBudget };
+        let updatedBudget = { ...budgets.find((b) => b._id === budget) };
 
-      if (!expenseId) {
-        let updatedBudget = { ...selectedBudget };
+        // updatedBudget.spentAmount = (
+        //   updatedBudget.spentAmount + newExpense.amount
+        // ).toFixed(2);
+        // updatedBudget.leftAmount = (
+        //   updatedBudget.expectedAmount - updatedBudget.spentAmount
+        // ).toFixed(2);
 
-        updatedBudget.spentAmount = (
-          Number.parseFloat(updatedBudget.spentAmount) +
-          Number.parseFloat(newExpense.amount)
-        ).toFixed(2);
-        updatedBudget.leftAmount = (
-          Number.parseFloat(updatedBudget.expectedAmount) -
-          Number.parseFloat(updatedBudget.spentAmount)
-        ).toFixed(2);
+        updatedBudget.spentAmount = Number.parseFloat(
+          (
+            Number.parseFloat(updatedBudget.spentAmount) +
+            Number.parseFloat(newExpense.amount)
+          ).toFixed(2)
+        );
+        updatedBudget.leftAmount = Number.parseFloat(
+          (
+            Number.parseFloat(updatedBudget.expectedAmount) -
+            Number.parseFloat(updatedBudget.spentAmount)
+          ).toFixed(2)
+        );
 
         try {
-          const { data } = await expenseService.store(newExpense);
+          await expenseService.store(newExpense);
 
-          await budgetService.update(selectedBudget._id, updatedBudget);
+          // await budgetService.update(selectedBudget._id, updatedBudget);
+          await budgetService.update(budget, updatedBudget);
 
-          handleUpdateExpenses(data);
+          // handleUpdateExpenses(data);
           handleSetMessage(RECORD_CREATED_MESSAGE);
           handleSetType("success");
           handleSetRecordType("expense");
-          handleUpdateSelectedBudget(selectedBudget._id);
-          getBudgets();
-          getAllExpenses();
-          handleExpenseToUpdate(null);
-          navigate(`/budgets/${budgetId}/expenses`);
+          // handleUpdateSelectedBudget(selectedBudget._id);
+          // handleUpdateSelectedBudget(budget);
+          // getBudgets();
+          // getAllExpenses();
+          // handleExpenseToUpdate(null);
+          // navigate(`/budgets/${budgetId}/expenses`);
+          navigate(`/`);
         } catch (error) {
           if (
             error.response.data.status === 400 &&
@@ -100,41 +128,46 @@ const ExpenseForm = () => {
           }
         }
       } else {
-        let updatedBudget = { ...selectedBudget };
+        // let updatedBudget = { ...selectedBudget };
+        let updatedBudget = { ...budgets.find((b) => b._id === budget) };
 
-        updatedBudget.spentAmount = (
-          Number.parseFloat(updatedBudget.spentAmount) -
-          Number.parseFloat(expenseToUpdate.amount)
-        ).toFixed(2);
+        updatedBudget.spentAmount = Number.parseFloat(
+          (
+            Number.parseFloat(updatedBudget.spentAmount) -
+            Number.parseFloat(expenses?.find((e) => e._id === expenseId).amount)
+          ).toFixed(2)
+        );
 
-        updatedBudget.spentAmount = (
-          Number.parseFloat(updatedBudget.spentAmount) +
-          Number.parseFloat(newExpense.amount)
-        ).toFixed(2);
+        updatedBudget.spentAmount = Number.parseFloat(
+          (
+            Number.parseFloat(updatedBudget.spentAmount) +
+            Number.parseFloat(newExpense.amount)
+          ).toFixed(2)
+        );
 
-        updatedBudget.leftAmount = (
-          Number.parseFloat(updatedBudget.expectedAmount) -
-          Number.parseFloat(updatedBudget.spentAmount)
-        ).toFixed(2);
+        updatedBudget.leftAmount = Number.parseFloat(
+          (
+            Number.parseFloat(updatedBudget.expectedAmount) -
+            Number.parseFloat(updatedBudget.spentAmount)
+          ).toFixed(2)
+        );
 
         try {
-          const { data } = await expenseService.edit(
-            expenseToUpdate._id,
-            newExpense
-          );
+          await expenseService.edit(expenseId, newExpense);
 
-          await budgetService.update(budgetId, updatedBudget);
+          await budgetService.update(budget, updatedBudget);
 
-          handleUpdateExpenses(data);
+          // handleUpdateExpenses(data);
           handleSetMessage(RECORD_UPDATED_MESSAGE);
           handleSetType("success");
           handleSetRecordType("expense");
-          handleUpdateSelectedBudget(selectedBudget._id);
-          handleExpenseToUpdate(null);
-          getBudgets();
-          getAllExpenses();
+          // handleUpdateSelectedBudget(selectedBudget._id);
+          // handleExpenseToUpdate(null);
+          // getBudgets();
+          // getAllExpenses();
 
-          navigate(`/budgets/${selectedBudget._id}/expenses`);
+          // navigate(`/budgets/${selectedBudget._id}/expenses`);
+          navigate("/");
         } catch (error) {
           if (
             error.response.data.status === 400 &&
@@ -156,7 +189,6 @@ const ExpenseForm = () => {
   };
 
   const { user, logout } = useAuthContext();
-  const { getBudgets } = useBudgetContext();
   const {
     handleSetMessage,
     handleSetType,
@@ -170,7 +202,8 @@ const ExpenseForm = () => {
     handleIsExpenseEditing(false);
     clearMessages();
     handleExpenseToUpdate(null);
-    navigate(`/budgets/${budgetId}/expenses`);
+    // navigate(`/budgets/${budgetId}/expenses`);
+    navigate(`/`);
   };
 
   return (
@@ -179,13 +212,15 @@ const ExpenseForm = () => {
         <ExpenseFormAdd
           onSubmit={onSubmit}
           onCancelOperation={onCancelOperation}
+          budgets={budgets}
         />
       )}
-      {expenseId && expenseToUpdate && (
+      {expenseId && expenses?.find((e) => e._id === expenseId) && (
         <ExpenseFormEdit
           onSubmit={onSubmit}
           onCancelOperation={onCancelOperation}
-          expenseToUpdate={expenseToUpdate}
+          expenseToUpdate={expenses?.find((e) => e._id === expenseId)}
+          budgets={budgets}
         />
       )}
     </>

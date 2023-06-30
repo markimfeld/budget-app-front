@@ -1,0 +1,27 @@
+.btn-primary {
+    --bs-btn-bg: hsl(282, 84%, 52%);
+    --bs-btn-border-color: hsl(282, 84%, 52%);
+    --bs-btn-color: #fff;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: hsla(282, 84%, 52%, 0.8);
+    --bs-btn-hover-border-color: hsla(282, 84%, 52%, 0.8);
+    --bs-btn-active-bg: hsl(282, 84%, 42%);
+    --bs-btn-active-border-color: hsl(282, 84%, 42%);
+}
+
+.btn-success {
+    --bs-btn-bg: hsl(230, 75%, 58%);
+    --bs-btn-border-color: hsl(230, 75%, 58%);
+    --bs-btn-disabled-bg: hsl(230, 75%, 58%);
+    --bs-btn-disabled-border-color: hsl(230, 75%, 58%);
+    --bs-btn-color: #fff;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: hsla(230, 75%, 58%, 0.8);
+    --bs-btn-hover-border-color: hsla(230, 75%, 58%, 0.8);
+    --bs-btn-active-bg: hsl(230, 75%, 48%);
+    --bs-btn-active-border-color: hsl(230, 75%, 48%);
+}
+
+.dropdown-menu {
+    --bs-dropdown-link-active-bg: #4560e5;
+}

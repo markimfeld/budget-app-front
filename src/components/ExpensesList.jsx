@@ -126,7 +126,8 @@ const ExpensesList = () => {
             <Card
               border="light"
               className="p-2 mb-5"
-              style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+              // style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+              style={{ backgroundColor: "hsl(230, 60%, 98%)" }}
             >
               {expensesList}
             </Card>

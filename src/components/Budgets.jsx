@@ -21,7 +21,7 @@ const Budgets = () => {
   const { handleIsEditing, getBudgets } = useBudgetContext();
 
   const { data, isLoading } = useQuery({
-    queryKey: "budgets",
+    queryKey: ["budgets"],
     queryFn: getBudgets,
   });
   console.log(data);

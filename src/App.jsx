@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
+import "./Bootstrap-mod.css";
+
 // components
 import Login from "./components/Login";
 import Register from "./components/Register";

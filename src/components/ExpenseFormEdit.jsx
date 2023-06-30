@@ -4,15 +4,24 @@ import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
 import { useFormik } from "formik";
 
 const ExpenseFormEdit = (props) => {
-  const { onSubmit, onCancelOperation, expenseToUpdate } = props;
+  const { onSubmit, onCancelOperation, expenseToUpdate, budgets } = props;
 
   const { handleSubmit, handleChange, values } = useFormik({
     initialValues: {
       name: expenseToUpdate?.name || "",
       description: expenseToUpdate?.description || "",
       amount: expenseToUpdate?.amount || "",
+      budget: expenseToUpdate?.budget._id || "",
     },
     onSubmit,
+  });
+
+  const budgetOptions = budgets?.map((budget) => {
+    return (
+      <option key={budget._id} value={budget._id}>
+        {budget.name}
+      </option>
+    );
   });
 
   return (
@@ -57,6 +66,21 @@ const ExpenseFormEdit = (props) => {
                 placeholder="15000"
                 required
               />
+            </FloatingLabel>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicPresupuesto">
+            <FloatingLabel controlId="floatingSelect" label="Presupuesto">
+              <Form.Select
+                name="budget"
+                value={values.budget}
+                onChange={handleChange}
+                aria-label="Floating label select example"
+                disabled
+              >
+                <option>Seleccionar</option>
+                {budgetOptions}
+              </Form.Select>
             </FloatingLabel>
           </Form.Group>
 

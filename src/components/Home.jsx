@@ -1,4 +1,4 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -33,12 +33,36 @@ const Home = () => {
                 path="/"
                 element={
                   <>
-                    <Dashboard /> <Expenses />
+                    <Dashboard />{" "}
+                    <Row>
+                      <Col md={3}>
+                        <Card
+                          border="light"
+                          style={{ backgroundColor: "white" }}
+                          className="mt-5 py-5"
+                        >
+                          <Card.Body>
+                            <Button
+                              variant="success"
+                              className="me-1"
+                              size="sm"
+                            >
+                              Todo
+                            </Button>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                      <Col md={9}>
+                        <Expenses />
+                      </Col>
+                    </Row>
                   </>
                 }
               />
             </Routes>
             <Routes>
+              <Route path="/expenses/add" element={<ExpenseForm />} />
+              <Route path="/:expenseId/edit" element={<ExpenseForm />} />
               <Route path="/budgets" element={<Budgets />} />
               <Route path="/budgets/add" element={<BudgetForm />} />
               <Route path="/budgets/:budgetId/edit" element={<BudgetForm />} />

@@ -4,23 +4,34 @@ import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
 import { useFormik } from "formik";
 
 const ExpenseFormAdd = (props) => {
-  const { onSubmit, onCancelOperation } = props;
+  const { onSubmit, onCancelOperation, budgets } = props;
 
   const { handleSubmit, handleChange, values } = useFormik({
     initialValues: {
       name: "",
       description: "",
       amount: "",
+      budget: "",
     },
     onSubmit,
   });
 
+  const budgetOptions = budgets?.map((budget) => {
+    return (
+      <option key={budget._id} value={budget._id}>
+        {budget.name}
+      </option>
+    );
+  });
+
   return (
-    <Card style={{ border: "none", backgroundColor: "hsl(0, 0%, 97%, 0.5)" }}>
-      <Card.Header style={{ border: "none" }}>
-        <Card.Title className="text-center fs-3">Nuevo gasto</Card.Title>
+    <Card style={{ border: "none", backgroundColor: "white" }} className="mt-4">
+      <Card.Header style={{ border: "none", backgroundColor: "#373E68" }}>
+        <Card.Title className="text-center fs-3 text-white">
+          Nuevo gasto
+        </Card.Title>
       </Card.Header>
-      <Card.Body>
+      <Card.Body className="p-4">
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicName">
             <FloatingLabel controlId="floatingName" label="Nombre del gasto">
@@ -57,6 +68,20 @@ const ExpenseFormAdd = (props) => {
                 placeholder="15000"
                 required
               />
+            </FloatingLabel>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicPresupuesto">
+            <FloatingLabel controlId="floatingSelect" label="Presupuesto">
+              <Form.Select
+                name="budget"
+                value={values.budget}
+                onChange={handleChange}
+                aria-label="Floating label select example"
+              >
+                <option>Seleccionar</option>
+                {budgetOptions}
+              </Form.Select>
             </FloatingLabel>
           </Form.Group>
 

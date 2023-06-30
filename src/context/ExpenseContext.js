@@ -1,5 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 
+import { useQueryClient } from "react-query";
+
 // services
 import expenseService from "../services/expense";
 import budgetService from "../services/budget";
@@ -24,6 +26,9 @@ export const ExpenseContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const { user, logout } = useAuthContext();
+
+  // Get QueryClient from the context
+  const queryClient = useQueryClient();
 
   const { getBudgets } = useBudgetContext();
 
@@ -156,12 +161,12 @@ export const ExpenseContextProvider = ({ children }) => {
     }
   };
 
-  const handleDeleteExpense = async (expense) => {
+  const handleDeleteExpense = async (expense, budget) => {
     if (user !== null) {
       try {
         await expenseService.del(expense._id);
 
-        let updatedBudget = { ...selectedBudget };
+        let updatedBudget = { ...budget };
 
         updatedBudget.spentAmount = (
           Number.parseFloat(updatedBudget.spentAmount) -
@@ -172,20 +177,24 @@ export const ExpenseContextProvider = ({ children }) => {
           Number.parseFloat(updatedBudget.spentAmount)
         ).toFixed(2);
 
-        await budgetService.update(selectedBudget._id, updatedBudget);
+        await budgetService.update(budget._id, updatedBudget);
 
-        setExpenses(expenses.filter((e) => e._id !== expense._id));
+        // setExpenses(expenses.filter((e) => e._id !== expense._id));
 
-        handleUpdateSelectedBudget(selectedBudget._id);
+        // handleUpdateSelectedBudget(selectedBudget._id);
+
+        queryClient.invalidateQueries({ queryKey: ["allExpenses"] });
+        queryClient.invalidateQueries({ queryKey: ["budgets"] });
+
         handleSetMessage(RECORD_DELETED_MESSAGE);
         handleSetType("success");
         handleSetRecordType("expense");
 
-        getBudgets();
+        // getBudgets();
       } catch (error) {
         if (
-          error.response.data.status === 400 &&
-          error.response.data.message === "INVALID_TOKEN"
+          error?.response?.data?.status === 400 &&
+          error?.response?.data?.message === "INVALID_TOKEN"
         ) {
           logout();
         }

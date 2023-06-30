@@ -1,7 +1,11 @@
 import { Card, Button, Stack, Row, Col, Placeholder } from "react-bootstrap";
 
+import "../components/Dashboard.css";
+
 import PieChart from "./PieChart";
 import BarChart from "./BarChart";
+
+import { useQuery } from "react-query";
 
 import { useNavigate } from "react-router-dom";
 
@@ -29,17 +33,22 @@ const Dashboard = () => {
   const {
     budgets,
     filters,
+    getBudgets,
     getCurrentMonthBudgets,
     getNextMonthBudgets,
     getPreviuosMonthBudgets,
     handleIsEditing,
     isBudgetCreating,
-    isLoading,
   } = useBudgetContext();
   const { clearMessages } = useMessageContext();
 
   const { selectedBudget, handleSelectedBudget, handleIsExpenseEditing } =
     useExpenseContext();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["budgets"],
+    queryFn: getBudgets,
+  });
 
   const navigate = useNavigate();
 
@@ -59,7 +68,7 @@ const Dashboard = () => {
     if (isBudgetCreating) {
       clearMessages();
       handleIsEditing(false);
-      navigate("/budgets/add");
+      navigate("/expenses/add");
     } else {
       handleSelectedBudget(selectedBudget);
       handleIsExpenseEditing(false);
@@ -163,12 +172,12 @@ const Dashboard = () => {
         <Col md={4}>
           {!isLoading && (
             <Card
-              className="mb-3"
+              className="mb-3 card-background-gradient"
               // style={{ backgroundColor: "rgba(255, 159, 64, 0.2)" }}
-              style={{
-                backgroundColor: "hsl(10, 79%, 65%)",
-                borderColor: "hsl(10, 79%, 65%)",
-              }}
+              // style={{
+              //   backgroundColor: "hsl(10, 79%, 65%)",
+              //   borderColor: "hsl(10, 79%, 65%)",
+              // }}
             >
               <Card.Body>
                 <p className="m-0 mb-1 text-white">Presupuestado este mes</p>
@@ -196,11 +205,11 @@ const Dashboard = () => {
         <Col md={4}>
           {!isLoading && (
             <Card
-              className="mb-3"
-              style={{
-                backgroundColor: "hsl(10, 79%, 65%)",
-                borderColor: "hsl(10, 79%, 65%)",
-              }}
+              className="mb-3 card-background-gradient"
+              // style={{
+              //   backgroundColor: "hsl(10, 79%, 65%)",
+              //   borderColor: "hsl(10, 79%, 65%)",
+              // }}
             >
               <Card.Body>
                 <p className="m-0 mb-1 text-white">Total este mes</p>
@@ -228,11 +237,11 @@ const Dashboard = () => {
         <Col md={4}>
           {!isLoading && (
             <Card
-              className="mb-3"
-              style={{
-                backgroundColor: "hsl(10, 79%, 65%)",
-                borderColor: "hsl(10, 79%, 65%)",
-              }}
+              className="mb-3 card-background-gradient"
+              // style={{
+              //   backgroundColor: "hsl(10, 79%, 65%)",
+              //   borderColor: "hsl(10, 79%, 65%)",
+              // }}
             >
               <Card.Body>
                 <p className="m-0 mb-1 text-white">Mi balance</p>
@@ -260,7 +269,24 @@ const Dashboard = () => {
           )}
         </Col>
       </Row>
-      {budgets.length > 0 && (
+      <Row>
+        <Col>
+          <Card style={{ backgroundColor: "#373E68" }}>
+            <Card.Body>
+              <Stack direction="horizontal" gap={3}>
+                <Button
+                  size="md"
+                  onClick={() => handleShowBudgetFormOrList(true)}
+                  className="ms-auto"
+                >
+                  <i className="fa-solid fa-plus fa-sm"></i> Agregar gasto
+                </Button>
+              </Stack>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      {/* {budgets.length > 0 && (
         <Row>
           <Col md={6}>
             <Card
@@ -291,7 +317,7 @@ const Dashboard = () => {
             </Card>
           </Col>
         </Row>
-      )}
+      )} */}
     </>
   );
 };
