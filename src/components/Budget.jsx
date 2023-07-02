@@ -16,19 +16,11 @@ import { useMessageContext } from "../hooks/useMessageContext";
 
 const Budget = ({ budget }) => {
   const { clearMessages } = useMessageContext();
-  const { handleDeleteBudget, handleIsEditing, handleIsBudgetCreating } =
-    useBudgetContext();
+  const { handleDeleteBudget } = useBudgetContext();
 
   const navigate = useNavigate();
 
-  const handleGetExpenses = (budget) => {
-    clearMessages();
-    handleIsBudgetCreating(false);
-    navigate(`/budgets/${budget._id}/expenses`);
-  };
-
   const handleEdit = (budget) => {
-    handleIsEditing(true);
     clearMessages();
     navigate(`/budgets/${budget._id}/edit`);
   };
@@ -57,12 +49,6 @@ const Budget = ({ budget }) => {
               className="ms-auto"
               align="end"
             >
-              <Dropdown.Item
-                eventKey="1"
-                onClick={() => handleGetExpenses(budget)}
-              >
-                Ver gastos
-              </Dropdown.Item>
               <Dropdown.Item eventKey="2" onClick={() => handleEdit(budget)}>
                 Editar
               </Dropdown.Item>

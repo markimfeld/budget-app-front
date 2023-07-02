@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 // custom hooks
 import { useBudgetContext } from "../hooks/useBudgetContext";
 import { useMessageContext } from "../hooks/useMessageContext";
-import { useExpenseContext } from "../hooks/useExpenseContext";
 
 const months = [
   "Enero",
@@ -37,13 +36,8 @@ const Dashboard = () => {
     getCurrentMonthBudgets,
     getNextMonthBudgets,
     getPreviuosMonthBudgets,
-    handleIsEditing,
-    isBudgetCreating,
   } = useBudgetContext();
   const { clearMessages } = useMessageContext();
-
-  const { selectedBudget, handleSelectedBudget, handleIsExpenseEditing } =
-    useExpenseContext();
 
   const { data, isLoading } = useQuery({
     queryKey: ["budgets"],
@@ -64,16 +58,9 @@ const Dashboard = () => {
     .reduce((acc, currentValue) => acc + currentValue, 0)
     .toFixed(2);
 
-  const handleShowBudgetFormOrList = (showForm) => {
-    if (isBudgetCreating) {
-      clearMessages();
-      handleIsEditing(false);
-      navigate("/expenses/add");
-    } else {
-      handleSelectedBudget(selectedBudget);
-      handleIsExpenseEditing(false);
-      clearMessages();
-    }
+  const handleShowBudgetFormOrList = () => {
+    clearMessages();
+    navigate("/expenses/add");
   };
 
   const handleCurrentMonth = () => {

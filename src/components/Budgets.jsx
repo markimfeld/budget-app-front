@@ -18,13 +18,12 @@ import { useQuery } from "react-query";
 
 const Budgets = () => {
   const { clearMessages } = useMessageContext();
-  const { handleIsEditing, getBudgets } = useBudgetContext();
+  const { getBudgets } = useBudgetContext();
 
   const { data, isLoading } = useQuery({
     queryKey: ["budgets"],
     queryFn: getBudgets,
   });
-  console.log(data);
 
   const navigate = useNavigate();
 
@@ -32,8 +31,7 @@ const Budgets = () => {
     return <Budget key={budget._id} budget={budget} />;
   });
 
-  const handleShowBudgetFormOrList = (showForm) => {
-    handleIsEditing(false);
+  const handleShowBudgetFormOrList = () => {
     clearMessages();
     navigate("add");
   };
@@ -96,7 +94,7 @@ const Budgets = () => {
               <Card.Text>
                 No hay presupuestos creados aun 😄.{" "}
                 <Button
-                  onClick={() => handleShowBudgetFormOrList(true)}
+                  onClick={() => handleShowBudgetFormOrList()}
                   variant="link"
                 >
                   Crear nuevo presupuesto

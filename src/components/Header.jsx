@@ -5,19 +5,15 @@ import { useNavigate, Link } from "react-router-dom";
 // custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useMessageContext } from "../hooks/useMessageContext";
-import { useBudgetContext } from "../hooks/useBudgetContext";
 
 const Header = () => {
   const { clearMessages } = useMessageContext();
   const { user, logout } = useAuthContext();
 
-  const { handleIsEditing } = useBudgetContext();
-
   const navigate = useNavigate();
 
   const handleShowBudgetFormOrList = (showForm) => {
     clearMessages();
-    handleIsEditing(false);
     navigate("/budgets/add");
   };
 

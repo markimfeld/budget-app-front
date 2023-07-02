@@ -17,13 +17,12 @@ import { useExpenseContext } from "../hooks/useExpenseContext";
 import { useMessageContext } from "../hooks/useMessageContext";
 
 const Expense = ({ expense, budget }) => {
-  const { handleDeleteExpense, handleIsExpenseEditing } = useExpenseContext();
+  const { handleDeleteExpense } = useExpenseContext();
 
   const { clearMessages } = useMessageContext();
   const navigate = useNavigate();
 
   const handleEdit = () => {
-    handleIsExpenseEditing(true);
     clearMessages();
     navigate(`${expense._id}/edit`);
   };

@@ -17,8 +17,8 @@ import {
   RECORD_CREATED_MESSAGE,
   RECORD_UPDATED_MESSAGE,
 } from "../labels/labels";
-import { useEffect } from "react";
 import BudgetFormEdit from "./BudgetFormEdit";
+import { useQuery } from "react-query";
 
 const BudgetForm = () => {
   const { user, logout } = useAuthContext();
@@ -28,24 +28,17 @@ const BudgetForm = () => {
     handleSetRecordType,
     clearMessages,
   } = useMessageContext();
-  const {
-    handleUpdateBudgets,
-    budgetToUpdate,
-    handleIsEditing,
-    handleGetOneBudget,
-    handleBudgetToUpdate,
-  } = useBudgetContext();
+
+  const { getBudgets } = useBudgetContext();
 
   const navigate = useNavigate();
 
   const { budgetId } = useParams();
 
-  useEffect(() => {
-    if (budgetId) {
-      handleGetOneBudget(budgetId);
-    }
-    // eslint-disable-next-line
-  }, [budgetId]);
+  const { data: budgets } = useQuery({
+    queryKey: ["budgets"],
+    queryFn: getBudgets,
+  });
 
   const onSubmit = async ({ name, expectedAmount }) => {
     if (user !== null) {
@@ -56,12 +49,10 @@ const BudgetForm = () => {
 
       if (!budgetId) {
         try {
-          const data = await budgetService.store(newBudget);
-          // handleUpdateBudgets(data.data);
+          await budgetService.store(newBudget);
           handleSetMessage(RECORD_CREATED_MESSAGE);
           handleSetType("success");
           handleSetRecordType("budget");
-          handleBudgetToUpdate(null);
           navigate("/budgets");
         } catch (error) {
           if (
@@ -80,23 +71,22 @@ const BudgetForm = () => {
           }
         }
       } else {
-        let budgetUpdated = { ...budgetToUpdate };
+        // let budgetUpdated = { ...budgetToUpdate };
+
+        let budgetUpdated = { ...budgets?.find((b) => b._id === budgetId) };
+
         budgetUpdated.expectedAmount = Number.parseFloat(expectedAmount);
         budgetUpdated.name = name;
-        budgetUpdated.leftAmount =
-          Number.parseFloat(expectedAmount) - budgetUpdated.spentAmount;
+        budgetUpdated.leftAmount = Number.parseFloat(
+          Number.parseFloat(expectedAmount) - budgetUpdated.spentAmount
+        );
 
         try {
-          const data = await budgetService.update(
-            budgetToUpdate._id,
-            budgetUpdated
-          );
+          await budgetService.update(budgetId, budgetUpdated);
 
-          handleUpdateBudgets(data.data);
           handleSetMessage(RECORD_UPDATED_MESSAGE);
           handleSetType("success");
           handleSetRecordType("budget");
-          handleBudgetToUpdate(null);
           navigate("/budgets");
         } catch (error) {
           if (
@@ -118,19 +108,17 @@ const BudgetForm = () => {
   };
 
   const onCancelOperation = () => {
-    handleIsEditing(false);
     clearMessages();
-    handleBudgetToUpdate(null);
     navigate("/budgets");
   };
 
   return (
     <>
-      {budgetToUpdate && budgetId && (
+      {budgetId && (
         <BudgetFormEdit
           onSubmit={onSubmit}
           onCancelOperation={onCancelOperation}
-          budgetToUpdate={budgetToUpdate}
+          budgetToUpdate={{ ...budgets?.find((b) => b._id === budgetId) }}
         />
       )}
       {!budgetId && (

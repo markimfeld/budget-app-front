@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { useNavigate, useParams } from "react-router-dom";
 
 // components
@@ -26,23 +24,23 @@ import {
 import { useQuery } from "react-query";
 
 const ExpenseForm = () => {
-  const {
-    getAllExpenses,
-    selectedBudget,
-    handleUpdateExpenses,
-    handleUpdateSelectedBudget,
-    handleIsExpenseEditing,
-    handleGetOneExpense,
-    expenseToUpdate,
-    handleSelectedBudget,
-    handleExpenseToUpdate,
-  } = useExpenseContext();
+  const { getAllExpenses } = useExpenseContext();
 
   const { getBudgets } = useBudgetContext();
 
   const { expenseId } = useParams();
 
-  const { data: budgets, isLoading } = useQuery({
+  const { user, logout } = useAuthContext();
+  const {
+    handleSetMessage,
+    handleSetType,
+    handleSetRecordType,
+    clearMessages,
+  } = useMessageContext();
+
+  const navigate = useNavigate();
+
+  const { data: budgets } = useQuery({
     queryKey: ["budgets"],
     queryFn: getBudgets,
   });
@@ -52,34 +50,17 @@ const ExpenseForm = () => {
     queryFn: getAllExpenses,
   });
 
-  // useEffect(() => {
-  //   if (expenseId) {
-  //     handleGetOneExpense(expenseId);
-  //     handleSelectedBudget(budgetId);
-  //   }
-  //   // eslint-disable-next-line
-  // }, [expenseId]);
-
   const onSubmit = async ({ name, amount, description, budget }) => {
     if (user !== null) {
       const newExpense = {
         name,
         amount,
         description,
-        // budget: selectedBudget._id,
         budget,
       };
 
       if (expenseId === undefined) {
-        // let updatedBudget = { ...selectedBudget };
         let updatedBudget = { ...budgets.find((b) => b._id === budget) };
-
-        // updatedBudget.spentAmount = (
-        //   updatedBudget.spentAmount + newExpense.amount
-        // ).toFixed(2);
-        // updatedBudget.leftAmount = (
-        //   updatedBudget.expectedAmount - updatedBudget.spentAmount
-        // ).toFixed(2);
 
         updatedBudget.spentAmount = Number.parseFloat(
           (
@@ -97,19 +78,11 @@ const ExpenseForm = () => {
         try {
           await expenseService.store(newExpense);
 
-          // await budgetService.update(selectedBudget._id, updatedBudget);
           await budgetService.update(budget, updatedBudget);
 
-          // handleUpdateExpenses(data);
           handleSetMessage(RECORD_CREATED_MESSAGE);
           handleSetType("success");
           handleSetRecordType("expense");
-          // handleUpdateSelectedBudget(selectedBudget._id);
-          // handleUpdateSelectedBudget(budget);
-          // getBudgets();
-          // getAllExpenses();
-          // handleExpenseToUpdate(null);
-          // navigate(`/budgets/${budgetId}/expenses`);
           navigate(`/`);
         } catch (error) {
           if (
@@ -128,7 +101,6 @@ const ExpenseForm = () => {
           }
         }
       } else {
-        // let updatedBudget = { ...selectedBudget };
         let updatedBudget = { ...budgets.find((b) => b._id === budget) };
 
         updatedBudget.spentAmount = Number.parseFloat(
@@ -157,16 +129,9 @@ const ExpenseForm = () => {
 
           await budgetService.update(budget, updatedBudget);
 
-          // handleUpdateExpenses(data);
           handleSetMessage(RECORD_UPDATED_MESSAGE);
           handleSetType("success");
           handleSetRecordType("expense");
-          // handleUpdateSelectedBudget(selectedBudget._id);
-          // handleExpenseToUpdate(null);
-          // getBudgets();
-          // getAllExpenses();
-
-          // navigate(`/budgets/${selectedBudget._id}/expenses`);
           navigate("/");
         } catch (error) {
           if (
@@ -188,21 +153,8 @@ const ExpenseForm = () => {
     }
   };
 
-  const { user, logout } = useAuthContext();
-  const {
-    handleSetMessage,
-    handleSetType,
-    handleSetRecordType,
-    clearMessages,
-  } = useMessageContext();
-
-  const navigate = useNavigate();
-
-  const onCancelOperation = (showList) => {
-    handleIsExpenseEditing(false);
+  const onCancelOperation = () => {
     clearMessages();
-    handleExpenseToUpdate(null);
-    // navigate(`/budgets/${budgetId}/expenses`);
     navigate(`/`);
   };
 

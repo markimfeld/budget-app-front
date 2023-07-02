@@ -1,4 +1,6 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
+
+import { useQueryClient } from "react-query";
 
 // services
 import budgetService from "../services/budget";
@@ -21,10 +23,9 @@ export const BudgetContextProvider = ({ children }) => {
     month: currentMonth,
     year: currentYear,
   });
-  const [isLoading, setIsLoading] = useState(true);
-  const [budgetToUpdate, setBudgetToUpdate] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isBudgetCreating, setIsBudgetCreating] = useState(true);
+
+  // Get QueryClient from the context
+  const queryClient = useQueryClient();
 
   const { handleSetMessage, handleSetType, handleSetRecordType } =
     useMessageContext();
@@ -36,7 +37,6 @@ export const BudgetContextProvider = ({ children }) => {
           ...filters,
         });
         setBudgets(response.data);
-        setIsLoading(false);
 
         return response.data;
       } catch (err) {
@@ -49,11 +49,6 @@ export const BudgetContextProvider = ({ children }) => {
       }
     }
   };
-
-  // useEffect(() => {
-  //   getBudgets();
-  //   // eslint-disable-next-line
-  // }, [user, filters]);
 
   const getCurrentMonthBudgets = () => {
     const currentMonth = new Date().getMonth() + 1;
@@ -95,54 +90,15 @@ export const BudgetContextProvider = ({ children }) => {
     setFilters({ month: prevMonth, year: prevYear });
   };
 
-  const handleUpdateBudgets = (newBudget) => {
-    const updatedBudgets = budgets.filter(
-      (budget) => newBudget._id !== budget._id
-    );
-
-    setBudgets([...updatedBudgets, newBudget]);
-  };
-
-  const handleBudgetToUpdate = (budget) => {
-    setBudgetToUpdate(budget);
-  };
-
-  const handleIsEditing = (isEditing) => {
-    setIsEditing(isEditing);
-
-    // setIsEditing(prevState ==> !prevState)
-  };
-
   const handleDeleteBudget = async (budget) => {
     if (user !== null) {
       try {
         await budgetService.delete(budget._id);
-        // setBudgets(budgets.filter((b) => b._id !== budget._id));
         handleSetMessage(RECORD_DELETED_MESSAGE);
         handleSetType("success");
         handleSetRecordType("budget");
-      } catch (error) {
-        if (
-          error.response.data.status === 400 &&
-          error.response.data.message === "INVALID_TOKEN"
-        ) {
-          logout();
-        }
-      }
-    }
-  };
 
-  const handleIsBudgetCreating = (creatingBudget) => {
-    setIsBudgetCreating(creatingBudget);
-  };
-
-  const handleGetOneBudget = async (budgetId) => {
-    if (user !== null) {
-      try {
-        const response = await budgetService.getOne(budgetId);
-        if (response.status === 200) {
-          handleBudgetToUpdate(response.data);
-        }
+        queryClient.invalidateQueries({ queryKey: ["budgets"] });
       } catch (error) {
         if (
           error.response.data.status === 400 &&
@@ -162,17 +118,8 @@ export const BudgetContextProvider = ({ children }) => {
         getCurrentMonthBudgets,
         getNextMonthBudgets,
         getPreviuosMonthBudgets,
-        handleUpdateBudgets,
         getBudgets,
         handleDeleteBudget,
-        isLoading,
-        handleIsEditing,
-        isEditing,
-        handleBudgetToUpdate,
-        budgetToUpdate,
-        handleIsBudgetCreating,
-        isBudgetCreating,
-        handleGetOneBudget,
       }}
     >
       {children}

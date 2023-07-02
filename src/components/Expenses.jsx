@@ -25,13 +25,6 @@ const Expenses = () => {
   });
 
   const expensesList = data?.map((expense, i) => {
-    // if (i === data.length - 1) {
-    //   return (
-    //     <div key={expense._id}>
-    //       <Expense expense={expense} />
-    //     </div>
-    //   );
-    // } else {
     return (
       <div key={expense._id} className="mb-3">
         <Expense
@@ -40,7 +33,6 @@ const Expenses = () => {
         />
       </div>
     );
-    // }
   });
 
   return (
@@ -58,13 +50,7 @@ const Expenses = () => {
             >
               Movimientos
             </p>
-            {/* <Card
-              border="light"
-              className="p-2 mb-5"
-              style={{ backgroundColor: "hsl(230, 60%, 98%)" }}
-            > */}
             {expensesList}
-            {/* </Card> */}
           </div>
         )}
         {data?.length === 0 && (

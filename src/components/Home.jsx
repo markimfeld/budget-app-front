@@ -1,4 +1,4 @@
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -8,7 +8,6 @@ import Dashboard from "./Dashboard";
 import Message from "./Message";
 import Header from "./Header";
 import BudgetForm from "./BudgetForm";
-import ExpenseList from "./ExpensesList";
 import ExpenseForm from "./ExpenseForm";
 import Expenses from "./Expenses";
 
@@ -35,7 +34,7 @@ const Home = () => {
                   <>
                     <Dashboard />{" "}
                     <Row>
-                      <Col md={3}>
+                      {/* <Col md={3}>
                         <Card
                           border="light"
                           style={{ backgroundColor: "white" }}
@@ -51,8 +50,8 @@ const Home = () => {
                             </Button>
                           </Card.Body>
                         </Card>
-                      </Col>
-                      <Col md={9}>
+                      </Col> */}
+                      <Col md={12}>
                         <Expenses />
                       </Col>
                     </Row>
@@ -66,18 +65,6 @@ const Home = () => {
               <Route path="/budgets" element={<Budgets />} />
               <Route path="/budgets/add" element={<BudgetForm />} />
               <Route path="/budgets/:budgetId/edit" element={<BudgetForm />} />
-              <Route
-                path="/budgets/:budgetId/expenses"
-                element={<ExpenseList />}
-              />
-              <Route
-                path="/budgets/:budgetId/expenses/add"
-                element={<ExpenseForm />}
-              />
-              <Route
-                path="/budgets/:budgetId/expenses/:expenseId/edit"
-                element={<ExpenseForm />}
-              />
             </Routes>
           </Col>
         </Row>
