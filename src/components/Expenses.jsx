@@ -44,19 +44,52 @@ const Expenses = () => {
         <Col>
           <Card style={{ backgroundColor: "white", border: "none" }}>
             <Card.Body style={{ wordBreak: "break-all" }}>
-              <Button onClick={() => setBudgetId(null)} variant="link">
-                Todos
-              </Button>
+              <Card.Text>Filtrar por categoria:</Card.Text>
+              {budgetId === null && (
+                <Button
+                  onClick={() => setBudgetId(null)}
+                  variant="outline-success"
+                  className="me-1"
+                  active
+                >
+                  Todos
+                </Button>
+              )}
+              {budgetId !== null && (
+                <Button
+                  onClick={() => setBudgetId(null)}
+                  variant="outline-success"
+                  className="me-1"
+                >
+                  Todos
+                </Button>
+              )}
+
               {budgets?.map((b) => {
-                return (
-                  <Button
-                    key={b._id}
-                    onClick={() => setBudgetId(b._id)}
-                    variant="link"
-                  >
-                    {b.name}
-                  </Button>
-                );
+                if (budgetId === b._id) {
+                  return (
+                    <Button
+                      key={b._id}
+                      onClick={() => setBudgetId(b._id)}
+                      variant="outline-success"
+                      className="me-1"
+                      active
+                    >
+                      {b.name}
+                    </Button>
+                  );
+                } else {
+                  return (
+                    <Button
+                      key={b._id}
+                      onClick={() => setBudgetId(b._id)}
+                      variant="outline-success"
+                      className="me-1"
+                    >
+                      {b.name}
+                    </Button>
+                  );
+                }
               })}
             </Card.Body>
           </Card>
