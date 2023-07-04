@@ -27,17 +27,22 @@ export const ExpenseContextProvider = ({ children }) => {
   const { handleSetMessage, handleSetType, handleSetRecordType } =
     useMessageContext();
 
-  const getAllExpenses = async () => {
+  const getAllExpenses = async (key) => {
     if (user !== null) {
       try {
+        const budgetId = key.queryKey[1].budget;
+
         const { data } = await expenseService.getAll();
 
-        setAllExpenses(data);
+        if (budgetId !== null) {
+          setAllExpenses(data.filter((e) => e.budget._id === budgetId));
+          return data.filter((e) => e.budget._id === budgetId);
+        }
         return data;
       } catch (error) {
         if (
-          error.response.data.status === 400 &&
-          error.response.data.message === "INVALID_TOKEN"
+          error.response.data?.status === 400 &&
+          error.response.data?.message === "INVALID_TOKEN"
         ) {
           logout();
         }

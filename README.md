@@ -2,6 +2,6 @@
 
 - [ ] Mejorar la vista de budgets.
 - [ ] Mejorar la vista del nav en mobile.
-- [ ] Agregar filtro para filtrar los gastos por budgets.
+- [x] Agregar filtro para filtrar los gastos por budgets.
 - [ ] Ver donde meter los graficos.
 - [ ] Agregar funcionalidad para editar usuario.

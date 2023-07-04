@@ -34,24 +34,7 @@ const Home = () => {
                   <>
                     <Dashboard />{" "}
                     <Row>
-                      {/* <Col md={3}>
-                        <Card
-                          border="light"
-                          style={{ backgroundColor: "white" }}
-                          className="mt-5 py-5"
-                        >
-                          <Card.Body>
-                            <Button
-                              variant="success"
-                              className="me-1"
-                              size="sm"
-                            >
-                              Todo
-                            </Button>
-                          </Card.Body>
-                        </Card>
-                      </Col> */}
-                      <Col md={12}>
+                      <Col>
                         <Expenses />
                       </Col>
                     </Row>

@@ -256,14 +256,14 @@ const Dashboard = () => {
           )}
         </Col>
       </Row>
-      <Row>
+      <Row className="mb-3">
         <Col>
           <Card style={{ backgroundColor: "#373E68" }}>
             <Card.Body>
               <Stack direction="horizontal" gap={3}>
                 <Button
                   size="md"
-                  onClick={() => handleShowBudgetFormOrList(true)}
+                  onClick={() => handleShowBudgetFormOrList()}
                   className="ms-auto"
                 >
                   <i className="fa-solid fa-plus fa-sm"></i> Agregar gasto
