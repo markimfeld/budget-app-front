@@ -49,7 +49,7 @@ const Expenses = () => {
                 <Button
                   onClick={() => setBudgetId(null)}
                   variant="outline-success"
-                  className="me-1"
+                  className="me-1 mb-1"
                   active
                 >
                   Todos
@@ -59,7 +59,7 @@ const Expenses = () => {
                 <Button
                   onClick={() => setBudgetId(null)}
                   variant="outline-success"
-                  className="me-1"
+                  className="me-1 mb-1"
                 >
                   Todos
                 </Button>
@@ -72,7 +72,7 @@ const Expenses = () => {
                       key={b._id}
                       onClick={() => setBudgetId(b._id)}
                       variant="outline-success"
-                      className="me-1"
+                      className="me-1 mb-1"
                       active
                     >
                       {b.name}
@@ -84,7 +84,7 @@ const Expenses = () => {
                       key={b._id}
                       onClick={() => setBudgetId(b._id)}
                       variant="outline-success"
-                      className="me-1"
+                      className="me-1 mb-1"
                     >
                       {b.name}
                     </Button>
