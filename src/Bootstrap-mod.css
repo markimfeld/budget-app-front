@@ -23,8 +23,10 @@
 }
 
 .btn-outline-success {
+    font-weight: 500;
+    --bs-btn-bg: hsl(231, 100%, 98%);
     --bs-btn-color: hsl(230, 75%, 48%);
-    --bs-btn-border-color: hsl(230, 75%, 48%);
+    --bs-btn-border-color: hsl(231, 100%, 98%);
     --bs-btn-hover-color: #fff;
     --bs-btn-hover-bg: hsla(230, 75%, 58%, 0.8);
     --bs-btn-hover-border-color: hsla(230, 75%, 58%, 0.8);

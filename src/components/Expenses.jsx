@@ -1,4 +1,4 @@
-import { Card, Row, Col, Button, Stack } from "react-bootstrap";
+import { Card, Row, Col, Button, Stack, Placeholder } from "react-bootstrap";
 
 import { useQuery } from "react-query";
 
@@ -17,7 +17,7 @@ const Expenses = () => {
   const [budgetId, setBudgetId] = useState(null);
 
   // Queries
-  const { data: expenses } = useQuery({
+  const { data: expenses, isLoading } = useQuery({
     queryKey: ["allExpenses", { budget: budgetId }],
     queryFn: getAllExpenses,
   });
@@ -96,21 +96,59 @@ const Expenses = () => {
         </Col>
       </Row>
       <div className="mt-3">
-        {expenses?.length > 0 && (
-          <div>
-            <p
-              className="text-muted"
-              style={{
-                paddingLeft: 2,
-                paddingBottom: 4,
-                marginBottom: 0,
-              }}
-            >
-              Movimientos
-            </p>
-            {expensesList}
-          </div>
-        )}
+        <div>
+          <p
+            className="text-muted"
+            style={{
+              paddingLeft: 2,
+              paddingBottom: 4,
+              marginBottom: 0,
+            }}
+          >
+            Movimientos
+          </p>
+          {isLoading && (
+            <>
+              <Row>
+                <Col>
+                  <Card
+                    className="mb-3"
+                    border="light"
+                    style={{ backgroundColor: "white" }}
+                  >
+                    <Card.Body>
+                      <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={6} />
+                      </Placeholder>
+                      <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={4} />
+                      </Placeholder>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Card
+                    className="mb-3"
+                    border="light"
+                    style={{ backgroundColor: "white" }}
+                  >
+                    <Card.Body>
+                      <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={6} />
+                      </Placeholder>
+                      <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={4} />
+                      </Placeholder>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+            </>
+          )}
+          {!isLoading && expenses?.length > 0 && expensesList}
+        </div>
         {expenses?.length === 0 && (
           <div>
             <p

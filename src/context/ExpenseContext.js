@@ -30,11 +30,11 @@ export const ExpenseContextProvider = ({ children }) => {
   const getAllExpenses = async (key) => {
     if (user !== null) {
       try {
-        const budgetId = key.queryKey[1].budget;
+        const budgetId = key.queryKey[1]?.budget;
 
         const { data } = await expenseService.getAll();
 
-        if (budgetId !== null) {
+        if (budgetId) {
           setAllExpenses(data.filter((e) => e.budget._id === budgetId));
           return data.filter((e) => e.budget._id === budgetId);
         }
