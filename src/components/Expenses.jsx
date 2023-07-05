@@ -44,12 +44,12 @@ const Expenses = () => {
         <Col>
           <Card style={{ backgroundColor: "white", border: "none" }}>
             <Card.Body style={{ wordBreak: "break-all" }}>
-              <Card.Text>Filtrar por categoria:</Card.Text>
+              <Card.Text>Filtrar por presupuesto:</Card.Text>
               {budgetId === null && (
                 <Button
                   onClick={() => setBudgetId(null)}
                   variant="outline-success"
-                  className="me-1 mb-1"
+                  className="me-2 mb-2"
                   active
                 >
                   Todos
@@ -59,7 +59,7 @@ const Expenses = () => {
                 <Button
                   onClick={() => setBudgetId(null)}
                   variant="outline-success"
-                  className="me-1 mb-1"
+                  className="me-2 mb-2"
                 >
                   Todos
                 </Button>
@@ -72,7 +72,7 @@ const Expenses = () => {
                       key={b._id}
                       onClick={() => setBudgetId(b._id)}
                       variant="outline-success"
-                      className="me-1 mb-1"
+                      className="me-2 mb-2"
                       active
                     >
                       {b.name}
@@ -84,7 +84,7 @@ const Expenses = () => {
                       key={b._id}
                       onClick={() => setBudgetId(b._id)}
                       variant="outline-success"
-                      className="me-1 mb-1"
+                      className="me-2 mb-2"
                     >
                       {b.name}
                     </Button>
