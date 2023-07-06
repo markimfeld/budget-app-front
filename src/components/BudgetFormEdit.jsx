@@ -15,9 +15,11 @@ const BudgetFormEdit = (props) => {
   });
 
   return (
-    <Card style={{ border: "none", backgroundColor: "hsl(0, 0%, 97%, 0.5)" }}>
-      <Card.Header style={{ border: "none" }}>
-        <Card.Title className="text-center fs-3">Editar presupuesto</Card.Title>
+    <Card style={{ border: "none", backgroundColor: "white" }} className="mt-4">
+      <Card.Header style={{ border: "none", backgroundColor: "#373E68" }}>
+        <Card.Title className="text-center fs-3 text-white">
+          Editar presupuesto
+        </Card.Title>
       </Card.Header>
       <Card.Body className="p-4">
         <Form onSubmit={handleSubmit}>

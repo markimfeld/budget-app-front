@@ -6,6 +6,7 @@ import {
   Dropdown,
   Button,
   Modal,
+  Col,
 } from "react-bootstrap";
 
 import { useNavigate } from "react-router-dom";
@@ -37,37 +38,39 @@ const Budget = ({ budget }) => {
 
   return (
     <>
-      <Card className="mb-4" style={{ border: "none" }}>
-        <Card.Header style={{ border: "none" }}>
-          <Stack direction="horizontal" gap={3}>
-            <span>{budget.name}</span>
+      <Col md={6} lg={4}>
+        <Card className="mb-4" style={{ border: "none" }}>
+          <Card.Header style={{ border: "none", backgroundColor: "white" }}>
+            <Stack direction="horizontal" gap={3}>
+              <span className="fs-4">{budget.name}</span>
 
-            <DropdownButton
-              title={<i className="fa-sharp fa-solid fa-plus gray-color"></i>}
-              id="bg-vertical-dropdown-2"
-              variant="link"
-              className="ms-auto"
-              align="end"
-            >
-              <Dropdown.Item eventKey="2" onClick={() => handleEdit(budget)}>
-                Editar
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="3" onClick={handleShow}>
-                Borrar
-              </Dropdown.Item>
-            </DropdownButton>
-          </Stack>
-        </Card.Header>
-        <Card.Body style={{ backgroundColor: "hsl(0, 0%, 97%, 0.5)" }}>
-          <Card.Title>${budget.spentAmount.toFixed(2)} </Card.Title>
-          <Card.Text className="text-muted m-0 p-0">
-            Monto disponible ${budget.leftAmount.toFixed(2)}
-          </Card.Text>
-          <Card.Text className="text-muted">
-            Monto límite ${budget.expectedAmount.toFixed(2)}
-          </Card.Text>
-        </Card.Body>
-      </Card>
+              <DropdownButton
+                title={<i className="fa-sharp fa-solid fa-plus gray-color"></i>}
+                id="bg-vertical-dropdown-2"
+                variant="link"
+                className="ms-auto"
+                align="end"
+              >
+                <Dropdown.Item eventKey="2" onClick={() => handleEdit(budget)}>
+                  Editar
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="3" onClick={handleShow}>
+                  Borrar
+                </Dropdown.Item>
+              </DropdownButton>
+            </Stack>
+          </Card.Header>
+          <Card.Body style={{ backgroundColor: "white" }}>
+            <Card.Title>${budget.spentAmount.toFixed(2)} </Card.Title>
+            <Card.Text className="text-muted m-0 p-0">
+              Monto disponible ${budget.leftAmount.toFixed(2)}
+            </Card.Text>
+            <Card.Text className="text-muted">
+              Monto límite ${budget.expectedAmount.toFixed(2)}
+            </Card.Text>
+          </Card.Body>
+        </Card>
+      </Col>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

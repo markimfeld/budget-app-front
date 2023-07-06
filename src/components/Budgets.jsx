@@ -4,6 +4,8 @@ import {
   Placeholder,
   Stack,
   DropdownButton,
+  Row,
+  Col,
 } from "react-bootstrap";
 
 import { useNavigate } from "react-router-dom";
@@ -38,6 +40,23 @@ const Budgets = () => {
 
   return (
     <>
+      <Row className="mb-4">
+        <Col>
+          <Card style={{ backgroundColor: "#373E68" }}>
+            <Card.Body>
+              <Stack direction="horizontal" gap={3}>
+                <Button
+                  size="md"
+                  onClick={() => handleShowBudgetFormOrList()}
+                  className="ms-auto"
+                >
+                  <i className="fa-solid fa-plus fa-sm"></i> Agregar presupuesto
+                </Button>
+              </Stack>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
       <div>
         {isLoading && (
           <Card
@@ -83,7 +102,7 @@ const Budgets = () => {
         )}
       </div>
       <div>
-        {data?.length > 0 && !isLoading && budgetList}
+        {data?.length > 0 && !isLoading && <Row>{budgetList}</Row>}
         {data?.length === 0 && !isLoading && (
           <Card
             className="mb-4"

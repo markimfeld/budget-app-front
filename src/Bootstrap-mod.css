@@ -39,3 +39,11 @@
 .dropdown-menu {
     --bs-dropdown-link-active-bg: #4560e5;
 }
+
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
