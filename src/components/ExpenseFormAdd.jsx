@@ -1,10 +1,14 @@
 import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
 
+import { useNavigate } from "react-router-dom";
+
 // formik
 import { useFormik } from "formik";
 
 const ExpenseFormAdd = (props) => {
   const { onSubmit, onCancelOperation, budgets } = props;
+
+  const navigate = useNavigate();
 
   const { handleSubmit, handleChange, values } = useFormik({
     initialValues: {
@@ -24,82 +28,111 @@ const ExpenseFormAdd = (props) => {
     );
   });
 
-  return (
-    <Card style={{ border: "none", backgroundColor: "white" }} className="mt-4">
-      <Card.Header style={{ border: "none", backgroundColor: "#373E68" }}>
-        <Card.Title className="text-center fs-3 text-white">
-          Nuevo gasto
-        </Card.Title>
-      </Card.Header>
-      <Card.Body className="p-4">
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="formBasicName">
-            <FloatingLabel controlId="floatingName" label="Nombre del gasto">
-              <Form.Control
-                name="name"
-                value={values.name}
-                onChange={handleChange}
-                type="text"
-                placeholder="Horeb"
-                required
-              />
-            </FloatingLabel>
-          </Form.Group>
+  if (budgets?.length === 0) {
+    // return "Para crear un gasto, primero tenes que tener algun presupuesto creado.";
+    return (
+      <Card
+        border="light"
+        style={{ backgroundColor: "white" }}
+        className="py-2"
+      >
+        <Card.Body>
+          <Card.Title className="mb-0">
+            Para crear un gasto, primero tenes que tener algun presupuesto
+            creado 😄.{" "}
+            <Button onClick={() => navigate("/budgets/add")} variant="link">
+              Crear nuevo presupuesto
+            </Button>
+          </Card.Title>
+        </Card.Body>
+      </Card>
+    );
+  }
 
-          <Form.Group className="mb-3" controlId="formBasicDescripcion">
-            <FloatingLabel controlId="floatingDescription" label="Descripción">
-              <Form.Control
-                name="description"
-                value={values.description}
-                onChange={handleChange}
-                type="text"
-                placeholder="Alfajor"
-              />
-            </FloatingLabel>
-          </Form.Group>
+  if (budgets?.length > 0) {
+    return (
+      <Card
+        style={{ border: "none", backgroundColor: "white" }}
+        className="mt-4"
+      >
+        <Card.Header style={{ border: "none", backgroundColor: "#373E68" }}>
+          <Card.Title className="text-center fs-3 text-white">
+            Nuevo gasto
+          </Card.Title>
+        </Card.Header>
+        <Card.Body className="p-4">
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="formBasicName">
+              <FloatingLabel controlId="floatingName" label="Nombre del gasto">
+                <Form.Control
+                  name="name"
+                  value={values.name}
+                  onChange={handleChange}
+                  type="text"
+                  placeholder="Horeb"
+                  required
+                />
+              </FloatingLabel>
+            </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicMonto">
-            <FloatingLabel controlId="floatingAmount" label="Monto">
-              <Form.Control
-                name="amount"
-                value={values.amount}
-                onChange={handleChange}
-                type="number"
-                placeholder="15000"
-                required
-              />
-            </FloatingLabel>
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicPresupuesto">
-            <FloatingLabel controlId="floatingSelect" label="Presupuesto">
-              <Form.Select
-                name="budget"
-                value={values.budget}
-                onChange={handleChange}
-                aria-label="Floating label select example"
+            <Form.Group className="mb-3" controlId="formBasicDescripcion">
+              <FloatingLabel
+                controlId="floatingDescription"
+                label="Descripción"
               >
-                <option>Seleccionar</option>
-                {budgetOptions}
-              </Form.Select>
-            </FloatingLabel>
-          </Form.Group>
+                <Form.Control
+                  name="description"
+                  value={values.description}
+                  onChange={handleChange}
+                  type="text"
+                  placeholder="Alfajor"
+                />
+              </FloatingLabel>
+            </Form.Group>
 
-          <Stack direction="horizontal" gap={3}>
-            <Button className="ms-auto" variant="success" type="submit">
-              Guardar
-            </Button>
-            <Button
-              variant="outline-secondary"
-              onClick={() => onCancelOperation(true)}
-            >
-              Cancelar
-            </Button>
-          </Stack>
-        </Form>
-      </Card.Body>
-    </Card>
-  );
+            <Form.Group className="mb-3" controlId="formBasicMonto">
+              <FloatingLabel controlId="floatingAmount" label="Monto">
+                <Form.Control
+                  name="amount"
+                  value={values.amount}
+                  onChange={handleChange}
+                  type="number"
+                  placeholder="15000"
+                  required
+                />
+              </FloatingLabel>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicPresupuesto">
+              <FloatingLabel controlId="floatingSelect" label="Presupuesto">
+                <Form.Select
+                  name="budget"
+                  value={values.budget}
+                  onChange={handleChange}
+                  aria-label="Floating label select example"
+                >
+                  <option>Seleccionar</option>
+                  {budgetOptions}
+                </Form.Select>
+              </FloatingLabel>
+            </Form.Group>
+
+            <Stack direction="horizontal" gap={3}>
+              <Button className="ms-auto" variant="success" type="submit">
+                Guardar
+              </Button>
+              <Button
+                variant="outline-secondary"
+                onClick={() => onCancelOperation(true)}
+              >
+                Cancelar
+              </Button>
+            </Stack>
+          </Form>
+        </Card.Body>
+      </Card>
+    );
+  }
 };
 
 export default ExpenseFormAdd;

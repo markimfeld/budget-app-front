@@ -4,7 +4,6 @@ import {
   Nav,
   NavDropdown,
   Offcanvas,
-  Image,
 } from "react-bootstrap";
 
 import { useNavigate, Link } from "react-router-dom";
@@ -52,7 +51,7 @@ const Header = () => {
       <Navbar
         key="md"
         expand="lg"
-        className="bg-body-dark mb-3"
+        className="bg-body-dark"
         bg="dark"
         variant="dark"
       >
@@ -86,6 +85,22 @@ const Header = () => {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="justify-content-end flex-grow-1 pe-3">
+                <Nav.Link
+                  onClick={() => {
+                    navigate("/");
+                    handleClose();
+                  }}
+                >
+                  Inicio
+                </Nav.Link>
+                <Nav.Link
+                  onClick={() => {
+                    navigate("/informes");
+                    handleClose();
+                  }}
+                >
+                  Informes
+                </Nav.Link>
                 <Nav.Link
                   onClick={() => {
                     handleShowBudgetList();

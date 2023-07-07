@@ -14,6 +14,7 @@ import Expenses from "./Expenses";
 // custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useMessageContext } from "../hooks/useMessageContext";
+import Informes from "./Informes";
 
 const Home = () => {
   const { message } = useMessageContext();
@@ -48,6 +49,7 @@ const Home = () => {
               <Route path="/budgets" element={<Budgets />} />
               <Route path="/budgets/add" element={<BudgetForm />} />
               <Route path="/budgets/:budgetId/edit" element={<BudgetForm />} />
+              <Route path="/informes" element={<Informes />} />
             </Routes>
           </Col>
         </Row>

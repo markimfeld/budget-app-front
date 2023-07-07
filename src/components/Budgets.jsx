@@ -105,20 +105,20 @@ const Budgets = () => {
         {data?.length > 0 && !isLoading && <Row>{budgetList}</Row>}
         {data?.length === 0 && !isLoading && (
           <Card
-            className="mb-4"
             border="light"
-            style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+            style={{ backgroundColor: "white" }}
+            className="py-2"
           >
             <Card.Body>
-              <Card.Text>
-                No hay presupuestos creados aun 😄.{" "}
+              <Card.Title className="mb-0">
+                No hay presupuestos creados aún 😄.{" "}
                 <Button
                   onClick={() => handleShowBudgetFormOrList()}
                   variant="link"
                 >
                   Crear nuevo presupuesto
                 </Button>
-              </Card.Text>
+              </Card.Title>
             </Card.Body>
           </Card>
         )}

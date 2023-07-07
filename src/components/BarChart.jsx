@@ -9,6 +9,10 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
+import { Card } from "react-bootstrap";
+
+import { useQuery } from "react-query";
+
 // custom hooks
 import { useExpenseContext } from "../hooks/useExpenseContext";
 
@@ -24,7 +28,13 @@ ChartJS.register(
 const BarChart = () => {
   const days = ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sáb"];
 
-  const { allExpenses } = useExpenseContext();
+  const { getAllExpenses } = useExpenseContext();
+
+  // Queries
+  const { data: allExpenses, isLoading } = useQuery({
+    queryKey: ["allExpenses", { budget: null }],
+    queryFn: getAllExpenses,
+  });
 
   const subDays = (fecha, dias) => {
     fecha.setDate(fecha.getDate() + dias);
@@ -41,12 +51,12 @@ const BarChart = () => {
   const lastFiveDay = subDays(new Date(), -5);
   const lastSixDay = subDays(new Date(), -6);
 
-  const lastSevenDayExpenses = allExpenses.filter(
+  const lastSevenDayExpenses = allExpenses?.filter(
     (expense) => new Date(expense.createdAt).getTime() > lastSevenDay.getTime()
   );
 
   const spentToday = lastSevenDayExpenses
-    .map((expense) => {
+    ?.map((expense) => {
       if (new Date(expense.createdAt).getDate() === today.getDate()) {
         return expense.amount;
       }
@@ -55,7 +65,7 @@ const BarChart = () => {
     .reduce((acc, currentValue) => acc + currentValue, 0);
 
   const spentYesterday = lastSevenDayExpenses
-    .map((expense) => {
+    ?.map((expense) => {
       if (new Date(expense.createdAt).getDate() === yesterday.getDate()) {
         return expense.amount;
       }
@@ -64,7 +74,7 @@ const BarChart = () => {
     .reduce((acc, currentValue) => acc + currentValue, 0);
 
   const spentlastTwoDay = lastSevenDayExpenses
-    .map((expense) => {
+    ?.map((expense) => {
       if (new Date(expense.createdAt).getDate() === lastTwoDay.getDate()) {
         return expense.amount;
       }
@@ -73,7 +83,7 @@ const BarChart = () => {
     .reduce((acc, currentValue) => acc + currentValue, 0);
 
   const spentlastThreeDay = lastSevenDayExpenses
-    .map((expense) => {
+    ?.map((expense) => {
       if (new Date(expense.createdAt).getDate() === lastThreeDay.getDate()) {
         return expense.amount;
       }
@@ -82,7 +92,7 @@ const BarChart = () => {
     .reduce((acc, currentValue) => acc + currentValue, 0);
 
   const spentlastFourDay = lastSevenDayExpenses
-    .map((expense) => {
+    ?.map((expense) => {
       if (new Date(expense.createdAt).getDate() === lastFourDay.getDate()) {
         return expense.amount;
       }
@@ -91,7 +101,7 @@ const BarChart = () => {
     .reduce((acc, currentValue) => acc + currentValue, 0);
 
   const spentlastFiveDay = lastSevenDayExpenses
-    .map((expense) => {
+    ?.map((expense) => {
       if (new Date(expense.createdAt).getDate() === lastFiveDay.getDate()) {
         return expense.amount;
       }
@@ -100,7 +110,7 @@ const BarChart = () => {
     .reduce((acc, currentValue) => acc + currentValue, 0);
 
   const spentlastSixDay = lastSevenDayExpenses
-    .map((expense) => {
+    ?.map((expense) => {
       if (new Date(expense.createdAt).getDate() === lastSixDay.getDate()) {
         return expense.amount;
       }
@@ -157,7 +167,13 @@ const BarChart = () => {
     ],
   };
 
-  return <Bar options={options} data={data} />;
+  if (!isLoading && allExpenses?.length === 0) {
+    return <Card.Title>No hay datos</Card.Title>;
+  }
+
+  if (!isLoading && allExpenses?.length > 0) {
+    return <Bar options={options} data={data} />;
+  }
 };
 
 export default BarChart;

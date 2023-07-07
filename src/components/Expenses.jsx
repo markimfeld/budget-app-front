@@ -9,12 +9,15 @@ import Expense from "./Expense";
 import { useExpenseContext } from "../hooks/useExpenseContext";
 import { useBudgetContext } from "../hooks/useBudgetContext";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Expenses = () => {
   const { getAllExpenses } = useExpenseContext();
   const { getBudgets } = useBudgetContext();
 
   const [budgetId, setBudgetId] = useState(null);
+
+  const navigate = useNavigate();
 
   // Queries
   const { data: expenses, isLoading } = useQuery({
@@ -40,61 +43,63 @@ const Expenses = () => {
 
   return (
     <>
-      <Row>
-        <Col>
-          <Card style={{ backgroundColor: "white", border: "none" }}>
-            <Card.Body style={{ wordBreak: "break-all" }}>
-              <Card.Text>Filtrar por presupuesto:</Card.Text>
-              {budgetId === null && (
-                <Button
-                  onClick={() => setBudgetId(null)}
-                  variant="outline-success"
-                  className="me-2 mb-2"
-                  active
-                >
-                  Todos
-                </Button>
-              )}
-              {budgetId !== null && (
-                <Button
-                  onClick={() => setBudgetId(null)}
-                  variant="outline-success"
-                  className="me-2 mb-2"
-                >
-                  Todos
-                </Button>
-              )}
+      {!isLoading && expenses?.length > 0 && (
+        <Row>
+          <Col>
+            <Card style={{ backgroundColor: "white", border: "none" }}>
+              <Card.Body style={{ wordBreak: "break-all" }}>
+                <Card.Text>Filtrar por presupuesto:</Card.Text>
+                {budgetId === null && (
+                  <Button
+                    onClick={() => setBudgetId(null)}
+                    variant="outline-success"
+                    className="me-2 mb-2"
+                    active
+                  >
+                    Todos
+                  </Button>
+                )}
+                {budgetId !== null && (
+                  <Button
+                    onClick={() => setBudgetId(null)}
+                    variant="outline-success"
+                    className="me-2 mb-2"
+                  >
+                    Todos
+                  </Button>
+                )}
 
-              {budgets?.map((b) => {
-                if (budgetId === b._id) {
-                  return (
-                    <Button
-                      key={b._id}
-                      onClick={() => setBudgetId(b._id)}
-                      variant="outline-success"
-                      className="me-2 mb-2"
-                      active
-                    >
-                      {b.name}
-                    </Button>
-                  );
-                } else {
-                  return (
-                    <Button
-                      key={b._id}
-                      onClick={() => setBudgetId(b._id)}
-                      variant="outline-success"
-                      className="me-2 mb-2"
-                    >
-                      {b.name}
-                    </Button>
-                  );
-                }
-              })}
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+                {budgets?.map((b) => {
+                  if (budgetId === b._id) {
+                    return (
+                      <Button
+                        key={b._id}
+                        onClick={() => setBudgetId(b._id)}
+                        variant="outline-success"
+                        className="me-2 mb-2"
+                        active
+                      >
+                        {b.name}
+                      </Button>
+                    );
+                  } else {
+                    return (
+                      <Button
+                        key={b._id}
+                        onClick={() => setBudgetId(b._id)}
+                        variant="outline-success"
+                        className="me-2 mb-2"
+                      >
+                        {b.name}
+                      </Button>
+                    );
+                  }
+                })}
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      )}
       <div className="mt-3">
         <div>
           <p
@@ -151,16 +156,6 @@ const Expenses = () => {
         </div>
         {expenses?.length === 0 && (
           <div>
-            <p
-              className="text-muted"
-              style={{
-                paddingLeft: 2,
-                paddingBottom: 4,
-                marginBottom: 0,
-              }}
-            >
-              Movimientos
-            </p>
             <Card
               border="light"
               style={{ backgroundColor: "white" }}
@@ -170,7 +165,13 @@ const Expenses = () => {
                 <Stack direction="horizontal" gap={3}>
                   <span>
                     <Card.Title className="mb-0">
-                      No se encontraron resultados 😄.
+                      No gastos creados aún 😄.{" "}
+                      <Button
+                        onClick={() => navigate("/expenses/add")}
+                        variant="link"
+                      >
+                        Crear nuevo gasto
+                      </Button>
                     </Card.Title>
                   </span>
                 </Stack>
