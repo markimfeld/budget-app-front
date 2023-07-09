@@ -11,29 +11,23 @@ import { useBudgetContext } from "../hooks/useBudgetContext";
 import { useMessageContext } from "../hooks/useMessageContext";
 import { useIncomeContext } from "../hooks/useIncomeContext";
 
-const months = [
-  "Enero",
-  "Febrero",
-  "Marzo",
-  "Abril",
-  "Mayo",
-  "Junio",
-  "Julio",
-  "Agosto",
-  "Septiembre",
-  "Octubre",
-  "Noviembre",
-  "Diciembre",
-];
+// const months = [
+//   "Enero",
+//   "Febrero",
+//   "Marzo",
+//   "Abril",
+//   "Mayo",
+//   "Junio",
+//   "Julio",
+//   "Agosto",
+//   "Septiembre",
+//   "Octubre",
+//   "Noviembre",
+//   "Diciembre",
+// ];
 
 const Dashboard = () => {
-  const {
-    budgets,
-    getBudgets,
-    getCurrentMonthBudgets,
-    getNextMonthBudgets,
-    getPreviuosMonthBudgets,
-  } = useBudgetContext();
+  const { budgets } = useBudgetContext();
   const { clearMessages } = useMessageContext();
 
   const { getIncomes } = useIncomeContext();
@@ -52,32 +46,32 @@ const Dashboard = () => {
 
   const spentTotal = budgets.map((budget) => budget.spentAmount);
 
-  const expectedTotal = budgets.map((budget) => budget.expectedAmount);
+  // const expectedTotal = budgets.map((budget) => budget.expectedAmount);
 
   const spentTotals = spentTotal
     .reduce((acc, currentValue) => acc + currentValue, 0)
     .toFixed(2);
 
-  const expectedTotals = expectedTotal
-    .reduce((acc, currentValue) => acc + currentValue, 0)
-    .toFixed(2);
+  // const expectedTotals = expectedTotal
+  //   .reduce((acc, currentValue) => acc + currentValue, 0)
+  //   .toFixed(2);
 
   const handleShowBudgetFormOrList = () => {
     clearMessages();
     navigate("/expenses/add");
   };
 
-  const handleCurrentMonth = () => {
-    getCurrentMonthBudgets();
-  };
+  // const handleCurrentMonth = () => {
+  //   getCurrentMonthBudgets();
+  // };
 
-  const handleNextMonth = () => {
-    getNextMonthBudgets();
-  };
+  // const handleNextMonth = () => {
+  //   getNextMonthBudgets();
+  // };
 
-  const handlePreviusMonth = () => {
-    getPreviuosMonthBudgets();
-  };
+  // const handlePreviusMonth = () => {
+  //   getPreviuosMonthBudgets();
+  // };
 
   return (
     <>
@@ -160,19 +154,18 @@ const Dashboard = () => {
         </Col>
       </Row> */}
       <Row>
-        <Col md={3}>
+        <Col md={4}>
           {!isLoading && (
-            <Card
-              className="mb-3 card-background-gradient"
-              // style={{ backgroundColor: "rgba(255, 159, 64, 0.2)" }}
-              // style={{
-              //   backgroundColor: "hsl(10, 79%, 65%)",
-              //   borderColor: "hsl(10, 79%, 65%)",
-              // }}
-            >
+            <Card className="mb-3 card-background-gradient">
               <Card.Body>
                 <p className="m-0 mb-1 text-white">Ingresos este mes</p>
-                <h3 className="ms-auto text-white">${totalIncomes}</h3>
+                <h3 className="ms-auto text-white">
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "USD",
+                  }).format(totalIncomes)}
+                </h3>
               </Card.Body>
             </Card>
           )}
@@ -193,16 +186,9 @@ const Dashboard = () => {
             </Card>
           )}
         </Col>
-        <Col md={3}>
+        {/* <Col md={3}>
           {!isLoading && (
-            <Card
-              className="mb-3 card-background-gradient"
-              // style={{ backgroundColor: "rgba(255, 159, 64, 0.2)" }}
-              // style={{
-              //   backgroundColor: "hsl(10, 79%, 65%)",
-              //   borderColor: "hsl(10, 79%, 65%)",
-              // }}
-            >
+            <Card className="mb-3 card-background-gradient">
               <Card.Body>
                 <p className="m-0 mb-1 text-white">Presupuestado este mes</p>
                 <h3 className="ms-auto text-white">${expectedTotals}</h3>
@@ -225,19 +211,19 @@ const Dashboard = () => {
               </Card.Body>
             </Card>
           )}
-        </Col>
-        <Col md={3}>
+        </Col> */}
+        <Col md={4}>
           {!isLoading && (
-            <Card
-              className="mb-3 card-background-gradient"
-              // style={{
-              //   backgroundColor: "hsl(10, 79%, 65%)",
-              //   borderColor: "hsl(10, 79%, 65%)",
-              // }}
-            >
+            <Card className="mb-3 card-background-gradient">
               <Card.Body>
                 <p className="m-0 mb-1 text-white">Total este mes</p>
-                <h3 className="ms-auto text-white">${spentTotals}</h3>
+                <h3 className="ms-auto text-white">
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "USD",
+                  }).format(spentTotals)}
+                </h3>
               </Card.Body>
             </Card>
           )}
@@ -258,19 +244,17 @@ const Dashboard = () => {
             </Card>
           )}
         </Col>
-        <Col md={3}>
+        <Col md={4}>
           {!isLoading && (
-            <Card
-              className="mb-3 card-background-gradient"
-              // style={{
-              //   backgroundColor: "hsl(10, 79%, 65%)",
-              //   borderColor: "hsl(10, 79%, 65%)",
-              // }}
-            >
+            <Card className="mb-3 card-background-gradient">
               <Card.Body>
                 <p className="m-0 mb-1 text-white">Mi balance</p>
                 <h3 className="ms-auto text-white">
-                  ${(expectedTotals - spentTotals).toFixed(2)}
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "USD",
+                  }).format((totalIncomes - spentTotals).toFixed(2))}
                 </h3>
               </Card.Body>
             </Card>

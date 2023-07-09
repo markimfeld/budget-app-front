@@ -6,4 +6,4 @@
 - [x] Ver donde meter los graficos.
 - [ ] Agregar funcionalidad para editar usuario.
 - [ ] validaciones de formularios, mostrar los errores yup.
-- [ ] Agregar ingresos.
+- [x] Agregar ingresos.
