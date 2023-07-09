@@ -10,11 +10,13 @@ import Header from "./Header";
 import BudgetForm from "./BudgetForm";
 import ExpenseForm from "./ExpenseForm";
 import Expenses from "./Expenses";
+import Incomes from "./Incomes";
+import Informes from "./Informes";
+import IncomeForm from "./IncomeForm";
 
 // custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useMessageContext } from "../hooks/useMessageContext";
-import Informes from "./Informes";
 
 const Home = () => {
   const { message } = useMessageContext();
@@ -50,6 +52,8 @@ const Home = () => {
               <Route path="/budgets/add" element={<BudgetForm />} />
               <Route path="/budgets/:budgetId/edit" element={<BudgetForm />} />
               <Route path="/informes" element={<Informes />} />
+              <Route path="/incomes" element={<Incomes />} />
+              <Route path="/incomes/add" element={<IncomeForm />} />
             </Routes>
           </Col>
         </Row>

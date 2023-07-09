@@ -45,7 +45,7 @@ const PieChart = () => {
   };
 
   const thereIsNothing =
-    data?.datasets[0]?.data?.reduce((prev, current) => prev + current) === 0;
+    data?.datasets[0]?.data?.reduce((prev, current) => prev + current, 0) === 0;
 
   if (!isLoading && (budgets?.length === 0 || thereIsNothing)) {
     return <Card.Title>No hay datos</Card.Title>;

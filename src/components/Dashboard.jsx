@@ -2,9 +2,6 @@ import { Card, Button, Stack, Row, Col, Placeholder } from "react-bootstrap";
 
 import "../components/Dashboard.css";
 
-import PieChart from "./PieChart";
-import BarChart from "./BarChart";
-
 import { useQuery } from "react-query";
 
 import { useNavigate } from "react-router-dom";
@@ -12,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 // custom hooks
 import { useBudgetContext } from "../hooks/useBudgetContext";
 import { useMessageContext } from "../hooks/useMessageContext";
+import { useIncomeContext } from "../hooks/useIncomeContext";
 
 const months = [
   "Enero",
@@ -31,7 +29,6 @@ const months = [
 const Dashboard = () => {
   const {
     budgets,
-    filters,
     getBudgets,
     getCurrentMonthBudgets,
     getNextMonthBudgets,
@@ -39,12 +36,19 @@ const Dashboard = () => {
   } = useBudgetContext();
   const { clearMessages } = useMessageContext();
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["budgets"],
-    queryFn: getBudgets,
+  const { getIncomes } = useIncomeContext();
+
+  const { data: incomes, isLoading } = useQuery({
+    queryKey: ["incomes"],
+    queryFn: getIncomes,
   });
 
   const navigate = useNavigate();
+
+  const totalIncomes = incomes
+    ?.map((income) => income.amount)
+    .reduce((acc, currentValue) => acc + currentValue, 0)
+    .toFixed(2);
 
   const spentTotal = budgets.map((budget) => budget.spentAmount);
 
@@ -156,7 +160,40 @@ const Dashboard = () => {
         </Col>
       </Row> */}
       <Row>
-        <Col md={4}>
+        <Col md={3}>
+          {!isLoading && (
+            <Card
+              className="mb-3 card-background-gradient"
+              // style={{ backgroundColor: "rgba(255, 159, 64, 0.2)" }}
+              // style={{
+              //   backgroundColor: "hsl(10, 79%, 65%)",
+              //   borderColor: "hsl(10, 79%, 65%)",
+              // }}
+            >
+              <Card.Body>
+                <p className="m-0 mb-1 text-white">Ingresos este mes</p>
+                <h3 className="ms-auto text-white">${totalIncomes}</h3>
+              </Card.Body>
+            </Card>
+          )}
+          {isLoading && (
+            <Card
+              className="mb-3"
+              border="light"
+              style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+            >
+              <Card.Body>
+                <Placeholder as={Card.Text} animation="glow">
+                  <Placeholder xs={6} />
+                </Placeholder>
+                <Placeholder as={Card.Text} animation="glow">
+                  <Placeholder xs={4} />
+                </Placeholder>
+              </Card.Body>
+            </Card>
+          )}
+        </Col>
+        <Col md={3}>
           {!isLoading && (
             <Card
               className="mb-3 card-background-gradient"
@@ -189,7 +226,7 @@ const Dashboard = () => {
             </Card>
           )}
         </Col>
-        <Col md={4}>
+        <Col md={3}>
           {!isLoading && (
             <Card
               className="mb-3 card-background-gradient"
@@ -221,7 +258,7 @@ const Dashboard = () => {
             </Card>
           )}
         </Col>
-        <Col md={4}>
+        <Col md={3}>
           {!isLoading && (
             <Card
               className="mb-3 card-background-gradient"
@@ -273,38 +310,6 @@ const Dashboard = () => {
           </Card>
         </Col>
       </Row>
-      {/* {budgets.length > 0 && (
-        <Row>
-          <Col md={6}>
-            <Card
-              className="mb-3 mb-md-1"
-              border="light"
-              style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
-            >
-              <Card.Body
-                style={{ height: "300px" }}
-                className="d-flex justify-content-center align-items-center"
-              >
-                <PieChart />
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={6}>
-            <Card
-              className="mb-1"
-              border="light"
-              style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
-            >
-              <Card.Body
-                style={{ height: "300px" }}
-                className="d-flex justify-content-center align-items-center"
-              >
-                <BarChart />
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      )} */}
     </>
   );
 };

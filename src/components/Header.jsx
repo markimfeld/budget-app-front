@@ -91,15 +91,23 @@ const Header = () => {
                     handleClose();
                   }}
                 >
-                  Inicio
+                  Gastos
                 </Nav.Link>
-                <Nav.Link
+                {/* <Nav.Link
                   onClick={() => {
                     navigate("/informes");
                     handleClose();
                   }}
                 >
                   Informes
+                </Nav.Link> */}
+                <Nav.Link
+                  onClick={() => {
+                    navigate("/incomes");
+                    handleClose();
+                  }}
+                >
+                  Ingresos
                 </Nav.Link>
                 <Nav.Link
                   onClick={() => {
