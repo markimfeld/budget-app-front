@@ -1,4 +1,12 @@
-import { Card, Button, Stack, Row, Col, Placeholder } from "react-bootstrap";
+import {
+  Card,
+  Button,
+  Stack,
+  Row,
+  Col,
+  Placeholder,
+  ProgressBar,
+} from "react-bootstrap";
 
 import "../components/Dashboard.css";
 
@@ -55,6 +63,8 @@ const Dashboard = () => {
   // const expectedTotals = expectedTotal
   //   .reduce((acc, currentValue) => acc + currentValue, 0)
   //   .toFixed(2);
+
+  const leftPorcentage = Math.floor((1 - spentTotals / totalIncomes) * 100);
 
   const handleShowBudgetFormOrList = () => {
     clearMessages();
@@ -154,7 +164,7 @@ const Dashboard = () => {
         </Col>
       </Row> */}
       <Row>
-        <Col md={4}>
+        {/* <Col md={4}>
           {!isLoading && (
             <Card className="mb-3 card-background-gradient">
               <Card.Body>
@@ -185,7 +195,7 @@ const Dashboard = () => {
               </Card.Body>
             </Card>
           )}
-        </Col>
+        </Col> */}
         {/* <Col md={3}>
           {!isLoading && (
             <Card className="mb-3 card-background-gradient">
@@ -212,11 +222,11 @@ const Dashboard = () => {
             </Card>
           )}
         </Col> */}
-        <Col md={4}>
+        {/* <Col md={4}>
           {!isLoading && (
             <Card className="mb-3 card-background-gradient">
               <Card.Body>
-                <p className="m-0 mb-1 text-white">Total este mes</p>
+                <p className="m-0 mb-1 text-white">Gastos este mes</p>
                 <h3 className="ms-auto text-white">
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
@@ -243,19 +253,39 @@ const Dashboard = () => {
               </Card.Body>
             </Card>
           )}
-        </Col>
-        <Col md={4}>
+        </Col> */}
+        <Col md={12}>
           {!isLoading && (
-            <Card className="mb-3 card-background-gradient">
+            <Card className="mb-3 card-bg-light">
               <Card.Body>
-                <p className="m-0 mb-1 text-white">Mi balance</p>
-                <h3 className="ms-auto text-white">
+                <p className="m-0 mb-1 text-muted">Balance total</p>
+                <h3 className="ms-auto text-dark fw-bold mb-3">
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
                     minimumFractionDigits: 2,
                     currency: "USD",
                   }).format((totalIncomes - spentTotals).toFixed(2))}
                 </h3>
+                {leftPorcentage >= 70 && (
+                  <ProgressBar
+                    now={leftPorcentage}
+                    label={`${leftPorcentage}%`}
+                  />
+                )}
+                {leftPorcentage >= 50 && leftPorcentage < 70 && (
+                  <ProgressBar
+                    className="progress-mid"
+                    now={leftPorcentage}
+                    label={`${leftPorcentage}%`}
+                  />
+                )}
+                {leftPorcentage < 50 && (
+                  <ProgressBar
+                    className="progress-low"
+                    now={leftPorcentage}
+                    label={`${leftPorcentage}%`}
+                  />
+                )}
               </Card.Body>
             </Card>
           )}

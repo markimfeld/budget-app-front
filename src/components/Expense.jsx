@@ -55,7 +55,7 @@ const Expense = ({ expense, budget }) => {
             </span>
             <Card.Title className="ms-auto mb-0">
               <Stack direction="horizontal" gap={3}>
-                <span className="fs-4">
+                <span className="fs-4 fw-bold">
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
                     minimumFractionDigits: 2,

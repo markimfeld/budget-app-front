@@ -61,7 +61,13 @@ const Income = ({ income }) => {
             </Stack>
           </Card.Header>
           <Card.Body style={{ backgroundColor: "white" }}>
-            <Card.Title>${income.amount.toFixed(2)} </Card.Title>
+            <Card.Title>
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                minimumFractionDigits: 2,
+                currency: "USD",
+              }).format(income.amount.toFixed(2))}
+            </Card.Title>
           </Card.Body>
         </Card>
       </Col>

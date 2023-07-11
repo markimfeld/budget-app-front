@@ -85,22 +85,15 @@ const Header = () => {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="justify-content-end flex-grow-1 pe-3">
-                <Nav.Link
-                  onClick={() => {
-                    navigate("/");
-                    handleClose();
-                  }}
-                >
-                  Gastos
-                </Nav.Link>
                 {/* <Nav.Link
                   onClick={() => {
                     navigate("/informes");
                     handleClose();
                   }}
                 >
-                  Informes
+                  Gráficos
                 </Nav.Link> */}
+
                 <Nav.Link
                   onClick={() => {
                     navigate("/incomes");
@@ -108,6 +101,14 @@ const Header = () => {
                   }}
                 >
                   Ingresos
+                </Nav.Link>
+                <Nav.Link
+                  onClick={() => {
+                    navigate("/");
+                    handleClose();
+                  }}
+                >
+                  Salidas
                 </Nav.Link>
                 <Nav.Link
                   onClick={() => {

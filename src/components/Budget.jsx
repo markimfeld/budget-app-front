@@ -61,12 +61,28 @@ const Budget = ({ budget }) => {
             </Stack>
           </Card.Header>
           <Card.Body style={{ backgroundColor: "white" }}>
-            <Card.Title>${budget.spentAmount.toFixed(2)} </Card.Title>
+            <Card.Title>
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                minimumFractionDigits: 2,
+                currency: "USD",
+              }).format(budget.spentAmount.toFixed(2))}
+            </Card.Title>
             <Card.Text className="text-muted m-0 p-0">
-              Monto disponible ${budget.leftAmount.toFixed(2)}
+              Monto disponible{" "}
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                minimumFractionDigits: 2,
+                currency: "USD",
+              }).format(budget.leftAmount.toFixed(2))}
             </Card.Text>
             <Card.Text className="text-muted">
-              Monto límite ${budget.expectedAmount.toFixed(2)}
+              Monto límite{" "}
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                minimumFractionDigits: 2,
+                currency: "USD",
+              }).format(budget.expectedAmount.toFixed(2))}
             </Card.Text>
           </Card.Body>
         </Card>

@@ -47,3 +47,15 @@
 .navbar-toggler:focus {
     box-shadow: none;
 }
+
+.progress {
+    --bs-progress-bar-bg: hsl(230, 75%, 58%);
+}
+
+.progress-mid {
+    --bs-progress-bar-bg: hsl(39, 75%, 58%);
+}
+
+.progress-low {
+    --bs-progress-bar-bg: hsl(0, 75%, 58%);
+}
