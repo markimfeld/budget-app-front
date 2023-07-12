@@ -55,7 +55,10 @@ const Expenses = () => {
                   marginBottom: 0,
                 }}
               ></p>
-              <Card style={{ backgroundColor: "white", border: "none" }}>
+              <Card
+                style={{ backgroundColor: "white", border: "none" }}
+                className="shadow-sm mb-3 bg-body rounded"
+              >
                 <Card.Body style={{ wordBreak: "break-all" }}>
                   <Card.Text>Filtrar por presupuesto:</Card.Text>
                   {budgetId === null && (
@@ -113,7 +116,7 @@ const Expenses = () => {
           <div>
             <div>
               <p
-                className="text-muted mt-4 mt-md-0"
+                className="text-muted mt-2 mt-md-0"
                 style={{
                   paddingLeft: 2,
                   paddingBottom: 4,
@@ -169,7 +172,7 @@ const Expenses = () => {
                 <Card
                   border="light"
                   style={{ backgroundColor: "white" }}
-                  className="py-2"
+                  className="shadow-sm py-2 mb-3 bg-body rounded"
                 >
                   <Card.Body>
                     <Stack direction="horizontal" gap={3}>

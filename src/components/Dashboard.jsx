@@ -64,7 +64,8 @@ const Dashboard = () => {
   //   .reduce((acc, currentValue) => acc + currentValue, 0)
   //   .toFixed(2);
 
-  const leftPorcentage = Math.floor((1 - spentTotals / totalIncomes) * 100);
+  const leftPorcentage =
+    Math.floor((1 - spentTotals / totalIncomes) * 100) || 0;
 
   const handleShowBudgetFormOrList = () => {
     clearMessages();
@@ -256,7 +257,10 @@ const Dashboard = () => {
         </Col> */}
         <Col md={12}>
           {!isLoading && (
-            <Card className="mb-3 card-bg-light">
+            <Card
+              className="shadow-sm mb-3 bg-body rounded"
+              style={{ border: "none" }}
+            >
               <Card.Body>
                 <p className="m-0 mb-1 text-muted">Balance total</p>
                 <h3 className="ms-auto text-dark fw-bold mb-3">
@@ -269,21 +273,21 @@ const Dashboard = () => {
                 {leftPorcentage >= 70 && (
                   <ProgressBar
                     now={leftPorcentage}
-                    label={`${leftPorcentage}%`}
+                    label={`${leftPorcentage}% disponible`}
                   />
                 )}
                 {leftPorcentage >= 50 && leftPorcentage < 70 && (
                   <ProgressBar
                     className="progress-mid"
                     now={leftPorcentage}
-                    label={`${leftPorcentage}%`}
+                    label={`${leftPorcentage}% disponible`}
                   />
                 )}
                 {leftPorcentage < 50 && (
                   <ProgressBar
                     className="progress-low"
                     now={leftPorcentage}
-                    label={`${leftPorcentage}%`}
+                    label={`${leftPorcentage}% disponible`}
                   />
                 )}
               </Card.Body>

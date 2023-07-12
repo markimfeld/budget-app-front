@@ -7,6 +7,7 @@ import {
   Button,
   Modal,
   Col,
+  ProgressBar,
 } from "react-bootstrap";
 
 import { useNavigate } from "react-router-dom";
@@ -36,13 +37,26 @@ const Budget = ({ budget }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const leftAmount = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    minimumFractionDigits: 2,
+    currency: "USD",
+  }).format(budget.leftAmount.toFixed(2));
+
+  const leftPorcentage = Math.floor(
+    (1 - budget.spentAmount / budget.expectedAmount) * 100
+  );
+
   return (
     <>
-      <Col md={6} lg={4}>
-        <Card className="mb-4" style={{ border: "none" }}>
+      <Col md={6} lg={6}>
+        <Card
+          className="shadow-sm p-3 mb-3 bg-body rounded"
+          style={{ border: "none" }}
+        >
           <Card.Header style={{ border: "none", backgroundColor: "white" }}>
             <Stack direction="horizontal" gap={3}>
-              <span className="fs-4">{budget.name}</span>
+              <span className="fs-4 fw-bold">{budget.name}</span>
 
               <DropdownButton
                 title={<i className="fa-sharp fa-solid fa-plus gray-color"></i>}
@@ -61,14 +75,14 @@ const Budget = ({ budget }) => {
             </Stack>
           </Card.Header>
           <Card.Body style={{ backgroundColor: "white" }}>
-            <Card.Title>
+            {/* <Card.Title>
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 minimumFractionDigits: 2,
                 currency: "USD",
               }).format(budget.spentAmount.toFixed(2))}
-            </Card.Title>
-            <Card.Text className="text-muted m-0 p-0">
+            </Card.Title> */}
+            {/* <Card.Text className="text-muted m-0 p-0">
               Monto disponible{" "}
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
@@ -83,7 +97,33 @@ const Budget = ({ budget }) => {
                 minimumFractionDigits: 2,
                 currency: "USD",
               }).format(budget.expectedAmount.toFixed(2))}
-            </Card.Text>
+            </Card.Text> */}
+            {leftPorcentage >= 70 && (
+              <ProgressBar
+                now={budget.leftAmount}
+                label={`${leftAmount} disponible`}
+                min={0}
+                max={budget.expectedAmount}
+              />
+            )}
+            {leftPorcentage >= 50 && leftPorcentage < 70 && (
+              <ProgressBar
+                className="progress-mid"
+                now={budget.leftAmount}
+                label={`${leftAmount} disponible`}
+                min={0}
+                max={budget.expectedAmount}
+              />
+            )}
+            {leftPorcentage < 50 && (
+              <ProgressBar
+                className="progress-low"
+                now={budget.leftAmount}
+                label={`${leftAmount} disponible`}
+                min={0}
+                max={budget.expectedAmount}
+              />
+            )}
           </Card.Body>
         </Card>
       </Col>
@@ -94,7 +134,7 @@ const Budget = ({ budget }) => {
         </Modal.Header>
         <Modal.Body>
           ¿Estás seguro de eliminar el presupuesto{" "}
-          <span style={{ fontWeight: 500 }}>{budget.name}</span>?
+          <span className="fw-bold">{budget.name}</span>?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

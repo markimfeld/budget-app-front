@@ -107,7 +107,7 @@ const Incomes = () => {
           <Card
             border="light"
             style={{ backgroundColor: "white" }}
-            className="py-2"
+            className="shadow-sm py-2 mb-3 bg-body rounded"
           >
             <Card.Body>
               <Card.Title className="mb-0">

@@ -42,8 +42,8 @@ const Expense = ({ expense, budget }) => {
       <Card
         key={expense._id}
         border="light"
-        style={{ backgroundColor: "white" }}
-        className="py-2"
+        style={{ backgroundColor: "white", border: "none" }}
+        className="shadow-sm py-2 mb-3 bg-body rounded"
       >
         <Card.Body>
           <Stack direction="horizontal" gap={3}>

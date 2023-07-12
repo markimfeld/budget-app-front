@@ -39,7 +39,10 @@ const Income = ({ income }) => {
   return (
     <>
       <Col md={6} lg={4}>
-        <Card className="mb-4" style={{ border: "none" }}>
+        <Card
+          className="shadow-sm mb-3 bg-body rounded"
+          style={{ border: "none" }}
+        >
           <Card.Header style={{ border: "none", backgroundColor: "white" }}>
             <Stack direction="horizontal" gap={3}>
               <span className="fs-4">{income.name}</span>
@@ -78,7 +81,7 @@ const Income = ({ income }) => {
         </Modal.Header>
         <Modal.Body>
           ¿Estás seguro de eliminar el presupuesto{" "}
-          <span style={{ fontWeight: 500 }}>{income.name}</span>?
+          <span className="fw-bold">{income.name}</span>?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

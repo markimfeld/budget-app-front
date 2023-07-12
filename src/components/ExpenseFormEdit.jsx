@@ -25,7 +25,10 @@ const ExpenseFormEdit = (props) => {
   });
 
   return (
-    <Card style={{ border: "none", backgroundColor: "white" }} className="mt-4">
+    <Card
+      style={{ border: "none", backgroundColor: "white" }}
+      className="shadow-sm mb-3 mt-4 bg-body rounded"
+    >
       <Card.Header style={{ border: "none", backgroundColor: "#373E68" }}>
         <Card.Title className="text-center fs-3 text-white">
           Modificar gasto

@@ -34,7 +34,7 @@ const ExpenseFormAdd = (props) => {
       <Card
         border="light"
         style={{ backgroundColor: "white" }}
-        className="py-2"
+        className="shadow-sm mb-3 py-2 bg-body rounded"
       >
         <Card.Body>
           <Card.Title className="mb-0">
@@ -53,7 +53,7 @@ const ExpenseFormAdd = (props) => {
     return (
       <Card
         style={{ border: "none", backgroundColor: "white" }}
-        className="mt-4"
+        className="shadow-sm mb-3 mt-4 bg-body rounded"
       >
         <Card.Header style={{ border: "none", backgroundColor: "#373E68" }}>
           <Card.Title className="text-center fs-3 text-white">
