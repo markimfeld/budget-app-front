@@ -8,12 +8,10 @@ import {
   Container,
 } from "react-bootstrap";
 import { useNavigate, useLocation, Navigate } from "react-router-dom";
+import * as Yup from "yup";
 
 // formik
 import { useFormik } from "formik";
-
-// components
-import Message from "./Message";
 
 // custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -22,6 +20,7 @@ import { useMessageContext } from "../hooks/useMessageContext";
 const Register = () => {
   const {
     message,
+    recordType,
     handleSetMessage,
     handleSetType,
     handleSetRecordType,
@@ -56,7 +55,17 @@ const Register = () => {
     }
   };
 
-  const { handleSubmit, values, setFieldValue } = useFormik({
+  const RegisterSchema = Yup.object().shape({
+    firstName: Yup.string().required("Requerido"),
+    lastName: Yup.string().required("Requerido"),
+    username: Yup.string().required("Requerido"),
+    email: Yup.string()
+      .email("Usá el formato usuario@dominio.com")
+      .required("Requerido"),
+    password: Yup.string().min(6, "Muy corta!").required("Requerido"),
+  });
+
+  const { handleSubmit, values, setFieldValue, errors, touched } = useFormik({
     initialValues: {
       email: "",
       password: "",
@@ -65,6 +74,7 @@ const Register = () => {
       username: "",
       registerEnabledBtn: false,
     },
+    validationSchema: RegisterSchema,
     onSubmit,
   });
 
@@ -140,6 +150,10 @@ const Register = () => {
     navigate("/login");
   };
 
+  const showMessage = () => {
+    return message !== null && recordType === "user";
+  };
+
   return (
     <>
       {user && <Navigate to={from} replace />}
@@ -150,7 +164,6 @@ const Register = () => {
             style={{ height: "97vh" }}
           >
             <Col md="6">
-              {message !== null && <Message />}
               <Card
                 style={{ borderRadius: 0, backgroundColor: "hsl(0, 0%, 97%)" }}
               >
@@ -158,7 +171,7 @@ const Register = () => {
                   <Card.Title className="text-center fs-1 mb-4">
                     <i className="fa-solid fa-coins"></i> Finance Pro
                   </Card.Title>
-                  <Form onSubmit={handleSubmit}>
+                  <Form noValidate onSubmit={handleSubmit}>
                     <Row className="g-2 mb-2">
                       <Col md>
                         <FloatingLabel
@@ -172,7 +185,12 @@ const Register = () => {
                             type="text"
                             placeholder="Ej: Lionel"
                             required
+                            isValid={touched.firstName && !errors.firstName}
+                            isInvalid={errors.firstName}
                           />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.firstName}
+                          </Form.Control.Feedback>
                         </FloatingLabel>
                       </Col>
                       <Col md>
@@ -187,7 +205,12 @@ const Register = () => {
                             type="text"
                             placeholder="Ej: Messi"
                             required
+                            isValid={touched.lastName && !errors.lastName}
+                            isInvalid={errors.lastName}
                           />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.lastName}
+                          </Form.Control.Feedback>
                         </FloatingLabel>
                       </Col>
                     </Row>
@@ -205,7 +228,12 @@ const Register = () => {
                             type="text"
                             placeholder="Ej: lionelmessi"
                             required
+                            isValid={touched.username && !errors.username}
+                            isInvalid={errors.username}
                           />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.username}
+                          </Form.Control.Feedback>
                         </FloatingLabel>
                       </Col>
                     </Row>
@@ -219,7 +247,12 @@ const Register = () => {
                             type="email"
                             placeholder="lionelmessi@gmail.com"
                             required
+                            isValid={touched.email && !errors.email}
+                            isInvalid={errors.email}
                           />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.email}
+                          </Form.Control.Feedback>
                         </FloatingLabel>
                       </Col>
                       <Col md>
@@ -234,7 +267,12 @@ const Register = () => {
                             type="password"
                             placeholder="password"
                             required
+                            isValid={touched.password && !errors.password}
+                            isInvalid={errors.password}
                           />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.password}
+                          </Form.Control.Feedback>
                         </FloatingLabel>
                       </Col>
                     </Row>
@@ -249,6 +287,11 @@ const Register = () => {
                         <Button variant="success" type="submit" disabled>
                           Inscribir
                         </Button>
+                      )}
+                      {showMessage && (
+                        <p className="text-center mb-0 mt-3 text-danger">
+                          {message}
+                        </p>
                       )}
                     </div>
                   </Form>

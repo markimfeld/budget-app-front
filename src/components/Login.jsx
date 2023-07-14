@@ -8,12 +8,10 @@ import {
   Container,
 } from "react-bootstrap";
 import { useNavigate, useLocation, Navigate } from "react-router-dom";
+import * as Yup from "yup";
 
 // formik
 import { useFormik } from "formik";
-
-// components
-import Message from "./Message";
 
 // custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -43,12 +41,20 @@ const Login = () => {
     }
   };
 
-  const { handleSubmit, values, setFieldValue } = useFormik({
+  const LoginSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Usá el formato usuario@dominio.com")
+      .required("Requerido"),
+    password: Yup.string().min(6, "Muy corta!").required("Requerido"),
+  });
+
+  const { handleSubmit, values, setFieldValue, errors, touched } = useFormik({
     initialValues: {
       email: "",
       password: "",
       loginEnabledBtn: false,
     },
+    validationSchema: LoginSchema,
     onSubmit,
   });
 
@@ -87,7 +93,6 @@ const Login = () => {
             style={{ height: "97vh" }}
           >
             <Col md="6">
-              {showMessage() && <Message />}
               <Card
                 style={{ borderRadius: 0, backgroundColor: "hsl(0, 0%, 97%)" }}
               >
@@ -95,7 +100,7 @@ const Login = () => {
                   <Card.Title className="text-center fs-1 mb-4">
                     <i className="fa-solid fa-coins"></i> Finance Pro
                   </Card.Title>
-                  <Form onSubmit={handleSubmit}>
+                  <Form noValidate onSubmit={handleSubmit}>
                     <Row className="g-2 mb-2">
                       <Col md>
                         <FloatingLabel controlId="floatingEmail" label="Email">
@@ -106,7 +111,12 @@ const Login = () => {
                             type="email"
                             placeholder="lionelmessi@gmail.com"
                             required
+                            isValid={touched.email && !errors.email}
+                            isInvalid={errors.email}
                           />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.email}
+                          </Form.Control.Feedback>
                         </FloatingLabel>
                       </Col>
                     </Row>
@@ -123,7 +133,12 @@ const Login = () => {
                             type="password"
                             placeholder="Ingresá tu contraseña"
                             required
+                            isValid={touched.password && !errors.password}
+                            isInvalid={touched.password && errors.password}
                           />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.password}
+                          </Form.Control.Feedback>
                         </FloatingLabel>
                       </Col>
                     </Row>
@@ -138,6 +153,11 @@ const Login = () => {
                         <Button variant="success" type="submit" disabled>
                           Iniciar sesión
                         </Button>
+                      )}
+                      {showMessage && (
+                        <p className="text-center mb-0 mt-3 text-danger">
+                          {message}
+                        </p>
                       )}
                     </div>
                   </Form>

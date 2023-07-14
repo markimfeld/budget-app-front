@@ -59,3 +59,13 @@
 .progress-low {
     --bs-progress-bar-bg: hsl(358, 65%, 46%);
 }
+
+.form-control.is-valid {
+    border-color:hsl(230, 75%, 58%);
+    background-image: url("../public/check-solid.svg");
+}
+
+.form-control.is-valid:focus {
+    border-color:hsl(230, 75%, 58%);
+    box-shadow: 0 0 0 0.25rem rgba(36, 55, 147, 0.25);
+}
