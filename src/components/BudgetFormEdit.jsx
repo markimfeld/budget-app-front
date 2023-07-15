@@ -1,16 +1,26 @@
 import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
 
+import * as Yup from "yup";
+
 // formik
 import { useFormik } from "formik";
 
 const BudgetFormEdit = (props) => {
   const { onSubmit, onCancelOperation, budgetToUpdate } = props;
 
-  const { handleSubmit, handleChange, values } = useFormik({
+  const BudgetSchema = Yup.object().shape({
+    name: Yup.string().required("Requerido"),
+    expectedAmount: Yup.number()
+      .min(0.01, "Debe ser mayor o igual a 1")
+      .required("Requerido"),
+  });
+
+  const { handleSubmit, handleChange, values, touched, errors } = useFormik({
     initialValues: {
       name: budgetToUpdate?.name || "",
       expectedAmount: budgetToUpdate?.expectedAmount || "",
     },
+    validationSchema: BudgetSchema,
     onSubmit,
   });
 
@@ -25,7 +35,7 @@ const BudgetFormEdit = (props) => {
         </Card.Title>
       </Card.Header>
       <Card.Body className="p-4">
-        <Form onSubmit={handleSubmit}>
+        <Form noValidate onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicName">
             <FloatingLabel
               controlId="floatingName"
@@ -38,7 +48,12 @@ const BudgetFormEdit = (props) => {
                 type="text"
                 placeholder="Comida"
                 required
+                isValid={touched.name && !errors.name}
+                isInvalid={errors.name}
               />
+              <Form.Control.Feedback type="invalid">
+                {errors.name}
+              </Form.Control.Feedback>
             </FloatingLabel>
           </Form.Group>
 
@@ -54,7 +69,12 @@ const BudgetFormEdit = (props) => {
                 type="number"
                 placeholder="15000"
                 required
+                isValid={touched.expectedAmount && !errors.expectedAmount}
+                isInvalid={errors.expectedAmount}
               />
+              <Form.Control.Feedback type="invalid">
+                {errors.expectedAmount}
+              </Form.Control.Feedback>
             </FloatingLabel>
           </Form.Group>
           <div className="d-grid gap-2">

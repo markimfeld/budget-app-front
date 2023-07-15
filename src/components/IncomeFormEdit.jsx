@@ -5,22 +5,22 @@ import * as Yup from "yup";
 // formik
 import { useFormik } from "formik";
 
-const BudgetFormAdd = (props) => {
-  const { onSubmit, onCancelOperation } = props;
+const IncomeFormEdit = (props) => {
+  const { onSubmit, onCancelOperation, incomeToUpdate } = props;
 
-  const BudgetSchema = Yup.object().shape({
+  const IncomeSchema = Yup.object().shape({
     name: Yup.string().required("Requerido"),
-    expectedAmount: Yup.number()
+    amount: Yup.number()
       .min(0.01, "Debe ser mayor o igual a 1")
       .required("Requerido"),
   });
 
   const { handleSubmit, handleChange, values, touched, errors } = useFormik({
     initialValues: {
-      name: "",
-      expectedAmount: "",
+      name: incomeToUpdate?.name || "",
+      amount: incomeToUpdate?.amount || "",
     },
-    validationSchema: BudgetSchema,
+    validationSchema: IncomeSchema,
     onSubmit,
   });
 
@@ -31,22 +31,19 @@ const BudgetFormAdd = (props) => {
     >
       <Card.Header style={{ border: "none", backgroundColor: "#373E68" }}>
         <Card.Title className="text-center fs-3 text-white">
-          Nuevo presupuesto
+          Editar ingreso
         </Card.Title>
       </Card.Header>
       <Card.Body className="p-4">
         <Form noValidate onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicName">
-            <FloatingLabel
-              controlId="floatingName"
-              label="Nombre del presupuesto"
-            >
+            <FloatingLabel controlId="floatingName" label="Nombre del ingreso">
               <Form.Control
                 name="name"
                 value={values.name}
                 onChange={handleChange}
                 type="text"
-                placeholder="Comida"
+                placeholder="Sueldo"
                 required
                 isValid={touched.name && !errors.name}
                 isInvalid={errors.name}
@@ -58,29 +55,26 @@ const BudgetFormAdd = (props) => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicExpectedAmount">
-            <FloatingLabel
-              controlId="floatingExpectedAmount"
-              label="Monto previsto"
-            >
+            <FloatingLabel controlId="floatingExpectedAmount" label="Monto">
               <Form.Control
-                name="expectedAmount"
-                value={values.expectedAmount}
+                name="amount"
+                value={values.amount}
                 onChange={handleChange}
                 type="number"
                 placeholder="15000"
                 required
-                isValid={touched.expectedAmount && !errors.expectedAmount}
-                isInvalid={errors.expectedAmount}
+                isValid={touched.amount && !errors.amount}
+                isInvalid={errors.amount}
               />
               <Form.Control.Feedback type="invalid">
-                {errors.expectedAmount}
+                {errors.amount}
               </Form.Control.Feedback>
             </FloatingLabel>
           </Form.Group>
           <div className="d-grid gap-2">
             <Stack direction="horizontal" gap={3}>
               <Button className="ms-auto" variant="success" type="submit">
-                Guardar
+                Modificar
               </Button>
               <Button
                 variant="outline-secondary"
@@ -96,4 +90,4 @@ const BudgetFormAdd = (props) => {
   );
 };
 
-export default BudgetFormAdd;
+export default IncomeFormEdit;

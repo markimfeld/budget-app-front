@@ -1,16 +1,26 @@
 import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
 
+import * as Yup from "yup";
+
 // formik
 import { useFormik } from "formik";
 
 const IncomeFormAdd = (props) => {
   const { onSubmit, onCancelOperation } = props;
 
-  const { handleSubmit, handleChange, values } = useFormik({
+  const IncomeSchema = Yup.object().shape({
+    name: Yup.string().required("Requerido"),
+    amount: Yup.number()
+      .min(0.01, "Debe ser mayor o igual a 1")
+      .required("Requerido"),
+  });
+
+  const { handleSubmit, handleChange, values, touched, errors } = useFormik({
     initialValues: {
       name: "",
       amount: "",
     },
+    validationSchema: IncomeSchema,
     onSubmit,
   });
 
@@ -25,7 +35,7 @@ const IncomeFormAdd = (props) => {
         </Card.Title>
       </Card.Header>
       <Card.Body className="p-4">
-        <Form onSubmit={handleSubmit}>
+        <Form noValidate onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicName">
             <FloatingLabel controlId="floatingName" label="Nombre del ingreso">
               <Form.Control
@@ -35,7 +45,12 @@ const IncomeFormAdd = (props) => {
                 type="text"
                 placeholder="Sueldo"
                 required
+                isValid={touched.name && !errors.name}
+                isInvalid={errors.name}
               />
+              <Form.Control.Feedback type="invalid">
+                {errors.name}
+              </Form.Control.Feedback>
             </FloatingLabel>
           </Form.Group>
 
@@ -48,7 +63,12 @@ const IncomeFormAdd = (props) => {
                 type="number"
                 placeholder="15000"
                 required
+                isValid={touched.amount && !errors.amount}
+                isInvalid={errors.amount}
               />
+              <Form.Control.Feedback type="invalid">
+                {errors.amount}
+              </Form.Control.Feedback>
             </FloatingLabel>
           </Form.Group>
           <div className="d-grid gap-2">

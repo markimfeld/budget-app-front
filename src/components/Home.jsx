@@ -54,6 +54,7 @@ const Home = () => {
               <Route path="/informes" element={<Informes />} />
               <Route path="/incomes" element={<Incomes />} />
               <Route path="/incomes/add" element={<IncomeForm />} />
+              <Route path="/incomes/:incomeId/edit" element={<IncomeForm />} />
             </Routes>
           </Col>
         </Row>

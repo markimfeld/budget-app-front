@@ -18,6 +18,7 @@ import {
   RECORD_UPDATED_MESSAGE,
 } from "../labels/labels";
 import { useQuery } from "react-query";
+import IncomeFormEdit from "./IncomeFormEdit";
 
 const IncomeForm = () => {
   const { user, logout } = useAuthContext();
@@ -70,7 +71,9 @@ const IncomeForm = () => {
           }
         }
       } else {
-        let incomeUpdated = { ...incomes?.find((b) => b._id === incomeId) };
+        let incomeUpdated = {
+          ...incomes?.find((income) => income._id === incomeId),
+        };
 
         incomeUpdated.amount = Number.parseFloat(amount);
         incomeUpdated.name = name;
@@ -108,13 +111,15 @@ const IncomeForm = () => {
 
   return (
     <>
-      {/* {budgetId && (
-        <BudgetFormEdit
+      {incomeId && (
+        <IncomeFormEdit
           onSubmit={onSubmit}
           onCancelOperation={onCancelOperation}
-          budgetToUpdate={{ ...budgets?.find((b) => b._id === budgetId) }}
+          incomeToUpdate={{
+            ...incomes?.find((income) => income._id === incomeId),
+          }}
         />
-      )} */}
+      )}
       {!incomeId && (
         <IncomeFormAdd
           onSubmit={onSubmit}

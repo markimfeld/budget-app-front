@@ -1,18 +1,29 @@
 import { Form, Button, Stack, Card, FloatingLabel } from "react-bootstrap";
 
+import * as Yup from "yup";
+
 // formik
 import { useFormik } from "formik";
 
 const ExpenseFormEdit = (props) => {
   const { onSubmit, onCancelOperation, expenseToUpdate, budgets } = props;
 
-  const { handleSubmit, handleChange, values } = useFormik({
+  const ExpenseSchema = Yup.object().shape({
+    name: Yup.string().required("Requerido"),
+    amount: Yup.number()
+      .min(0.01, "Debe ser mayor o igual a 1")
+      .required("Requerido"),
+    budget: Yup.string().required("Requerido"),
+  });
+
+  const { handleSubmit, handleChange, values, touched, errors } = useFormik({
     initialValues: {
       name: expenseToUpdate?.name || "",
       description: expenseToUpdate?.description || "",
       amount: expenseToUpdate?.amount || "",
       budget: expenseToUpdate?.budget._id || "",
     },
+    validationSchema: ExpenseSchema,
     onSubmit,
   });
 
@@ -35,7 +46,7 @@ const ExpenseFormEdit = (props) => {
         </Card.Title>
       </Card.Header>
       <Card.Body className="p-4">
-        <Form onSubmit={handleSubmit}>
+        <Form noValidate onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicName">
             <FloatingLabel controlId="floatingName" label="Nombre del gasto">
               <Form.Control
@@ -45,7 +56,12 @@ const ExpenseFormEdit = (props) => {
                 type="text"
                 placeholder="Horeb"
                 required
+                isValid={touched.name && !errors.name}
+                isInvalid={errors.name}
               />
+              <Form.Control.Feedback type="invalid">
+                {errors.name}
+              </Form.Control.Feedback>
             </FloatingLabel>
           </Form.Group>
 
@@ -70,7 +86,12 @@ const ExpenseFormEdit = (props) => {
                 type="number"
                 placeholder="15000"
                 required
+                isValid={touched.amount && !errors.amount}
+                isInvalid={errors.amount}
               />
+              <Form.Control.Feedback type="invalid">
+                {errors.amount}
+              </Form.Control.Feedback>
             </FloatingLabel>
           </Form.Group>
 
@@ -82,10 +103,15 @@ const ExpenseFormEdit = (props) => {
                 onChange={handleChange}
                 aria-label="Floating label select example"
                 disabled
+                isValid={touched.budget && !errors.budget}
+                isInvalid={errors.budget}
               >
                 <option>Seleccionar</option>
                 {budgetOptions}
               </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                {errors.budget}
+              </Form.Control.Feedback>
             </FloatingLabel>
           </Form.Group>
 

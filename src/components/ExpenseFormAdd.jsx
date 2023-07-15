@@ -5,18 +5,29 @@ import { useNavigate } from "react-router-dom";
 // formik
 import { useFormik } from "formik";
 
+import * as Yup from "yup";
+
 const ExpenseFormAdd = (props) => {
   const { onSubmit, onCancelOperation, budgets } = props;
 
   const navigate = useNavigate();
 
-  const { handleSubmit, handleChange, values } = useFormik({
+  const ExpenseSchema = Yup.object().shape({
+    name: Yup.string().required("Requerido"),
+    amount: Yup.number()
+      .min(0.01, "Debe ser mayor o igual a 1")
+      .required("Requerido"),
+    budget: Yup.string().required("Requerido"),
+  });
+
+  const { handleSubmit, handleChange, values, touched, errors } = useFormik({
     initialValues: {
       name: "",
       description: "",
       amount: "",
       budget: "",
     },
+    validationSchema: ExpenseSchema,
     onSubmit,
   });
 
@@ -61,7 +72,7 @@ const ExpenseFormAdd = (props) => {
           </Card.Title>
         </Card.Header>
         <Card.Body className="p-4">
-          <Form onSubmit={handleSubmit}>
+          <Form noValidate onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicName">
               <FloatingLabel controlId="floatingName" label="Nombre del gasto">
                 <Form.Control
@@ -71,14 +82,19 @@ const ExpenseFormAdd = (props) => {
                   type="text"
                   placeholder="Horeb"
                   required
+                  isValid={touched.name && !errors.name}
+                  isInvalid={errors.name}
                 />
+                <Form.Control.Feedback type="invalid">
+                  {errors.name}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicDescripcion">
               <FloatingLabel
                 controlId="floatingDescription"
-                label="Descripción"
+                label="Descripción (opcional)"
               >
                 <Form.Control
                   name="description"
@@ -99,7 +115,12 @@ const ExpenseFormAdd = (props) => {
                   type="number"
                   placeholder="15000"
                   required
+                  isValid={touched.amount && !errors.amount}
+                  isInvalid={errors.amount}
                 />
+                <Form.Control.Feedback type="invalid">
+                  {errors.amount}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
 
@@ -110,10 +131,15 @@ const ExpenseFormAdd = (props) => {
                   value={values.budget}
                   onChange={handleChange}
                   aria-label="Floating label select example"
+                  isValid={touched.budget && !errors.budget}
+                  isInvalid={errors.budget}
                 >
                   <option>Seleccionar</option>
                   {budgetOptions}
                 </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  {errors.budget}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
 
