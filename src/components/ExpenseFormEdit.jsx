@@ -66,7 +66,10 @@ const ExpenseFormEdit = (props) => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicDescripcion">
-            <FloatingLabel controlId="floatingDescription" label="Descripción">
+            <FloatingLabel
+              controlId="floatingDescription"
+              label="Descripción (opcional)"
+            >
               <Form.Control
                 name="description"
                 value={values.description}

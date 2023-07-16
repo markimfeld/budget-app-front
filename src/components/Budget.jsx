@@ -22,6 +22,11 @@ const Budget = ({ budget }) => {
 
   const navigate = useNavigate();
 
+  const handleDetails = (budget) => {
+    clearMessages();
+    navigate(`/budgets/${budget._id}/details`);
+  };
+
   const handleEdit = (budget) => {
     clearMessages();
     navigate(`/budgets/${budget._id}/edit`);
@@ -65,6 +70,12 @@ const Budget = ({ budget }) => {
                 className="ms-auto"
                 align="end"
               >
+                <Dropdown.Item
+                  eventKey="2"
+                  onClick={() => handleDetails(budget)}
+                >
+                  Detalles
+                </Dropdown.Item>
                 <Dropdown.Item eventKey="2" onClick={() => handleEdit(budget)}>
                   Editar
                 </Dropdown.Item>

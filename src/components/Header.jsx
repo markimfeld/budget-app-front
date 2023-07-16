@@ -80,15 +80,6 @@ const Header = () => {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="justify-content-end flex-grow-1 pe-3">
-                {/* <Nav.Link
-                  onClick={() => {
-                    navigate("/informes");
-                    handleClose();
-                  }}
-                >
-                  Gráficos
-                </Nav.Link> */}
-
                 <Nav.Link
                   onClick={() => {
                     navigate("/incomes");
@@ -113,14 +104,6 @@ const Header = () => {
                 >
                   Presupuestos
                 </Nav.Link>
-                {/* <Nav.Link
-                  onClick={() => {
-                    handleShowBudgetFormOrList();
-                    handleClose();
-                  }}
-                >
-                  Nuevo presupuesto
-                </Nav.Link> */}
                 <NavDropdown
                   title={`${user.firstName} ${user.lastName}`}
                   id={`offcanvasNavbarDropdown-expand-lg`}
@@ -137,6 +120,14 @@ const Header = () => {
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={() => handleSettings()}>
                     Tu perfil
+                  </NavDropdown.Item>
+                  <NavDropdown.Item
+                    onClick={() => {
+                      navigate("/informes");
+                      handleClose();
+                    }}
+                  >
+                    Gráficos
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={() => handleTheme()}>

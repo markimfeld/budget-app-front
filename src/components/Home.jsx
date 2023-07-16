@@ -13,6 +13,7 @@ import Expenses from "./Expenses";
 import Incomes from "./Incomes";
 import Informes from "./Informes";
 import IncomeForm from "./IncomeForm";
+import BudgetDetails from "./BudgetDetails";
 
 // custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -51,6 +52,10 @@ const Home = () => {
               <Route path="/budgets" element={<Budgets />} />
               <Route path="/budgets/add" element={<BudgetForm />} />
               <Route path="/budgets/:budgetId/edit" element={<BudgetForm />} />
+              <Route
+                path="/budgets/:budgetId/details"
+                element={<BudgetDetails />}
+              />
               <Route path="/informes" element={<Informes />} />
               <Route path="/incomes" element={<Incomes />} />
               <Route path="/incomes/add" element={<IncomeForm />} />

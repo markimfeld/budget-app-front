@@ -30,15 +30,21 @@ export const BudgetContextProvider = ({ children }) => {
   const { handleSetMessage, handleSetType, handleSetRecordType } =
     useMessageContext();
 
-  const getBudgets = async () => {
+  const getBudgets = async (key) => {
     if (user !== null) {
       try {
-        const response = await budgetService.getAll({
+        const budgetId = key.queryKey[1]?.id;
+
+        const { data } = await budgetService.getAll({
           ...filters,
         });
-        setBudgets(response.data);
+        if (budgetId) {
+          setBudgets(data.filter((b) => b._id === budgetId));
+          return data.filter((b) => b._id === budgetId)[0];
+        }
+        setBudgets(data);
 
-        return response.data;
+        return data;
       } catch (err) {
         if (
           err.response.data.status === 400 &&
