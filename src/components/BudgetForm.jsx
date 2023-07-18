@@ -107,7 +107,7 @@ const BudgetForm = () => {
     }
   };
 
-  const onCancelOperation = () => {
+  const onCancelOperation = (from) => {
     clearMessages();
     navigate("/budgets");
   };

@@ -29,7 +29,7 @@ const Budget = ({ budget }) => {
 
   const handleEdit = (budget) => {
     clearMessages();
-    navigate(`/budgets/${budget._id}/edit`);
+    navigate(`/budgets/${budget._id}/edit`, { replace: true });
   };
 
   const handleDelete = (budget) => {

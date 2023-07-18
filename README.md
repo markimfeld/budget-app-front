@@ -6,8 +6,8 @@
 - [x] Ver donde meter los graficos.
 - [x] validaciones de formularios, mostrar los errores yup.
 - [x] Agregar ingresos.
-- [ ] Vista detalle de presupuesto.
-- [ ] Vista detalle de gasto.
+- [x] Vista detalle de presupuesto.
+- [x] Vista detalle de gasto.
 - [ ] Agregar funcionalidad para editar usuario.
 - [ ] Recuperar contraseña.
 - [ ] Tema dark / light.

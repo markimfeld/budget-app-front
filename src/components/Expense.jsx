@@ -22,6 +22,11 @@ const Expense = ({ expense, budget }) => {
   const { clearMessages } = useMessageContext();
   const navigate = useNavigate();
 
+  const handleDetails = (expense) => {
+    clearMessages();
+    navigate(`${expense._id}/details`);
+  };
+
   const handleEdit = () => {
     clearMessages();
     navigate(`${expense._id}/edit`);
@@ -71,6 +76,12 @@ const Expense = ({ expense, budget }) => {
                   variant="link"
                   align="end"
                 >
+                  <Dropdown.Item
+                    eventKey="1"
+                    onClick={() => handleDetails(expense)}
+                  >
+                    Detalle
+                  </Dropdown.Item>
                   <Dropdown.Item
                     eventKey="1"
                     onClick={() => handleEdit(expense)}

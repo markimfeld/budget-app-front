@@ -38,7 +38,7 @@ const Income = ({ income }) => {
 
   return (
     <>
-      <Col md={6} lg={4}>
+      <Col md={6} lg={6}>
         <Card
           className="shadow-sm mb-3 bg-body rounded"
           style={{ border: "none" }}

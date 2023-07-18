@@ -31,12 +31,16 @@ export const ExpenseContextProvider = ({ children }) => {
     if (user !== null) {
       try {
         const budgetId = key.queryKey[1]?.budget;
+        const expenseId = key.queryKey[1]?.id;
 
         const { data } = await expenseService.getAll();
 
         if (budgetId) {
           setAllExpenses(data.filter((e) => e.budget._id === budgetId));
           return data.filter((e) => e.budget._id === budgetId);
+        } else if (expenseId) {
+          setAllExpenses(data.filter((e) => e._id === expenseId));
+          return data.filter((e) => e._id === expenseId)[0];
         }
         return data;
       } catch (error) {

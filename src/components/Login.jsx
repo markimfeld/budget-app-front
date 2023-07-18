@@ -20,7 +20,7 @@ import { useMessageContext } from "../hooks/useMessageContext";
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/budgets";
+  const from = location.state?.from?.pathname;
 
   const {
     message,
@@ -31,7 +31,7 @@ const Login = () => {
     clearMessages,
   } = useMessageContext();
 
-  const { login, user } = useAuthContext();
+  const { login, user, isLoading } = useAuthContext();
 
   const onSubmit = async ({ email, password }) => {
     const response = await login(email, password);
@@ -77,6 +77,13 @@ const Login = () => {
     handleSetType(null);
     handleSetRecordType(null);
     navigate("/register");
+  };
+
+  const handleRecoverPassword = () => {
+    handleSetMessage(null);
+    handleSetType(null);
+    handleSetRecordType(null);
+    console.log("Aca enviar email para resetear constraseña");
   };
 
   const showMessage = () => {
@@ -144,21 +151,33 @@ const Login = () => {
                     </Row>
 
                     <div className="d-grid gap-2">
-                      {values.loginEnabledBtn && (
+                      {values.loginEnabledBtn && !isLoading && (
                         <Button variant="success" type="submit">
                           Iniciar sesión
                         </Button>
                       )}
-                      {!values.loginEnabledBtn && (
+                      {!values.loginEnabledBtn && !isLoading && (
                         <Button variant="success" type="submit" disabled>
                           Iniciar sesión
                         </Button>
                       )}
-                      {showMessage && (
+                      {values.loginEnabledBtn && isLoading && (
+                        <Button variant="success" type="submit" disabled>
+                          Iniciando sesión ...
+                        </Button>
+                      )}
+                      {showMessage() && (
                         <p className="text-center mb-0 mt-3 text-danger">
                           {message}
                         </p>
                       )}
+                      <Button
+                        variant="link"
+                        className="m-0 p-0"
+                        onClick={() => handleRecoverPassword()}
+                      >
+                        ¿Olvidaste tu clave?
+                      </Button>
                     </div>
                   </Form>
                 </Card.Body>

@@ -27,10 +27,11 @@ export const UserContextProvider = ({ children }) => {
     JSON.parse(window.localStorage.getItem("user"))
   );
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const login = async (email, password) => {
     try {
+      setIsLoading(true);
       const response = await loginService.login({ email, password });
 
       if (response.status === 200) {

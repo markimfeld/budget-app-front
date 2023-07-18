@@ -11,11 +11,14 @@ import {
 import { useQuery } from "react-query";
 
 import { useBudgetContext } from "../hooks/useBudgetContext";
+import { useMessageContext } from "../hooks/useMessageContext";
 
 import { useNavigate, useParams } from "react-router-dom";
 
 const BudgetDetails = () => {
   const { getBudgets } = useBudgetContext();
+
+  const { clearMessages } = useMessageContext();
 
   const { budgetId } = useParams("budgetId");
 
@@ -28,6 +31,11 @@ const BudgetDetails = () => {
 
   const handleGoBack = () => {
     navigate("/budgets");
+  };
+
+  const handleEdit = (budget) => {
+    clearMessages();
+    navigate(`/budgets/${budget._id}/edit`, { replace: true });
   };
 
   const leftAmount = new Intl.NumberFormat("en-US", {
@@ -49,10 +57,17 @@ const BudgetDetails = () => {
               <Stack direction="horizontal" gap={3}>
                 <Button
                   size="md"
+                  variant="success"
                   onClick={() => handleGoBack()}
-                  className="ms-auto"
                 >
                   <i className="fa-solid fa-arrow-left fa-sm"></i> Volver
+                </Button>
+                <Button
+                  size="md"
+                  onClick={() => handleEdit(budget)}
+                  className="ms-auto"
+                >
+                  <i className="fa-solid fa-edit fa-sm"></i> Editar
                 </Button>
               </Stack>
             </Card.Body>
