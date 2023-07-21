@@ -6,6 +6,8 @@ import {
   Dropdown,
   Button,
   Modal,
+  Col,
+  ProgressBar,
 } from "react-bootstrap";
 
 import { useNavigate } from "react-router-dom";
@@ -16,27 +18,23 @@ import { useMessageContext } from "../hooks/useMessageContext";
 
 const Budget = ({ budget }) => {
   const { clearMessages } = useMessageContext();
-  const {
-    handleDeleteBudget,
-    handleBudgetToUpdate,
-    handleIsEditing,
-    handleIsBudgetCreating,
-  } = useBudgetContext();
+  const { handleDeleteBudget } = useBudgetContext();
 
   const navigate = useNavigate();
 
-  const handleGetExpenses = (budget) => {
+  const handleDetails = (budget) => {
     clearMessages();
-    handleIsBudgetCreating(false);
-    navigate(`/budgets/${budget._id}/expenses`);
+    navigate(`/budgets/${budget._id}/details`);
   };
 
   const handleEdit = (budget) => {
-    handleBudgetToUpdate(budget);
-    handleIsEditing(true);
     clearMessages();
+    navigate(`/budgets/${budget._id}/edit`, { replace: true });
+  };
 
-    navigate(`/budgets/${budget._id}/edit`);
+  const handleDelete = (budget) => {
+    handleDeleteBudget(budget);
+    handleClose();
   };
 
   const [show, setShow] = useState(false);
@@ -44,45 +42,102 @@ const Budget = ({ budget }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const leftAmount = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    minimumFractionDigits: 2,
+    currency: "USD",
+  }).format(budget.leftAmount.toFixed(2));
+
+  const leftPorcentage = Math.floor(
+    (1 - budget.spentAmount / budget.expectedAmount) * 100
+  );
+
   return (
     <>
-      <Card className="mb-4" style={{ border: "none" }}>
-        <Card.Header style={{ border: "none" }}>
-          <Stack direction="horizontal" gap={3}>
-            <span>{budget.name}</span>
+      <Col md={6} lg={6}>
+        <Card
+          className="shadow-sm p-3 mb-3 bg-body rounded"
+          style={{ border: "none" }}
+        >
+          <Card.Header style={{ border: "none", backgroundColor: "white" }}>
+            <Stack direction="horizontal" gap={3}>
+              <span className="fs-4 fw-bold">{budget.name}</span>
 
-            <DropdownButton
-              title={<i className="fa-sharp fa-solid fa-plus gray-color"></i>}
-              id="bg-vertical-dropdown-2"
-              variant="link"
-              className="ms-auto"
-              align="end"
-            >
-              <Dropdown.Item
-                eventKey="1"
-                onClick={() => handleGetExpenses(budget)}
+              <DropdownButton
+                title={<i className="fa-sharp fa-solid fa-plus gray-color"></i>}
+                id="bg-vertical-dropdown-2"
+                variant="link"
+                className="ms-auto"
+                align="end"
               >
-                Ver gastos
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="2" onClick={() => handleEdit(budget)}>
-                Editar
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="3" onClick={handleShow}>
-                Borrar
-              </Dropdown.Item>
-            </DropdownButton>
-          </Stack>
-        </Card.Header>
-        <Card.Body style={{ backgroundColor: "hsl(0, 0%, 97%, 0.5)" }}>
-          <Card.Title>${budget.spentAmount.toFixed(2)} </Card.Title>
-          <Card.Text className="text-muted m-0 p-0">
-            Monto disponible ${budget.leftAmount.toFixed(2)}
-          </Card.Text>
-          <Card.Text className="text-muted">
-            Monto límite ${budget.expectedAmount.toFixed(2)}
-          </Card.Text>
-        </Card.Body>
-      </Card>
+                <Dropdown.Item
+                  eventKey="2"
+                  onClick={() => handleDetails(budget)}
+                >
+                  Detalles
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="2" onClick={() => handleEdit(budget)}>
+                  Editar
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="3" onClick={handleShow}>
+                  Borrar
+                </Dropdown.Item>
+              </DropdownButton>
+            </Stack>
+          </Card.Header>
+          <Card.Body style={{ backgroundColor: "white" }}>
+            {/* <Card.Title>
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                minimumFractionDigits: 2,
+                currency: "USD",
+              }).format(budget.spentAmount.toFixed(2))}
+            </Card.Title> */}
+            {/* <Card.Text className="text-muted m-0 p-0">
+              Monto disponible{" "}
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                minimumFractionDigits: 2,
+                currency: "USD",
+              }).format(budget.leftAmount.toFixed(2))}
+            </Card.Text>
+            <Card.Text className="text-muted">
+              Monto límite{" "}
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                minimumFractionDigits: 2,
+                currency: "USD",
+              }).format(budget.expectedAmount.toFixed(2))}
+            </Card.Text> */}
+            {leftPorcentage >= 70 && (
+              <ProgressBar
+                now={budget.leftAmount}
+                label={`${leftAmount} disponible`}
+                min={0}
+                max={budget.expectedAmount}
+              />
+            )}
+            {leftPorcentage >= 50 && leftPorcentage < 70 && (
+              <ProgressBar
+                className="progress-mid"
+                now={budget.leftAmount}
+                label={`${leftAmount} disponible`}
+                min={0}
+                max={budget.expectedAmount}
+              />
+            )}
+            {leftPorcentage < 50 && (
+              <ProgressBar
+                className="progress-low"
+                now={budget.leftAmount}
+                label={`${leftAmount} disponible`}
+                min={0}
+                max={budget.expectedAmount}
+              />
+            )}
+          </Card.Body>
+        </Card>
+      </Col>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -90,13 +145,13 @@ const Budget = ({ budget }) => {
         </Modal.Header>
         <Modal.Body>
           ¿Estás seguro de eliminar el presupuesto{" "}
-          <span style={{ fontWeight: 500 }}>{budget.name}</span>?
+          <span className="fw-bold">{budget.name}</span>?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button variant="danger" onClick={() => handleDeleteBudget(budget)}>
+          <Button variant="danger" onClick={() => handleDelete(budget)}>
             Sí, estoy seguro
           </Button>
         </Modal.Footer>

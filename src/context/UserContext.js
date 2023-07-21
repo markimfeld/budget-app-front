@@ -27,24 +27,22 @@ export const UserContextProvider = ({ children }) => {
     JSON.parse(window.localStorage.getItem("user"))
   );
 
-  const [showRegisterForm, setShowRegisterForm] = useState(false);
-  const [showLoginForm, setshowLoginForm] = useState(true);
-
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const login = async (email, password) => {
     try {
+      setIsLoading(true);
       const response = await loginService.login({ email, password });
 
       if (response.status === 200) {
         setUser(response.user);
         window.localStorage.setItem("user", JSON.stringify(response.user));
-        handleShowLoginForm(false);
         setIsLoading(false);
 
         return response;
       }
     } catch (error) {
+      setIsLoading(false);
       if (
         error.response.data.status === 404 &&
         error.response.data.message === "INVALID_CREDENTIALS"
@@ -66,7 +64,7 @@ export const UserContextProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     window.localStorage.clear();
-    handleShowLoginForm(true);
+    document.cookie = "jwt=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
   };
 
   const loadUserFromStorage = () => {
@@ -109,20 +107,19 @@ export const UserContextProvider = ({ children }) => {
     }
   };
 
-  const handleShowLoginForm = (showLogin) => {
-    if (showLogin) {
-      setshowLoginForm(true);
-    } else {
-      setshowLoginForm(false);
+  const getOne = async (key) => {
+    const id = key.queryKey[1].id;
+    try {
+      const { data: user } = await loginService.getUser({ id });
+      return user;
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  const handleShowRegisterForm = (showRegister) => {
-    if (showRegister) {
-      setShowRegisterForm(true);
-    } else {
-      setShowRegisterForm(false);
-    }
+  const updateUserStorage = (user) => {
+    setUser(user);
+    window.localStorage.setItem("user", JSON.stringify(user));
   };
 
   return (
@@ -133,11 +130,9 @@ export const UserContextProvider = ({ children }) => {
         logout,
         loadUserFromStorage,
         register,
-        showRegisterForm,
-        showLoginForm,
-        handleShowLoginForm,
-        handleShowRegisterForm,
         isLoading,
+        getOne,
+        updateUserStorage,
       }}
     >
       {children}

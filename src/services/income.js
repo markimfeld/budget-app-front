@@ -1,16 +1,10 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:3001/api/v1/budgets";
+const baseUrl = "http://localhost:3001/api/v1/incomes";
 
-const budgetService = {
-  getAll: async (filters) => {
-    let finalUrl;
-
-    if (filters.month && filters.year) {
-      finalUrl = `${baseUrl}?month=${filters.month}&year=${filters.year}`;
-    } else {
-      finalUrl = baseUrl;
-    }
+const incomeService = {
+  getAll: async () => {
+    let finalUrl = baseUrl;
 
     const { data } = await axios.get(finalUrl, { withCredentials: true });
     return data;
@@ -21,8 +15,8 @@ const budgetService = {
     });
     return data;
   },
-  store: async (newBudget) => {
-    const { data } = await axios.post(baseUrl, newBudget, {
+  store: async (newIncome) => {
+    const { data } = await axios.post(baseUrl, newIncome, {
       withCredentials: true,
     });
     return data;
@@ -33,12 +27,12 @@ const budgetService = {
     });
     return data;
   },
-  update: async (id, budgetToUpdate) => {
-    const { data } = await axios.put(`${baseUrl}/${id}`, budgetToUpdate, {
+  update: async (id, incomeToUpdate) => {
+    const { data } = await axios.put(`${baseUrl}/${id}`, incomeToUpdate, {
       withCredentials: true,
     });
     return data;
   },
 };
 
-export default budgetService;
+export default incomeService;

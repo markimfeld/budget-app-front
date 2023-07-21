@@ -1,0 +1,10 @@
+.card-background-gradient {
+    background: rgb(120,143,245);
+    background: linear-gradient(90deg, rgba(120,143,245,1) 0%, rgba(177,60,218,1) 50%, rgba(219,106,152,1) 100%);
+    border: none;
+}
+
+.card-bg-light {
+    background-color: white;
+    border: none;
+}

@@ -1,57 +1,82 @@
 import {
-  Form,
-  Button,
   Card,
+  Stack,
   Col,
   Row,
+  Button,
   FloatingLabel,
-  Container,
+  Form,
 } from "react-bootstrap";
-import { useNavigate, useLocation, Navigate } from "react-router-dom";
+
+import { useQuery } from "react-query";
+import { useQueryClient } from "react-query";
+
+import { useMessageContext } from "../hooks/useMessageContext";
+import { useAuthContext } from "../hooks/useAuthContext";
+
+import { useNavigate } from "react-router-dom";
+
 import * as Yup from "yup";
+
+// labels
+import { DUPLICATE_RECORD } from "../labels/labels";
 
 // formik
 import { useFormik } from "formik";
+import loginService from "../services/login";
+import { useState } from "react";
 
-// custom hooks
-import { useAuthContext } from "../hooks/useAuthContext";
-import { useMessageContext } from "../hooks/useMessageContext";
-
-const Register = () => {
+const ProfileDetails = () => {
+  // Get QueryClient from the context
+  const queryClient = useQueryClient();
   const {
-    message,
-    recordType,
+    clearMessages,
     handleSetMessage,
     handleSetType,
     handleSetRecordType,
-    clearMessages,
   } = useMessageContext();
 
-  const { register, login, user } = useAuthContext();
+  const [isSaving, setIsSaving] = useState(false);
+
+  const { user, getOne, updateUserStorage } = useAuthContext();
+
+  const { data: userInfo, isLoading } = useQuery({
+    queryKey: ["userInfo", { id: user.id }],
+    queryFn: getOne,
+  });
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
 
   const onSubmit = async ({
     firstName,
     lastName,
     username,
     email,
-    password,
+    // password,
   }) => {
-    const response = await register({
-      firstName,
-      lastName,
-      username,
-      email,
-      password,
-    });
+    try {
+      setIsSaving(true);
+      const { isUpdated } = await loginService.update(userInfo._id, {
+        firstName,
+        lastName,
+        username,
+        email,
+      });
 
-    if (response && response.isStored && response.status === 201) {
-      await login(email, password);
-      clearMessages();
-      navigate(from, { replace: true });
+      if (isUpdated) {
+        queryClient.invalidateQueries({ queryKey: ["userInfo"] });
+        setIsSaving(false);
+        updateUserStorage({ id: userInfo._id, firstName, lastName, username });
+      }
+    } catch (error) {
+      if (
+        error.response.data.status === 400 &&
+        error.response.data.message === "DUPLICATE_RECORD"
+      ) {
+        handleSetMessage(DUPLICATE_RECORD);
+        handleSetType("danger");
+        handleSetRecordType("user");
+      }
     }
   };
 
@@ -67,13 +92,14 @@ const Register = () => {
 
   const { handleSubmit, values, setFieldValue, errors, touched } = useFormik({
     initialValues: {
-      email: "",
-      password: "",
-      firstName: "",
-      lastName: "",
-      username: "",
+      email: !isLoading ? userInfo?.email : "",
+      password: !isLoading ? userInfo?.password : "",
+      firstName: !isLoading ? userInfo?.firstName : "",
+      lastName: !isLoading ? userInfo?.lastName : "",
+      username: !isLoading ? userInfo?.username : "",
       registerEnabledBtn: false,
     },
+    enableReinitialize: true,
     validationSchema: RegisterSchema,
     onSubmit,
   });
@@ -143,34 +169,58 @@ const Register = () => {
     }
   };
 
-  const handleLogin = () => {
-    handleSetMessage(null);
-    handleSetType(null);
-    handleSetRecordType(null);
-    navigate("/login");
-  };
-
-  const showMessage = () => {
-    return message !== null && recordType === "user";
+  const onCancelOperation = () => {
+    clearMessages();
+    navigate(`/`);
   };
 
   return (
     <>
-      {user && <Navigate to={from} replace />}
-      {!user && (
-        <Container>
-          <Row
-            className="justify-content-md-center align-items-center"
-            style={{ height: "97vh" }}
-          >
-            <Col md="6">
+      {!isLoading && (
+        <>
+          <Row>
+            <Col>
               <Card
-                style={{ borderRadius: 0, backgroundColor: "hsl(0, 0%, 97%)" }}
+                style={{ border: "none", backgroundColor: "white" }}
+                className="shadow-sm p-2 bg-body rounded"
               >
-                <Card.Body>
-                  <Card.Title className="text-center fs-1 mb-4">
-                    <i className="fa-solid fa-coins"></i> Finance Pro
+                <Card.Header
+                  style={{ border: "none", backgroundColor: "white" }}
+                >
+                  <Card.Title className="fs-4">
+                    {userInfo?.firstName} {userInfo?.lastName}
                   </Card.Title>
+                  <hr />
+                </Card.Header>
+                <Card.Body>
+                  <Stack className="mb-2" direction="horizontal" gap={3}>
+                    <span className="text-muted">Usuario: </span>
+                    <span className="ms-auto fw-bold">
+                      {userInfo?.username}
+                    </span>
+                  </Stack>
+                  <Stack direction="horizontal" gap={3}>
+                    <span className="text-muted">Email: </span>
+                    <span className="ms-auto fw-bold">{userInfo?.email}</span>
+                  </Stack>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Card
+                style={{ border: "none", backgroundColor: "white" }}
+                className="shadow-sm p-2 mt-4 bg-body rounded"
+              >
+                <Card.Header
+                  style={{ border: "none", backgroundColor: "white" }}
+                >
+                  <Card.Title className="fs-4 mb-0 p-0 text-dark">
+                    Cambiar datos
+                  </Card.Title>
+                </Card.Header>
+                <Card.Body>
                   <Form noValidate onSubmit={handleSubmit}>
                     <Row className="g-2 mb-2">
                       <Col md>
@@ -255,7 +305,7 @@ const Register = () => {
                           </Form.Control.Feedback>
                         </FloatingLabel>
                       </Col>
-                      <Col md>
+                      {/* <Col md>
                         <FloatingLabel
                           controlId="floatingPassword"
                           label="Contraseña"
@@ -274,49 +324,46 @@ const Register = () => {
                             {errors.password}
                           </Form.Control.Feedback>
                         </FloatingLabel>
-                      </Col>
+                      </Col> */}
                     </Row>
 
-                    <div className="d-grid gap-2">
-                      {values.registerEnabledBtn && (
-                        <Button variant="success" type="submit">
-                          Inscribir
+                    <Stack direction="horizontal" gap={3}>
+                      {!isSaving && (
+                        <Button
+                          className="ms-auto"
+                          variant="success"
+                          type="submit"
+                        >
+                          Guardar
                         </Button>
                       )}
-                      {!values.registerEnabledBtn && (
-                        <Button variant="success" type="submit" disabled>
-                          Inscribir
+                      {isSaving && (
+                        <Button
+                          className="ms-auto"
+                          variant="success"
+                          type="submit"
+                          disabled
+                        >
+                          Guardando...
                         </Button>
                       )}
-                      {showMessage && (
-                        <p className="text-center mb-0 mt-3 text-danger">
-                          {message}
-                        </p>
-                      )}
-                    </div>
+
+                      <Button
+                        variant="outline-secondary"
+                        onClick={() => onCancelOperation()}
+                      >
+                        Cancelar
+                      </Button>
+                    </Stack>
                   </Form>
-                </Card.Body>
-              </Card>
-              <Card className="mt-3" style={{ borderRadius: 0 }}>
-                <Card.Body>
-                  <Card.Text className="text-center">
-                    ¿Ya tenes cuenta?{" "}
-                    <Button
-                      variant="link"
-                      className="m-0 p-0"
-                      onClick={() => handleLogin()}
-                    >
-                      Iniciar sesión
-                    </Button>
-                  </Card.Text>
                 </Card.Body>
               </Card>
             </Col>
           </Row>
-        </Container>
+        </>
       )}
     </>
   );
 };
 
-export default Register;
+export default ProfileDetails;

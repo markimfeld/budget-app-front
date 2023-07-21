@@ -1,0 +1,76 @@
+.btn-primary {
+    --bs-btn-bg: hsl(282, 84%, 52%);
+    --bs-btn-border-color: hsl(282, 84%, 52%);
+    --bs-btn-color: #fff;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: hsla(282, 84%, 52%, 0.8);
+    --bs-btn-hover-border-color: hsla(282, 84%, 52%, 0.8);
+    --bs-btn-active-bg: hsl(282, 84%, 42%);
+    --bs-btn-active-border-color: hsl(282, 84%, 42%);
+}
+
+.btn-success {
+    --bs-btn-bg: hsl(230, 75%, 58%);
+    --bs-btn-border-color: hsl(230, 75%, 58%);
+    --bs-btn-disabled-bg: hsl(230, 75%, 58%);
+    --bs-btn-disabled-border-color: hsl(230, 75%, 58%);
+    --bs-btn-color: #fff;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: hsla(230, 75%, 58%, 0.8);
+    --bs-btn-hover-border-color: hsla(230, 75%, 58%, 0.8);
+    --bs-btn-active-bg: hsl(230, 75%, 48%);
+    --bs-btn-active-border-color: hsl(230, 75%, 48%);
+}
+
+.btn-outline-success {
+    font-weight: 500;
+    --bs-btn-bg: hsl(231, 100%, 98%);
+    --bs-btn-color: hsl(230, 75%, 48%);
+    --bs-btn-border-color: hsl(231, 100%, 98%);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: hsla(230, 75%, 58%, 0.8);
+    --bs-btn-hover-border-color: hsla(230, 75%, 58%, 0.8);
+    --bs-btn-focus-shadow-rgb: 108,117,125;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: hsl(230, 75%, 58%);
+    --bs-btn-active-border-color: hsl(230, 75%, 58%);
+}
+
+.dropdown-menu {
+    --bs-dropdown-link-active-bg: #4560e5;
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.progress {
+    --bs-progress-bar-bg: hsl(230, 75%, 58%);
+}
+
+.progress-mid {
+    --bs-progress-bar-bg: hsl(34, 100%, 51%);
+}
+
+.progress-low {
+    --bs-progress-bar-bg: hsl(358, 65%, 46%);
+}
+
+.form-control.is-valid {
+    border-color:hsl(230, 75%, 58%);
+    background-image: url("../public/check-solid.svg");
+}
+
+.form-control.is-valid:focus {
+    border-color:hsl(230, 75%, 58%);
+    box-shadow: 0 0 0 0.25rem rgba(36, 55, 147, 0.25);
+}
+
+.form-select.is-valid:not([multiple]):not([size]) {
+    border-color:hsl(230, 75%, 58%);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"), url("../public/check-solid.svg");
+}

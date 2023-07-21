@@ -8,8 +8,14 @@ import Dashboard from "./Dashboard";
 import Message from "./Message";
 import Header from "./Header";
 import BudgetForm from "./BudgetForm";
-import ExpenseList from "./ExpensesList";
 import ExpenseForm from "./ExpenseForm";
+import Expenses from "./Expenses";
+import Incomes from "./Incomes";
+import Informes from "./Informes";
+import IncomeForm from "./IncomeForm";
+import BudgetDetails from "./BudgetDetails";
+import ExpenseDetails from "./ExpenseDetails";
+import ProfileDetails from "./ProfileDetails";
 
 // custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -27,23 +33,37 @@ const Home = () => {
       <Container>
         <Row className="mt-4">
           <Col>
-            <Dashboard />
             <Routes>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <Dashboard />{" "}
+                    <Row>
+                      <Col>
+                        <Expenses />
+                      </Col>
+                    </Row>
+                  </>
+                }
+              />
+            </Routes>
+            <Routes>
+              <Route path="/expenses/add" element={<ExpenseForm />} />
+              <Route path="/:expenseId/edit" element={<ExpenseForm />} />
+              <Route path="/:expenseId/details" element={<ExpenseDetails />} />
               <Route path="/budgets" element={<Budgets />} />
               <Route path="/budgets/add" element={<BudgetForm />} />
               <Route path="/budgets/:budgetId/edit" element={<BudgetForm />} />
               <Route
-                path="/budgets/:budgetId/expenses"
-                element={<ExpenseList />}
+                path="/budgets/:budgetId/details"
+                element={<BudgetDetails />}
               />
-              <Route
-                path="/budgets/:budgetId/expenses/add"
-                element={<ExpenseForm />}
-              />
-              <Route
-                path="/budgets/:budgetId/expenses/:expenseId/edit"
-                element={<ExpenseForm />}
-              />
+              <Route path="/informes" element={<Informes />} />
+              <Route path="/incomes" element={<Incomes />} />
+              <Route path="/incomes/add" element={<IncomeForm />} />
+              <Route path="/incomes/:incomeId/edit" element={<IncomeForm />} />
+              <Route path="/users/profile" element={<ProfileDetails />} />
             </Routes>
           </Col>
         </Row>

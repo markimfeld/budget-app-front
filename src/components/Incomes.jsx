@@ -11,29 +11,29 @@ import {
 import { useNavigate } from "react-router-dom";
 
 // components
-import Budget from "./Budget";
+import Income from "./Income";
 
 // custom hooks
 import { useMessageContext } from "../hooks/useMessageContext";
-import { useBudgetContext } from "../hooks/useBudgetContext";
+import { useIncomeContext } from "../hooks/useIncomeContext";
 import { useQuery } from "react-query";
 
-const Budgets = () => {
+const Incomes = () => {
   const { clearMessages } = useMessageContext();
-  const { getBudgets } = useBudgetContext();
+  const { getIncomes } = useIncomeContext();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["budgets"],
-    queryFn: getBudgets,
+    queryKey: ["incomes"],
+    queryFn: getIncomes,
   });
 
   const navigate = useNavigate();
 
-  const budgetList = data?.map((budget) => {
-    return <Budget key={budget._id} budget={budget} />;
+  const incomeList = data?.map((income) => {
+    return <Income key={income._id} income={income} />;
   });
 
-  const handleShowBudgetFormOrList = () => {
+  const handleShowIncomeFormOrList = () => {
     clearMessages();
     navigate("add");
   };
@@ -47,10 +47,10 @@ const Budgets = () => {
               <Stack direction="horizontal" gap={3}>
                 <Button
                   size="md"
-                  onClick={() => handleShowBudgetFormOrList()}
+                  onClick={() => handleShowIncomeFormOrList()}
                   className="ms-auto"
                 >
-                  <i className="fa-solid fa-plus fa-sm"></i> Agregar presupuesto
+                  <i className="fa-solid fa-plus fa-sm"></i> Agregar ingreso
                 </Button>
               </Stack>
             </Card.Body>
@@ -102,7 +102,7 @@ const Budgets = () => {
         )}
       </div>
       <div>
-        {data?.length > 0 && !isLoading && <Row>{budgetList}</Row>}
+        {data?.length > 0 && !isLoading && <Row>{incomeList}</Row>}
         {data?.length === 0 && !isLoading && (
           <Card
             border="light"
@@ -111,12 +111,12 @@ const Budgets = () => {
           >
             <Card.Body>
               <Card.Title className="mb-0">
-                No hay presupuestos creados aún 😄.{" "}
+                No hay ingresos creados aún 😄.{" "}
                 <Button
-                  onClick={() => handleShowBudgetFormOrList()}
+                  onClick={() => handleShowIncomeFormOrList()}
                   variant="link"
                 >
-                  Crear nuevo presupuesto
+                  Crear nuevo ingreso
                 </Button>
               </Card.Title>
             </Card.Body>
@@ -127,4 +127,4 @@ const Budgets = () => {
   );
 };
 
-export default Budgets;
+export default Incomes;

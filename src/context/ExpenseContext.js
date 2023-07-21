@@ -1,5 +1,7 @@
 import { createContext, useState } from "react";
 
+import { useQueryClient } from "react-query";
+
 // services
 import expenseService from "../services/expense";
 import budgetService from "../services/budget";
@@ -7,7 +9,6 @@ import budgetService from "../services/budget";
 // custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useMessageContext } from "../hooks/useMessageContext";
-import { useBudgetContext } from "../hooks/useBudgetContext";
 
 // labels
 import { RECORD_DELETED_MESSAGE } from "../labels/labels";
@@ -15,97 +16,42 @@ import { RECORD_DELETED_MESSAGE } from "../labels/labels";
 export const ExpenseContext = createContext();
 
 export const ExpenseContextProvider = ({ children }) => {
-  const [expenses, setExpenses] = useState([]);
-  const [showExpensesList, setShowExpensesList] = useState(false);
-  const [showExpenseForm, setShowExpenseForm] = useState(false);
-  const [selectedBudget, setSelectedBudget] = useState(null);
+  const [allExpenses, setAllExpenses] = useState([]);
   const [messageExpense, setMessageExpense] = useState(null);
-  const [expenseToUpdate, setExpenseToUpdate] = useState(null);
-  const [isExpenseEditing, setIsExpenseEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   const { user, logout } = useAuthContext();
 
-  const { getBudgets } = useBudgetContext();
+  // Get QueryClient from the context
+  const queryClient = useQueryClient();
 
   const { handleSetMessage, handleSetType, handleSetRecordType } =
     useMessageContext();
 
-  const getExpenses = async (budgetId) => {
+  const getAllExpenses = async (key) => {
     if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
       try {
-        const { data } = await expenseService.getAll(config);
-        const expensesByBudgetId = data.filter(
-          (expense) => expense.budget._id === budgetId
-        );
-        setExpenses(expensesByBudgetId);
-        handleSetIsLoading(false);
+        const budgetId = key.queryKey[1]?.budget;
+        const expenseId = key.queryKey[1]?.id;
+
+        const { data } = await expenseService.getAll();
+
+        if (budgetId) {
+          setAllExpenses(data.filter((e) => e.budget._id === budgetId));
+          return data.filter((e) => e.budget._id === budgetId);
+        } else if (expenseId) {
+          setAllExpenses(data.filter((e) => e._id === expenseId));
+          return data.filter((e) => e._id === expenseId)[0];
+        }
+        return data;
       } catch (error) {
         if (
-          error.response.data.status === 400 &&
-          error.response.data.message === "INVALID_TOKEN"
+          error.response.data?.status === 400 &&
+          error.response.data?.message === "INVALID_TOKEN"
         ) {
           logout();
         }
       }
     }
-  };
-
-  const handleSetIsLoading = (loading) => {
-    if (loading) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  };
-
-  const handleShowExpenseList = (showList) => {
-    if (showList) {
-      setShowExpensesList(true);
-    } else {
-      setShowExpensesList(false);
-    }
-  };
-
-  const handleShowExpenseForm = (showForm) => {
-    if (showForm) {
-      setShowExpenseForm(true);
-    } else {
-      setShowExpenseForm(false);
-    }
-  };
-
-  const handleSelectedBudget = async (budgetId) => {
-    if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
-      try {
-        const response = await budgetService.getOne(config, budgetId);
-        setSelectedBudget(response.data);
-      } catch (error) {
-        if (
-          error.response.data.status === 400 &&
-          error.response.data.message === "INVALID_TOKEN"
-        ) {
-          logout();
-        }
-      }
-    }
-  };
-
-  const handleUpdateExpenses = (newExpense) => {
-    const updatedExpenses = expenses.filter(
-      (expense) => newExpense._id !== expense._id
-    );
-    setExpenses([newExpense, ...updatedExpenses]);
   };
 
   const handleSetMessageExpense = (message) => {
@@ -116,70 +62,12 @@ export const ExpenseContextProvider = ({ children }) => {
     }, 2500);
   };
 
-  const handleUpdateSelectedBudget = async (budgetId) => {
+  const handleDeleteExpense = async (expense, budget) => {
     if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
       try {
-        const response = await budgetService.getOne(config, budgetId);
-        setSelectedBudget(response.data);
-      } catch (error) {
-        if (
-          error.response.data.status === 400 &&
-          error.response.data.message === "INVALID_TOKEN"
-        ) {
-          logout();
-        }
-      }
-    }
-  };
+        await expenseService.del(expense._id);
 
-  const handleIsExpenseEditing = (isEditing) => {
-    setIsExpenseEditing(isEditing);
-  };
-
-  const handleExpenseToUpdate = (expense) => {
-    setExpenseToUpdate(expense);
-  };
-
-  const handleGetOneExpense = async (expenseId) => {
-    if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
-      try {
-        const response = await expenseService.getOne(config, expenseId);
-        if (response.status === 200) {
-          setExpenseToUpdate(response.data);
-          return response.data;
-        }
-      } catch (error) {
-        if (
-          error.response.data.status === 400 &&
-          error.response.data.message === "INVALID_TOKEN"
-        ) {
-          logout();
-        }
-      }
-    }
-  };
-
-  const handleDeleteExpense = async (expense) => {
-    if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
-      try {
-        await expenseService.del(expense._id, config);
-
-        let updatedBudget = { ...selectedBudget };
+        let updatedBudget = { ...budget };
 
         updatedBudget.spentAmount = (
           Number.parseFloat(updatedBudget.spentAmount) -
@@ -190,20 +78,18 @@ export const ExpenseContextProvider = ({ children }) => {
           Number.parseFloat(updatedBudget.spentAmount)
         ).toFixed(2);
 
-        await budgetService.update(selectedBudget._id, updatedBudget, config);
+        await budgetService.update(budget._id, updatedBudget);
 
-        setExpenses(expenses.filter((e) => e._id !== expense._id));
+        queryClient.invalidateQueries({ queryKey: ["allExpenses"] });
+        queryClient.invalidateQueries({ queryKey: ["budgets"] });
 
-        handleUpdateSelectedBudget(selectedBudget._id);
         handleSetMessage(RECORD_DELETED_MESSAGE);
         handleSetType("success");
         handleSetRecordType("expense");
-
-        getBudgets();
       } catch (error) {
         if (
-          error.response.data.status === 400 &&
-          error.response.data.message === "INVALID_TOKEN"
+          error?.response?.data?.status === 400 &&
+          error?.response?.data?.message === "INVALID_TOKEN"
         ) {
           logout();
         }
@@ -214,26 +100,11 @@ export const ExpenseContextProvider = ({ children }) => {
   return (
     <ExpenseContext.Provider
       value={{
-        expenses,
-        getExpenses,
-        showExpensesList,
-        handleShowExpenseList,
-        selectedBudget,
-        showExpenseForm,
-        handleShowExpenseForm,
-        handleSelectedBudget,
-        handleUpdateExpenses,
         handleSetMessageExpense,
         messageExpense,
-        handleUpdateSelectedBudget,
         handleDeleteExpense,
-        expenseToUpdate,
-        isExpenseEditing,
-        handleIsExpenseEditing,
-        handleExpenseToUpdate,
-        handleSetIsLoading,
-        isLoading,
-        handleGetOneExpense,
+        getAllExpenses,
+        allExpenses,
       }}
     >
       {children}

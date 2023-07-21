@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Form,
   Button,
@@ -9,22 +8,19 @@ import {
   Container,
 } from "react-bootstrap";
 import { useNavigate, useLocation, Navigate } from "react-router-dom";
+import * as Yup from "yup";
 
-// components
-import Message from "./Message";
+// formik
+import { useFormik } from "formik";
 
 // custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useMessageContext } from "../hooks/useMessageContext";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loginEnabledBtn, setLoginEnabledBtn] = useState(false);
-
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/budgets";
+  const from = location.state?.from?.pathname;
 
   const {
     message,
@@ -35,31 +31,44 @@ const Login = () => {
     clearMessages,
   } = useMessageContext();
 
-  const { login, user } = useAuthContext();
+  const { login, user, isLoading } = useAuthContext();
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-
+  const onSubmit = async ({ email, password }) => {
     const response = await login(email, password);
-
     if (response && response.status === 200) {
       clearMessages();
       navigate(from, { replace: true });
     }
   };
 
+  const LoginSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Usá el formato usuario@dominio.com")
+      .required("Requerido"),
+    password: Yup.string().min(6, "Muy corta!").required("Requerido"),
+  });
+
+  const { handleSubmit, values, setFieldValue, errors, touched } = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      loginEnabledBtn: false,
+    },
+    validationSchema: LoginSchema,
+    onSubmit,
+  });
+
   const onChangeEmail = (e) => {
-    setEmail(e.target.value);
-    if (email && password) {
-      setLoginEnabledBtn(true);
+    setFieldValue("email", e.target.value);
+    if (values.email && values.password) {
+      setFieldValue("loginEnabledBtn", true);
     }
   };
 
   const onChangePassword = (e) => {
-    setPassword(e.target.value);
-
-    if (email && password) {
-      setLoginEnabledBtn(true);
+    setFieldValue("password", e.target.value);
+    if (values.email && values.password) {
+      setFieldValue("loginEnabledBtn", true);
     }
   };
 
@@ -68,6 +77,13 @@ const Login = () => {
     handleSetType(null);
     handleSetRecordType(null);
     navigate("/register");
+  };
+
+  const handleRecoverPassword = () => {
+    handleSetMessage(null);
+    handleSetType(null);
+    handleSetRecordType(null);
+    console.log("Aca enviar email para resetear constraseña");
   };
 
   const showMessage = () => {
@@ -84,7 +100,6 @@ const Login = () => {
             style={{ height: "97vh" }}
           >
             <Col md="6">
-              {showMessage() && <Message />}
               <Card
                 style={{ borderRadius: 0, backgroundColor: "hsl(0, 0%, 97%)" }}
               >
@@ -92,18 +107,23 @@ const Login = () => {
                   <Card.Title className="text-center fs-1 mb-4">
                     <i className="fa-solid fa-coins"></i> Finance Pro
                   </Card.Title>
-                  <Form onSubmit={handleLogin}>
+                  <Form noValidate onSubmit={handleSubmit}>
                     <Row className="g-2 mb-2">
                       <Col md>
                         <FloatingLabel controlId="floatingEmail" label="Email">
                           <Form.Control
                             name="email"
-                            value={email}
+                            value={values.email}
                             onChange={onChangeEmail}
                             type="email"
                             placeholder="lionelmessi@gmail.com"
                             required
+                            isValid={touched.email && !errors.email}
+                            isInvalid={errors.email}
                           />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.email}
+                          </Form.Control.Feedback>
                         </FloatingLabel>
                       </Col>
                     </Row>
@@ -114,28 +134,50 @@ const Login = () => {
                           label="Contraseña"
                         >
                           <Form.Control
-                            password={password}
-                            value={password}
+                            name="password"
+                            value={values.password}
                             onChange={onChangePassword}
                             type="password"
                             placeholder="Ingresá tu contraseña"
                             required
+                            isValid={touched.password && !errors.password}
+                            isInvalid={touched.password && errors.password}
                           />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.password}
+                          </Form.Control.Feedback>
                         </FloatingLabel>
                       </Col>
                     </Row>
 
                     <div className="d-grid gap-2">
-                      {loginEnabledBtn && (
+                      {values.loginEnabledBtn && !isLoading && (
                         <Button variant="success" type="submit">
                           Iniciar sesión
                         </Button>
                       )}
-                      {!loginEnabledBtn && (
+                      {!values.loginEnabledBtn && !isLoading && (
                         <Button variant="success" type="submit" disabled>
                           Iniciar sesión
                         </Button>
                       )}
+                      {values.loginEnabledBtn && isLoading && (
+                        <Button variant="success" type="submit" disabled>
+                          Iniciando sesión ...
+                        </Button>
+                      )}
+                      {showMessage() && (
+                        <p className="text-center mb-0 mt-3 text-danger">
+                          {message}
+                        </p>
+                      )}
+                      <Button
+                        variant="link"
+                        className="m-0 p-0"
+                        onClick={() => handleRecoverPassword()}
+                      >
+                        ¿Olvidaste tu clave?
+                      </Button>
                     </div>
                   </Form>
                 </Card.Body>

@@ -16,17 +16,25 @@ import { useNavigate } from "react-router-dom";
 import { useExpenseContext } from "../hooks/useExpenseContext";
 import { useMessageContext } from "../hooks/useMessageContext";
 
-const Expense = ({ expense }) => {
-  const { handleDeleteExpense, handleIsExpenseEditing, handleExpenseToUpdate } =
-    useExpenseContext();
+const Expense = ({ expense, budget }) => {
+  const { handleDeleteExpense } = useExpenseContext();
 
   const { clearMessages } = useMessageContext();
   const navigate = useNavigate();
 
+  const handleDetails = (expense) => {
+    clearMessages();
+    navigate(`${expense._id}/details`);
+  };
+
   const handleEdit = () => {
-    handleIsExpenseEditing(true);
     clearMessages();
     navigate(`${expense._id}/edit`);
+  };
+
+  const handleDelete = (expense, budget) => {
+    handleDeleteExpense(expense, budget);
+    handleClose();
   };
 
   const [show, setShow] = useState(false);
@@ -39,23 +47,26 @@ const Expense = ({ expense }) => {
       <Card
         key={expense._id}
         border="light"
-        // bg="light"
-        style={{ backgroundColor: "hsla(0, 0%, 94%, 1)" }}
+        style={{ backgroundColor: "white", border: "none" }}
+        className="shadow-sm py-2 mb-3 bg-body rounded"
       >
         <Card.Body>
           <Stack direction="horizontal" gap={3}>
             <span>
               <Card.Title className="mb-0">{expense.name}</Card.Title>
-              {/* <Card.Text className="text-muted mb-0">
-              {expense.description}
-            </Card.Text> */}
               <Card.Text className="text-muted">
                 {format(new Date(expense.createdAt), "dd/MM/yyyy kk:mm")}
               </Card.Text>
             </span>
             <Card.Title className="ms-auto mb-0">
               <Stack direction="horizontal" gap={3}>
-                <span className="fs-4">${expense.amount.toFixed(2)}</span>
+                <span className="fs-4 fw-bold">
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "USD",
+                  }).format(expense.amount.toFixed(2))}
+                </span>
 
                 <DropdownButton
                   title={
@@ -65,6 +76,12 @@ const Expense = ({ expense }) => {
                   variant="link"
                   align="end"
                 >
+                  <Dropdown.Item
+                    eventKey="1"
+                    onClick={() => handleDetails(expense)}
+                  >
+                    Detalle
+                  </Dropdown.Item>
                   <Dropdown.Item
                     eventKey="1"
                     onClick={() => handleEdit(expense)}
@@ -79,10 +96,6 @@ const Expense = ({ expense }) => {
             </Card.Title>
           </Stack>
         </Card.Body>
-        {/* <Card.Footer className="text-muted">
-            Realizado el{" "}
-            
-          </Card.Footer> */}
       </Card>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -96,7 +109,10 @@ const Expense = ({ expense }) => {
           <Button variant="secondary" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button variant="danger" onClick={() => handleDeleteExpense(expense)}>
+          <Button
+            variant="danger"
+            onClick={() => handleDelete(expense, budget)}
+          >
             Sí, estoy seguro
           </Button>
         </Modal.Footer>

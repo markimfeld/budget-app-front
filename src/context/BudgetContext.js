@@ -1,4 +1,6 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
+
+import { useQueryClient } from "react-query";
 
 // services
 import budgetService from "../services/budget";
@@ -21,30 +23,28 @@ export const BudgetContextProvider = ({ children }) => {
     month: currentMonth,
     year: currentYear,
   });
-  const [showBudgetForm, setShowBudgetForm] = useState(false);
-  const [showBudgetList, setShowBudgetList] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
-  const [budgetToUpdate, setBudgetToUpdate] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isBudgetCreating, setIsBudgetCreating] = useState(true);
+
+  // Get QueryClient from the context
+  const queryClient = useQueryClient();
 
   const { handleSetMessage, handleSetType, handleSetRecordType } =
     useMessageContext();
 
-  const getBudgets = async () => {
+  const getBudgets = async (key) => {
     if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
       try {
-        const response = await budgetService.getAll(config, {
+        const budgetId = key.queryKey[1]?.id;
+
+        const { data } = await budgetService.getAll({
           ...filters,
-          createdBy: user.id,
         });
-        setBudgets(response.data);
-        setIsLoading(false);
+        if (budgetId) {
+          setBudgets(data.filter((b) => b._id === budgetId));
+          return data.filter((b) => b._id === budgetId)[0];
+        }
+        setBudgets(data);
+
+        return data;
       } catch (err) {
         if (
           err.response.data.status === 400 &&
@@ -55,11 +55,6 @@ export const BudgetContextProvider = ({ children }) => {
       }
     }
   };
-
-  useEffect(() => {
-    getBudgets();
-    // eslint-disable-next-line
-  }, [user, filters]);
 
   const getCurrentMonthBudgets = () => {
     const currentMonth = new Date().getMonth() + 1;
@@ -101,53 +96,15 @@ export const BudgetContextProvider = ({ children }) => {
     setFilters({ month: prevMonth, year: prevYear });
   };
 
-  const handleShowBudgetForm = (showForm) => {
-    if (showForm) {
-      setShowBudgetForm(true);
-    } else {
-      setShowBudgetForm(false);
-    }
-  };
-
-  const handleShowBudgetList = (showList) => {
-    if (showList) {
-      setShowBudgetList(true);
-    } else {
-      setShowBudgetList(false);
-    }
-  };
-
-  const handleUpdateBudgets = (newBudget) => {
-    const updatedBudgets = budgets.filter(
-      (budget) => newBudget._id !== budget._id
-    );
-
-    setBudgets([...updatedBudgets, newBudget]);
-  };
-
-  const handleBudgetToUpdate = (budget) => {
-    setBudgetToUpdate(budget);
-  };
-
-  const handleIsEditing = (isEditing) => {
-    setIsEditing(isEditing);
-
-    // setIsEditing(prevState ==> !prevState)
-  };
-
   const handleDeleteBudget = async (budget) => {
     if (user !== null) {
-      const config = {
-        headers: {
-          Authorization: `${user.accessToken}`,
-        },
-      };
       try {
-        await budgetService.delete(budget._id, config);
-        setBudgets(budgets.filter((b) => b._id !== budget._id));
+        await budgetService.delete(budget._id);
         handleSetMessage(RECORD_DELETED_MESSAGE);
         handleSetType("success");
         handleSetRecordType("budget");
+
+        queryClient.invalidateQueries({ queryKey: ["budgets"] });
       } catch (error) {
         if (
           error.response.data.status === 400 &&
@@ -159,10 +116,6 @@ export const BudgetContextProvider = ({ children }) => {
     }
   };
 
-  const handleIsBudgetCreating = (creatingBudget) => {
-    setIsBudgetCreating(creatingBudget);
-  };
-
   return (
     <BudgetContext.Provider
       value={{
@@ -171,20 +124,8 @@ export const BudgetContextProvider = ({ children }) => {
         getCurrentMonthBudgets,
         getNextMonthBudgets,
         getPreviuosMonthBudgets,
-        handleShowBudgetForm,
-        showBudgetForm,
-        showBudgetList,
-        handleUpdateBudgets,
-        handleShowBudgetList,
         getBudgets,
         handleDeleteBudget,
-        isLoading,
-        handleIsEditing,
-        isEditing,
-        handleBudgetToUpdate,
-        budgetToUpdate,
-        handleIsBudgetCreating,
-        isBudgetCreating,
       }}
     >
       {children}

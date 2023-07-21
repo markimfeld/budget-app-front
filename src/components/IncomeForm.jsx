@@ -1,14 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
 
 // components
-import BudgetFormAdd from "./BudgetFormAdd";
+import IncomeFormAdd from "./IncomeFormAdd";
 
 // services
-import budgetService from "../services/budget";
+import incomeService from "../services/income";
 
 // custom hooks
 import { useMessageContext } from "../hooks/useMessageContext";
-import { useBudgetContext } from "../hooks/useBudgetContext";
+import { useIncomeContext } from "../hooks/useIncomeContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 // labels
@@ -17,10 +17,10 @@ import {
   RECORD_CREATED_MESSAGE,
   RECORD_UPDATED_MESSAGE,
 } from "../labels/labels";
-import BudgetFormEdit from "./BudgetFormEdit";
 import { useQuery } from "react-query";
+import IncomeFormEdit from "./IncomeFormEdit";
 
-const BudgetForm = () => {
+const IncomeForm = () => {
   const { user, logout } = useAuthContext();
   const {
     handleSetMessage,
@@ -29,31 +29,31 @@ const BudgetForm = () => {
     clearMessages,
   } = useMessageContext();
 
-  const { getBudgets } = useBudgetContext();
+  const { getIncomes } = useIncomeContext();
 
   const navigate = useNavigate();
 
-  const { budgetId } = useParams();
+  const { incomeId } = useParams();
 
-  const { data: budgets } = useQuery({
-    queryKey: ["budgets"],
-    queryFn: getBudgets,
+  const { data: incomes } = useQuery({
+    queryKey: ["incomes"],
+    queryFn: getIncomes,
   });
 
-  const onSubmit = async ({ name, expectedAmount }) => {
+  const onSubmit = async ({ name, amount }) => {
     if (user !== null) {
-      const newBudget = {
+      const newIncome = {
         name,
-        expectedAmount,
+        amount,
       };
 
-      if (!budgetId) {
+      if (!incomeId) {
         try {
-          await budgetService.store(newBudget);
+          await incomeService.store(newIncome);
           handleSetMessage(RECORD_CREATED_MESSAGE);
           handleSetType("success");
-          handleSetRecordType("budget");
-          navigate("/budgets");
+          handleSetRecordType("income");
+          navigate("/incomes");
         } catch (error) {
           if (
             error.response.data.status === 400 &&
@@ -67,27 +67,24 @@ const BudgetForm = () => {
           ) {
             handleSetMessage(MISSING_FIELDS_REQUIRED);
             handleSetType("danger");
-            handleSetRecordType("budget");
+            handleSetRecordType("income");
           }
         }
       } else {
-        // let budgetUpdated = { ...budgetToUpdate };
+        let incomeUpdated = {
+          ...incomes?.find((income) => income._id === incomeId),
+        };
 
-        let budgetUpdated = { ...budgets?.find((b) => b._id === budgetId) };
-
-        budgetUpdated.expectedAmount = Number.parseFloat(expectedAmount);
-        budgetUpdated.name = name;
-        budgetUpdated.leftAmount = Number.parseFloat(
-          Number.parseFloat(expectedAmount) - budgetUpdated.spentAmount
-        );
+        incomeUpdated.amount = Number.parseFloat(amount);
+        incomeUpdated.name = name;
 
         try {
-          await budgetService.update(budgetId, budgetUpdated);
+          await incomeService.update(incomeId, incomeUpdated);
 
           handleSetMessage(RECORD_UPDATED_MESSAGE);
           handleSetType("success");
-          handleSetRecordType("budget");
-          navigate("/budgets");
+          handleSetRecordType("income");
+          navigate("/incomes");
         } catch (error) {
           if (
             error.response.data.status === 400 &&
@@ -100,29 +97,31 @@ const BudgetForm = () => {
           ) {
             handleSetMessage(MISSING_FIELDS_REQUIRED);
             handleSetType("danger");
-            handleSetRecordType("budget");
+            handleSetRecordType("income");
           }
         }
       }
     }
   };
 
-  const onCancelOperation = (from) => {
+  const onCancelOperation = () => {
     clearMessages();
-    navigate("/budgets");
+    navigate("/incomes");
   };
 
   return (
     <>
-      {budgetId && (
-        <BudgetFormEdit
+      {incomeId && (
+        <IncomeFormEdit
           onSubmit={onSubmit}
           onCancelOperation={onCancelOperation}
-          budgetToUpdate={{ ...budgets?.find((b) => b._id === budgetId) }}
+          incomeToUpdate={{
+            ...incomes?.find((income) => income._id === incomeId),
+          }}
         />
       )}
-      {!budgetId && (
-        <BudgetFormAdd
+      {!incomeId && (
+        <IncomeFormAdd
           onSubmit={onSubmit}
           onCancelOperation={onCancelOperation}
         />
@@ -131,4 +130,4 @@ const BudgetForm = () => {
   );
 };
 
-export default BudgetForm;
+export default IncomeForm;
