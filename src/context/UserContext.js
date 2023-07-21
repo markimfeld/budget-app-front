@@ -42,6 +42,7 @@ export const UserContextProvider = ({ children }) => {
         return response;
       }
     } catch (error) {
+      setIsLoading(false);
       if (
         error.response.data.status === 404 &&
         error.response.data.message === "INVALID_CREDENTIALS"

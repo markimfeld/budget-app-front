@@ -7,7 +7,6 @@ import {
   FloatingLabel,
   Form,
 } from "react-bootstrap";
-import Message from "./Message";
 
 import { useQuery } from "react-query";
 import { useQueryClient } from "react-query";
@@ -25,6 +24,7 @@ import { DUPLICATE_RECORD } from "../labels/labels";
 // formik
 import { useFormik } from "formik";
 import loginService from "../services/login";
+import { useState } from "react";
 
 const ProfileDetails = () => {
   // Get QueryClient from the context
@@ -34,9 +34,9 @@ const ProfileDetails = () => {
     handleSetMessage,
     handleSetType,
     handleSetRecordType,
-    message,
-    recordType,
   } = useMessageContext();
+
+  const [isSaving, setIsSaving] = useState(false);
 
   const { user, getOne, updateUserStorage } = useAuthContext();
 
@@ -55,6 +55,7 @@ const ProfileDetails = () => {
     // password,
   }) => {
     try {
+      setIsSaving(true);
       const { isUpdated } = await loginService.update(userInfo._id, {
         firstName,
         lastName,
@@ -64,7 +65,7 @@ const ProfileDetails = () => {
 
       if (isUpdated) {
         queryClient.invalidateQueries({ queryKey: ["userInfo"] });
-
+        setIsSaving(false);
         updateUserStorage({ id: userInfo._id, firstName, lastName, username });
       }
     } catch (error) {
@@ -327,13 +328,26 @@ const ProfileDetails = () => {
                     </Row>
 
                     <Stack direction="horizontal" gap={3}>
-                      <Button
-                        className="ms-auto"
-                        variant="success"
-                        type="submit"
-                      >
-                        Guardar
-                      </Button>
+                      {!isSaving && (
+                        <Button
+                          className="ms-auto"
+                          variant="success"
+                          type="submit"
+                        >
+                          Guardar
+                        </Button>
+                      )}
+                      {isSaving && (
+                        <Button
+                          className="ms-auto"
+                          variant="success"
+                          type="submit"
+                          disabled
+                        >
+                          Guardando...
+                        </Button>
+                      )}
+
                       <Button
                         variant="outline-secondary"
                         onClick={() => onCancelOperation()}
