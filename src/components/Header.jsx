@@ -38,6 +38,12 @@ const Header = () => {
     alert("Settings");
   };
 
+  const handleProfile = () => {
+    clearMessages();
+    handleClose();
+    navigate("/users/profile");
+  };
+
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
@@ -118,7 +124,7 @@ const Header = () => {
                     </span>
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
-                  <NavDropdown.Item onClick={() => handleSettings()}>
+                  <NavDropdown.Item onClick={() => handleProfile()}>
                     Tu perfil
                   </NavDropdown.Item>
                   <NavDropdown.Item

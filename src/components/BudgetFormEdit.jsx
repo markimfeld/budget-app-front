@@ -20,6 +20,7 @@ const BudgetFormEdit = (props) => {
       name: budgetToUpdate?.name || "",
       expectedAmount: budgetToUpdate?.expectedAmount || "",
     },
+    enableReinitialize: true,
     validationSchema: BudgetSchema,
     onSubmit,
   });

@@ -106,6 +106,21 @@ export const UserContextProvider = ({ children }) => {
     }
   };
 
+  const getOne = async (key) => {
+    const id = key.queryKey[1].id;
+    try {
+      const { data: user } = await loginService.getUser({ id });
+      return user;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateUserStorage = (user) => {
+    setUser(user);
+    window.localStorage.setItem("user", JSON.stringify(user));
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -115,6 +130,8 @@ export const UserContextProvider = ({ children }) => {
         loadUserFromStorage,
         register,
         isLoading,
+        getOne,
+        updateUserStorage,
       }}
     >
       {children}

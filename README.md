@@ -8,6 +8,6 @@
 - [x] Agregar ingresos.
 - [x] Vista detalle de presupuesto.
 - [x] Vista detalle de gasto.
-- [ ] Agregar funcionalidad para editar usuario.
+- [x] Agregar funcionalidad para editar usuario.
 - [ ] Recuperar contraseña.
 - [ ] Tema dark / light.

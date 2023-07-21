@@ -52,20 +52,25 @@ const BudgetDetails = () => {
     <>
       <Row className="mb-4">
         <Col>
-          <Card style={{ backgroundColor: "#373E68" }}>
+          <Card
+            className="shadow-sm p-1 bg-body rounded"
+            style={{ border: "none" }}
+          >
             <Card.Body>
               <Stack direction="horizontal" gap={3}>
                 <Button
+                  variant="outline-secondary"
                   size="md"
-                  variant="success"
                   onClick={() => handleGoBack()}
                 >
-                  <i className="fa-solid fa-arrow-left fa-sm"></i> Volver
+                  <i className="fa-solid fa-angle-left fa-sm"></i>{" "}
+                  <span className="fw-bold">Volver</span>
                 </Button>
                 <Button
                   size="md"
                   onClick={() => handleEdit(budget)}
                   className="ms-auto"
+                  variant="success"
                 >
                   <i className="fa-solid fa-edit fa-sm"></i> Editar
                 </Button>

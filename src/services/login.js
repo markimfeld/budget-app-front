@@ -13,6 +13,18 @@ const loginService = {
     const { data } = await axios.post(`${baseUrl}/register`, newUser);
     return data;
   },
+  getUser: async (id) => {
+    const { data } = await axios.post(`${baseUrl}/profile`, id, {
+      withCredentials: true,
+    });
+    return data;
+  },
+  update: async (id, userToUpdate) => {
+    const { data } = await axios.put(`${baseUrl}/profile/${id}`, userToUpdate, {
+      withCredentials: true,
+    });
+    return data;
+  },
 };
 
 export default loginService;

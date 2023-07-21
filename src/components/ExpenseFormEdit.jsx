@@ -23,6 +23,7 @@ const ExpenseFormEdit = (props) => {
       amount: expenseToUpdate?.amount || "",
       budget: expenseToUpdate?.budget._id || "",
     },
+    enableReinitialize: true,
     validationSchema: ExpenseSchema,
     onSubmit,
   });
