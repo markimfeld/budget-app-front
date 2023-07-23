@@ -21,8 +21,11 @@ import loginService from "../services/login";
 
 const NewPasswordForm = () => {
   const {
+    type,
+    message,
     handleSetMessage,
     handleSetType,
+    recordType,
     handleSetRecordType,
     clearMessages,
   } = useMessageContext();
@@ -50,7 +53,11 @@ const NewPasswordForm = () => {
         navigate("/login");
       }
     } catch (error) {
-      console.log(error);
+      logout();
+      clearMessages();
+      handleSetMessage("Enlace vencido.");
+      handleSetType("danger");
+      handleSetRecordType("user");
     }
   };
 
@@ -84,6 +91,10 @@ const NewPasswordForm = () => {
     if (values.password && values.confirmPassword) {
       setFieldValue("registerEnabledBtn", true);
     }
+  };
+
+  const showMessage = () => {
+    return message !== null && recordType === "user";
   };
 
   return (
@@ -159,6 +170,16 @@ const NewPasswordForm = () => {
                       <Button variant="success" type="submit" disabled>
                         Reestablecer
                       </Button>
+                    )}
+                    {showMessage() && type === "danger" && (
+                      <p className="text-center mb-0 mt-3 text-danger">
+                        {message}
+                      </p>
+                    )}
+                    {showMessage() && type === "success" && (
+                      <p className="text-center mb-0 mt-3 text-success">
+                        {message}
+                      </p>
                     )}
                   </div>
                 </Form>
