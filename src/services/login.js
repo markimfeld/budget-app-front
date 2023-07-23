@@ -25,6 +25,14 @@ const loginService = {
     });
     return data;
   },
+  newPassword: async (newPassword) => {
+    const { data } = await axios.put(`${baseUrl}/new-password`, newPassword);
+    return data;
+  },
+  recoverPassword: async (email) => {
+    const data = axios.put(`${baseUrl}/recovery-password`, email);
+    return data;
+  },
 };
 
 export default loginService;

@@ -20,11 +20,12 @@ import { useMessageContext } from "../hooks/useMessageContext";
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname;
+  const from = location.state?.from?.pathname || "/";
 
   const {
     message,
     recordType,
+    type,
     handleSetMessage,
     handleSetType,
     handleSetRecordType,
@@ -83,7 +84,7 @@ const Login = () => {
     handleSetMessage(null);
     handleSetType(null);
     handleSetRecordType(null);
-    console.log("Aca enviar email para resetear constraseña");
+    navigate("/forgot-password");
   };
 
   const showMessage = () => {
@@ -166,8 +167,13 @@ const Login = () => {
                           Iniciando sesión ...
                         </Button>
                       )}
-                      {showMessage() && (
+                      {showMessage() && type === "danger" && (
                         <p className="text-center mb-0 mt-3 text-danger">
+                          {message}
+                        </p>
+                      )}
+                      {showMessage() && type === "success" && (
+                        <p className="text-center mb-0 mt-3 text-success">
                           {message}
                         </p>
                       )}

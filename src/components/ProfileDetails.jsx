@@ -207,7 +207,7 @@ const ProfileDetails = () => {
               </Card>
             </Col>
           </Row>
-          <Row>
+          <Row className="mb-5">
             <Col>
               <Card
                 style={{ border: "none", backgroundColor: "white" }}
