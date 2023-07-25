@@ -87,7 +87,7 @@ const ForgotPasswordForm = () => {
                     Ingresá tu correo electrónico con el que te registraste.
                   </Card.Subtitle>
                   <Form noValidate onSubmit={handleSubmit}>
-                    <Row className="g-2 mb-2">
+                    <Row className="g-2 mb-3">
                       <Col>
                         <FloatingLabel
                           controlId="floatingPassword"

@@ -135,7 +135,7 @@ const NewPasswordForm = () => {
                       </FloatingLabel>
                     </Col>
                   </Row>
-                  <Row className="g-2 mb-2">
+                  <Row className="g-2 mb-3">
                     <Col>
                       <FloatingLabel
                         controlId="floatingPassword"
