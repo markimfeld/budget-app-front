@@ -42,7 +42,7 @@ const Incomes = () => {
     <>
       <Row className="mb-4">
         <Col>
-          <Card style={{ backgroundColor: "#373E68" }}>
+          <Card className="bg-card-secondary">
             <Card.Body>
               <Stack direction="horizontal" gap={3}>
                 <Button
@@ -104,11 +104,7 @@ const Incomes = () => {
       <div>
         {data?.length > 0 && !isLoading && <Row>{incomeList}</Row>}
         {data?.length === 0 && !isLoading && (
-          <Card
-            border="light"
-            style={{ backgroundColor: "white" }}
-            className="shadow-sm py-2 mb-3 bg-body rounded"
-          >
+          <Card border="light" className="shadow-sm py-2 mb-3 bg-body rounded">
             <Card.Body>
               <Card.Title className="mb-0">
                 No hay ingresos creados aún 😄.{" "}

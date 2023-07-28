@@ -42,7 +42,7 @@ const Budgets = () => {
     <>
       <Row className="mb-4">
         <Col>
-          <Card style={{ backgroundColor: "#373E68" }}>
+          <Card className="bg-card-secondary">
             <Card.Body>
               <Stack direction="horizontal" gap={3}>
                 <Button

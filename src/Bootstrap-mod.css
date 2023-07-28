@@ -1,12 +1,93 @@
+:root {
+    --bg-color: hsl(230, 60%, 96%);
+
+    /* buttons */
+    --bs-btn-primary-bg: hsl(282, 84%, 52%);
+    --bs-btn-primary-border-color: hsl(282, 84%, 52%);
+    --bs-btn-primary-color: #fff;
+    --bs-btn-primary-hover-color: #fff;
+    --bs-btn-primary-hover-bg: hsla(282, 84%, 52%, 0.8);
+    --bs-btn-primary-hover-border-color: hsla(282, 84%, 52%, 0.8);
+    --bs-btn-primary-active-bg: hsl(282, 84%, 42%);
+    --bs-btn-primary-active-border-color: hsl(282, 84%, 42%);
+
+
+    /* cards */
+    --bs-primary-card-bg: white;
+    --bs-secondary-card-bg: #373E68;
+    --bs-primary-card-border-color: white;
+    --bs-primary-card-color: black;
+
+    
+    /* navs */
+    --bs-nav-bg: #212529;
+
+    /* forms */
+    --bs-form-control-bg: white;
+    --bs-form-control-border-color: #ccc;
+    --bs-form-control-color: #ccc;
+}
+
+[data-theme="dark"] {
+    --bg-color: hsl(233, 30%, 11%);
+
+    --bs-btn-primary-bg: hsl(252, 93%, 67%);
+    --bs-btn-primary-border-color: hsl(252, 93%, 67%);
+    --bs-btn-primary-color: #fff;
+    --bs-btn-primary-hover-color: #fff;
+    --bs-btn-primary-hover-bg: hsla(252, 93%, 67%, 0.8);
+    --bs-btn-primary-hover-border-color: hsla(252, 93%, 67%, 0.8);
+    --bs-btn-primary-active-bg: hsl(252, 93%, 57%);
+    --bs-btn-primary-active-border-color: hsl(252, 93%, 57%);
+
+    /* cards */
+    --bs-primary-card-bg: hsl(236, 30%, 18%);
+    --bs-primary-card-border-color: hsl(236, 30%, 18%);
+    --bs-primary-card-color: white;
+    --bs-primary-card-subtitle-color: hsl(255, 100%, 100%, 0.5);
+
+    /* navs */
+    --bs-nav-bg: #373E68;
+
+    /* forms */
+    --bs-form-control-bg: #373E68;
+    --bs-form-control-border-color: #373E68;
+    --bs-form-control-color: white;
+}
+
+.card {
+    background-color: var(--bs-primary-card-bg) !important;
+    border-color: var(--bs-primary-card-border-color) !important;
+    color: var(--bs-primary-card-color);
+    border: none;
+}
+
+.card-header {
+    border: none;
+    background-color: var(--bs-primary-card-bg) !important;
+}
+
+.card-body {
+    border: none;
+}
+
+.card-subtitle {
+    color: var(--bs-primary-card-subtitle-color) !important;
+}
+
+.bg-card-secondary {
+    background-color: var(--bs-secondary-card-bg) !important;
+}
+
 .btn-primary {
-    --bs-btn-bg: hsl(282, 84%, 52%);
-    --bs-btn-border-color: hsl(282, 84%, 52%);
-    --bs-btn-color: #fff;
-    --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: hsla(282, 84%, 52%, 0.8);
-    --bs-btn-hover-border-color: hsla(282, 84%, 52%, 0.8);
-    --bs-btn-active-bg: hsl(282, 84%, 42%);
-    --bs-btn-active-border-color: hsl(282, 84%, 42%);
+    --bs-btn-bg: var(--bs-btn-primary-bg);
+    --bs-btn-border-color: var(--bs-btn-primary-border-color);
+    --bs-btn-color: var(--bs-btn-primary-color);
+    --bs-btn-hover-color: var(--bs-btn-primary-hover-color);
+    --bs-btn-hover-bg: var(--bs-btn-primary-hover-bg);
+    --bs-btn-hover-border-color: var(--bs-btn-primary-hover-border-color);
+    --bs-btn-active-bg: var(--bs-btn-primary-active-bg);
+    --bs-btn-active-border-color: var(--bs-btn-primary-active-border-color);
 }
 
 .btn-success {
@@ -73,4 +154,26 @@
 .form-select.is-valid:not([multiple]):not([size]) {
     border-color:hsl(230, 75%, 58%);
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"), url("../public/check-solid.svg");
+}
+
+.form-control {
+    background-color: var(--bs-form-control) !important;
+    border-color: var(--bs-form-control-border-color) !important;
+    color: var(--bs-form-control-color) !important;
+}
+
+.form-select {
+    background-color: var(--bs-form-control-bg) !important;
+    border-color: var(--bs-form-control-border-color) !important;
+    color: var(--bs-form-control-color) !important;
+}
+
+
+.bg-body-dark {
+    background-color: var(--bs-nav-bg) !important;
+}
+
+.theme {
+    background-color: var(--bg-color); 
+    height: 100vh;
 }

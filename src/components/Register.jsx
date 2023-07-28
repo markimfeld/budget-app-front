@@ -164,9 +164,7 @@ const Register = () => {
             style={{ height: "97vh" }}
           >
             <Col md="6">
-              <Card
-                style={{ borderRadius: 0, backgroundColor: "hsl(0, 0%, 97%)" }}
-              >
+              <Card className="shadow-sm py-2 mb-3 bg-body rounded-0">
                 <Card.Body>
                   <Card.Title className="text-center fs-1 mb-4">
                     <i className="fa-solid fa-coins"></i> Finance Pro
@@ -297,7 +295,7 @@ const Register = () => {
                   </Form>
                 </Card.Body>
               </Card>
-              <Card className="mt-3" style={{ borderRadius: 0 }}>
+              <Card className="shadow-sm py-2 mb-3 bg-body rounded-0">
                 <Card.Body>
                   <Card.Text className="text-center">
                     ¿Ya tenes cuenta?{" "}

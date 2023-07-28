@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Container,
   Navbar,
@@ -11,11 +12,12 @@ import { useNavigate, Link } from "react-router-dom";
 // custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useMessageContext } from "../hooks/useMessageContext";
-import { useState } from "react";
+import { useThemeContext } from "../hooks/useThemeContext";
 
 const Header = () => {
   const { clearMessages } = useMessageContext();
   const { user, logout } = useAuthContext();
+  const { theme, handleSetTheme } = useThemeContext();
 
   const [show, setShow] = useState(false);
 
@@ -31,7 +33,12 @@ const Header = () => {
   };
 
   const handleTheme = () => {
-    alert("Cambiando tema");
+    if (theme === "light") {
+      handleSetTheme("dark");
+    } else {
+      handleSetTheme("light");
+    }
+    handleClose();
   };
 
   const handleSettings = () => {

@@ -11,6 +11,7 @@ import { BudgetContextProvider } from "./context/BudgetContext";
 import { IncomeContextProvider } from "./context/IncomeContext";
 import { MessageContextProvider } from "./context/MessageContext";
 import { ExpenseContextProvider } from "./context/ExpenseContext";
+import { ThemeContextProvider } from "./context/ThemeContext";
 
 const queryClient = new QueryClient();
 
@@ -18,21 +19,23 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
   <QueryClientProvider client={queryClient}>
-    <MessageContextProvider>
-      <UserContextProvider>
-        <IncomeContextProvider>
-          <BudgetContextProvider>
-            <ExpenseContextProvider>
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/*" element={<App />} />
-                </Routes>
-              </BrowserRouter>
-            </ExpenseContextProvider>
-          </BudgetContextProvider>
-        </IncomeContextProvider>
-      </UserContextProvider>
-    </MessageContextProvider>
+    <ThemeContextProvider>
+      <MessageContextProvider>
+        <UserContextProvider>
+          <IncomeContextProvider>
+            <BudgetContextProvider>
+              <ExpenseContextProvider>
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/*" element={<App />} />
+                  </Routes>
+                </BrowserRouter>
+              </ExpenseContextProvider>
+            </BudgetContextProvider>
+          </IncomeContextProvider>
+        </UserContextProvider>
+      </MessageContextProvider>
+    </ThemeContextProvider>
   </QueryClientProvider>
   // </React.StrictMode>
 );
