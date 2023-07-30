@@ -369,6 +369,11 @@ body {
     --bs-alert-link-color: var(--bs-success-text-emphasis);
 }
 
+.modal {
+    --bs-modal-bg: var(--bs-nav-bg);
+    color: white;
+}
+
 .theme {
     background-color: var(--bg-color); 
     height: 100%;
