@@ -97,6 +97,11 @@ const NewPasswordForm = () => {
     return message !== null && recordType === "user";
   };
 
+  const onCancelOperation = () => {
+    clearMessages();
+    navigate(`/`);
+  };
+
   return (
     <>
       <Container>
@@ -169,6 +174,12 @@ const NewPasswordForm = () => {
                         Reestablecer
                       </Button>
                     )}
+                    <Button
+                      variant="outline-secondary"
+                      onClick={() => onCancelOperation()}
+                    >
+                      Cancelar
+                    </Button>
                     {showMessage() && type === "danger" && (
                       <p className="text-center mb-0 mt-3 text-danger">
                         {message}

@@ -17,6 +17,8 @@ import { useMessageContext } from "../hooks/useMessageContext";
 import loginService from "../services/login";
 import { useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 const ForgotPasswordForm = () => {
   const {
     message,
@@ -27,6 +29,13 @@ const ForgotPasswordForm = () => {
     clearMessages,
   } = useMessageContext();
   const [isSend, setIsSend] = useState(false);
+
+  const navigate = useNavigate();
+
+  const onCancelOperation = () => {
+    clearMessages();
+    navigate(`/`);
+  };
 
   const onSubmit = async ({ email }) => {
     try {
@@ -119,6 +128,12 @@ const ForgotPasswordForm = () => {
                           Enviar
                         </Button>
                       )}
+                      <Button
+                        variant="outline-secondary"
+                        onClick={() => onCancelOperation()}
+                      >
+                        Cancelar
+                      </Button>
                     </div>
                   </Form>
                 </Card.Body>

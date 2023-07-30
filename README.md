@@ -10,4 +10,4 @@
 - [x] Vista detalle de gasto.
 - [x] Agregar funcionalidad para editar usuario.
 - [x] Recuperar contraseña.
-- [ ] Tema dark / light.
+- [x] Tema dark / light.

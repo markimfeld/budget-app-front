@@ -77,6 +77,7 @@ const Header = () => {
             id={`offcanvasNavbar-expand-="md"`}
             aria-labelledby={`offcanvasNavbarLabel-expand-lg`}
             placement="end"
+            className="bg-body-dark"
             show={show}
             onHide={handleClose}
           >
@@ -126,9 +127,7 @@ const Header = () => {
                     className="text-wrap"
                   >
                     Iniciado como{" "}
-                    <span style={{ fontWeight: "bold", color: "black" }}>
-                      @{user.username}
-                    </span>
+                    <span style={{ fontWeight: "bold" }}>@{user.username}</span>
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={() => handleProfile()}>
