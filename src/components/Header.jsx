@@ -143,10 +143,7 @@ const Header = () => {
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={() => handleTheme()}>
-                    Configuración
-                  </NavDropdown.Item>
-                  <NavDropdown.Item onClick={() => handleTheme()}>
-                    Tema
+                    {theme === "dark" ? "Tema claro" : "Tema oscuro"}
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={() => handleLogout()}>

@@ -217,7 +217,7 @@
     --bs-primary-card-subtitle-color: hsl(255, 100%, 100%, 0.5);
 
     /* navs */
-    --bs-nav-bg: #373E68;
+    --bs-nav-bg: hsl(236, 30%, 18%);
 
     /* forms */
     --bs-form-control-bg: #373E68;

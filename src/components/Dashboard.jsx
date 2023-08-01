@@ -258,7 +258,7 @@ const Dashboard = () => {
         <Col md={12}>
           {!isLoading && (
             <Card
-              className="shadow-sm mb-3 bg-body rounded"
+              className="shadow-sm mb-4 bg-body rounded"
               style={{ border: "none" }}
             >
               <Card.Body>
