@@ -66,7 +66,7 @@ const Header = () => {
         <Container>
           <Navbar.Brand className="fs-4">
             <Link to="/" style={{ color: "white", textDecoration: "none" }}>
-              <i className="fa-solid fa-coins"></i> Finance Pro
+              <i className="fa-solid fa-coins"></i> Finanzas perfectas
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle
@@ -89,7 +89,7 @@ const Header = () => {
                   handleClose();
                 }}
               >
-                <i className="fa-solid fa-coins"></i> Finance Pro
+                <i className="fa-solid fa-coins"></i> Finanzas perfectas
               </Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
