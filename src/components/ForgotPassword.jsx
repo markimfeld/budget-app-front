@@ -17,6 +17,8 @@ import { useMessageContext } from "../hooks/useMessageContext";
 import loginService from "../services/login";
 import { useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 const ForgotPasswordForm = () => {
   const {
     message,
@@ -27,6 +29,13 @@ const ForgotPasswordForm = () => {
     clearMessages,
   } = useMessageContext();
   const [isSend, setIsSend] = useState(false);
+
+  const navigate = useNavigate();
+
+  const onCancelOperation = () => {
+    clearMessages();
+    navigate(`/`);
+  };
 
   const onSubmit = async ({ email }) => {
     try {
@@ -76,12 +85,10 @@ const ForgotPasswordForm = () => {
         >
           {!isSend && (
             <Col md="6">
-              <Card
-                style={{ borderRadius: 0, backgroundColor: "hsl(0, 0%, 97%)" }}
-              >
+              <Card className="shadow-sm py-2 mb-3 bg-body rounded-0">
                 <Card.Body>
                   <Card.Title className="text-center fs-1 mb-4">
-                    <i className="fa-solid fa-coins"></i> Finance Pro
+                    <i className="fa-solid fa-coins"></i> Finanzas perfectas
                   </Card.Title>
                   <Card.Subtitle className="fs-5 mb-2">
                     Ingresá tu correo electrónico con el que te registraste.
@@ -121,6 +128,12 @@ const ForgotPasswordForm = () => {
                           Enviar
                         </Button>
                       )}
+                      <Button
+                        variant="outline-secondary"
+                        onClick={() => onCancelOperation()}
+                      >
+                        Cancelar
+                      </Button>
                     </div>
                   </Form>
                 </Card.Body>
@@ -129,12 +142,10 @@ const ForgotPasswordForm = () => {
           )}
           {isSend && (
             <Col md="6">
-              <Card
-                style={{ borderRadius: 0, backgroundColor: "hsl(0, 0%, 97%)" }}
-              >
+              <Card className="shadow-sm py-2 mb-3 bg-body rounded-0">
                 <Card.Body>
                   <Card.Title className="text-center fs-1 mb-4">
-                    <i className="fa-solid fa-coins"></i> Finance Pro
+                    <i className="fa-solid fa-coins"></i> Finanzas perfectas
                   </Card.Title>
 
                   {showMessage && (

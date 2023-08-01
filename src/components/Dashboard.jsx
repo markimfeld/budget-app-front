@@ -258,12 +258,12 @@ const Dashboard = () => {
         <Col md={12}>
           {!isLoading && (
             <Card
-              className="shadow-sm mb-3 bg-body rounded"
+              className="shadow-sm mb-4 bg-body rounded"
               style={{ border: "none" }}
             >
               <Card.Body>
-                <p className="m-0 mb-1 text-muted">Balance total</p>
-                <h3 className="ms-auto text-dark fw-bold mb-3">
+                <p className="m-0 mb-1">Balance total</p>
+                <h3 className="ms-auto fw-bold mb-3">
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
                     minimumFractionDigits: 2,
@@ -313,7 +313,7 @@ const Dashboard = () => {
       </Row>
       <Row className="mb-3">
         <Col>
-          <Card style={{ backgroundColor: "#373E68" }}>
+          <Card className="bg-card-secondary">
             <Card.Body>
               <Stack direction="horizontal" gap={3}>
                 <Button

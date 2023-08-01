@@ -12,7 +12,7 @@ import ForgotPasswordForm from "./components/ForgotPassword";
 
 function App() {
   return (
-    <>
+    <div className="theme">
       <Routes>
         {/* public routes */}
         <Route path="/login" element={<Login />} />
@@ -24,7 +24,7 @@ function App() {
           <Route path="/*" element={<Home />} />
         </Route>
       </Routes>
-    </>
+    </div>
   );
 }
 

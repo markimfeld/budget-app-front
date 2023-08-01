@@ -53,8 +53,8 @@ const Expense = ({ expense, budget }) => {
         <Card.Body>
           <Stack direction="horizontal" gap={3}>
             <span>
-              <Card.Title className="mb-0">{expense.name}</Card.Title>
-              <Card.Text className="text-muted">
+              <Card.Title className="mb-2">{expense.name}</Card.Title>
+              <Card.Text className="card-subtitle">
                 {format(new Date(expense.createdAt), "dd/MM/yyyy kk:mm")}
               </Card.Text>
             </span>

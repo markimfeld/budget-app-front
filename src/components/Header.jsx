@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Container,
   Navbar,
@@ -11,11 +12,12 @@ import { useNavigate, Link } from "react-router-dom";
 // custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useMessageContext } from "../hooks/useMessageContext";
-import { useState } from "react";
+import { useThemeContext } from "../hooks/useThemeContext";
 
 const Header = () => {
   const { clearMessages } = useMessageContext();
   const { user, logout } = useAuthContext();
+  const { theme, handleSetTheme } = useThemeContext();
 
   const [show, setShow] = useState(false);
 
@@ -31,7 +33,12 @@ const Header = () => {
   };
 
   const handleTheme = () => {
-    alert("Cambiando tema");
+    if (theme === "light") {
+      handleSetTheme("dark");
+    } else {
+      handleSetTheme("light");
+    }
+    handleClose();
   };
 
   const handleSettings = () => {
@@ -59,7 +66,7 @@ const Header = () => {
         <Container>
           <Navbar.Brand className="fs-4">
             <Link to="/" style={{ color: "white", textDecoration: "none" }}>
-              <i className="fa-solid fa-coins"></i> Finance Pro
+              <i className="fa-solid fa-coins"></i> Finanzas perfectas
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle
@@ -70,6 +77,7 @@ const Header = () => {
             id={`offcanvasNavbar-expand-="md"`}
             aria-labelledby={`offcanvasNavbarLabel-expand-lg`}
             placement="end"
+            className="bg-body-dark"
             show={show}
             onHide={handleClose}
           >
@@ -81,7 +89,7 @@ const Header = () => {
                   handleClose();
                 }}
               >
-                <i className="fa-solid fa-coins"></i> Finance Pro
+                <i className="fa-solid fa-coins"></i> Finanzas perfectas
               </Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
@@ -119,9 +127,7 @@ const Header = () => {
                     className="text-wrap"
                   >
                     Iniciado como{" "}
-                    <span style={{ fontWeight: "bold", color: "black" }}>
-                      @{user.username}
-                    </span>
+                    <span style={{ fontWeight: "bold" }}>@{user.username}</span>
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={() => handleProfile()}>
@@ -137,10 +143,7 @@ const Header = () => {
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={() => handleTheme()}>
-                    Configuración
-                  </NavDropdown.Item>
-                  <NavDropdown.Item onClick={() => handleTheme()}>
-                    Tema
+                    {theme === "dark" ? "Tema claro" : "Tema oscuro"}
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={() => handleLogout()}>

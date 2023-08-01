@@ -43,7 +43,7 @@ const Income = ({ income }) => {
           className="shadow-sm mb-3 bg-body rounded"
           style={{ border: "none" }}
         >
-          <Card.Header style={{ border: "none", backgroundColor: "white" }}>
+          <Card.Header>
             <Stack direction="horizontal" gap={3}>
               <span className="fs-4">{income.name}</span>
 
@@ -63,7 +63,7 @@ const Income = ({ income }) => {
               </DropdownButton>
             </Stack>
           </Card.Header>
-          <Card.Body style={{ backgroundColor: "white" }}>
+          <Card.Body>
             <Card.Title>
               {new Intl.NumberFormat("en-US", {
                 style: "currency",

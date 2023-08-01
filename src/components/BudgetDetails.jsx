@@ -84,7 +84,7 @@ const BudgetDetails = () => {
           className="shadow-sm p-3 mb-3 bg-body rounded"
           style={{ border: "none" }}
         >
-          <Card.Header style={{ border: "none", backgroundColor: "white" }}>
+          <Card.Header>
             <Placeholder
               as={Card.Title}
               animation="wave"
@@ -93,7 +93,7 @@ const BudgetDetails = () => {
               <Placeholder xs={3} />
             </Placeholder>
           </Card.Header>
-          <Card.Body style={{ backgroundColor: "white" }}>
+          <Card.Body>
             <Placeholder as={Card.Text} animation="wave">
               <Placeholder xs={3} />
             </Placeholder>
@@ -111,12 +111,12 @@ const BudgetDetails = () => {
           className="shadow-sm p-3 mb-3 bg-body rounded"
           style={{ border: "none" }}
         >
-          <Card.Header style={{ border: "none", backgroundColor: "white" }}>
+          <Card.Header>
             <Stack direction="horizontal" gap={3}>
               <span className="fs-4 fw-bold">{budget?.name}</span>
             </Stack>
           </Card.Header>
-          <Card.Body style={{ backgroundColor: "white" }}>
+          <Card.Body>
             <Card.Text>
               Presupuestado:{" "}
               <span className="fw-bold">

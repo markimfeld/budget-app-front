@@ -59,7 +59,7 @@ const Budget = ({ budget }) => {
           className="shadow-sm p-3 mb-3 bg-body rounded"
           style={{ border: "none" }}
         >
-          <Card.Header style={{ border: "none", backgroundColor: "white" }}>
+          <Card.Header>
             <Stack direction="horizontal" gap={3}>
               <span className="fs-4 fw-bold">{budget.name}</span>
 
@@ -85,7 +85,7 @@ const Budget = ({ budget }) => {
               </DropdownButton>
             </Stack>
           </Card.Header>
-          <Card.Body style={{ backgroundColor: "white" }}>
+          <Card.Body>
             {/* <Card.Title>
               {new Intl.NumberFormat("en-US", {
                 style: "currency",

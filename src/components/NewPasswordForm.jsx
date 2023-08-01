@@ -97,6 +97,11 @@ const NewPasswordForm = () => {
     return message !== null && recordType === "user";
   };
 
+  const onCancelOperation = () => {
+    clearMessages();
+    navigate(`/`);
+  };
+
   return (
     <>
       <Container>
@@ -105,12 +110,10 @@ const NewPasswordForm = () => {
           style={{ height: "97vh" }}
         >
           <Col md="6">
-            <Card
-              style={{ borderRadius: 0, backgroundColor: "hsl(0, 0%, 97%)" }}
-            >
+            <Card className="shadow-sm py-2 mb-3 bg-body rounded-0">
               <Card.Body>
                 <Card.Title className="text-center fs-1 mb-4">
-                  <i className="fa-solid fa-coins"></i> Finance Pro
+                  <i className="fa-solid fa-coins"></i> Finanzas perfectas
                 </Card.Title>
                 <Form noValidate onSubmit={handleSubmit}>
                   <Row className="g-2 mb-2">
@@ -171,6 +174,12 @@ const NewPasswordForm = () => {
                         Reestablecer
                       </Button>
                     )}
+                    <Button
+                      variant="outline-secondary"
+                      onClick={() => onCancelOperation()}
+                    >
+                      Cancelar
+                    </Button>
                     {showMessage() && type === "danger" && (
                       <p className="text-center mb-0 mt-3 text-danger">
                         {message}
