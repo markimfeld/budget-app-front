@@ -35,14 +35,19 @@ export const BudgetContextProvider = ({ children }) => {
       try {
         const budgetId = key.queryKey[1]?.id;
 
+        const filters = key.queryKey[1]?.filters;
+
         const { data } = await budgetService.getAll({
           ...filters,
         });
+
         if (budgetId) {
           setBudgets(data.filter((b) => b._id === budgetId));
           return data.filter((b) => b._id === budgetId)[0];
         }
-        setBudgets(data);
+        if (!filters) {
+          setBudgets(data);
+        }
 
         return data;
       } catch (err) {
