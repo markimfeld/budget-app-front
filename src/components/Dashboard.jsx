@@ -104,13 +104,14 @@ const Dashboard = () => {
   const leftPorcentage =
     Math.floor((1 - spentTotals / totalIncomes) * 100) || 0;
 
-  const incomePorcentageBetweenLastMonth = Number.parseFloat(
-    (1 - lastMonthTotalIncomes / totalIncomes) * 100
-  ).toFixed(2);
+  const incomePorcentageBetweenLastMonth =
+    Number.parseFloat((1 - lastMonthTotalIncomes / totalIncomes) * 100).toFixed(
+      2
+    ) || 0;
 
-  const expensePorcentageBetweenLastMonth = Number.parseFloat(
-    (1 - lastSpentTotals / spentTotals) * 100
-  ).toFixed(2);
+  const expensePorcentageBetweenLastMonth =
+    Number.parseFloat((1 - lastSpentTotals / spentTotals) * 100).toFixed(2) ||
+    0;
 
   const handleShowBudgetFormOrList = () => {
     clearMessages();
@@ -227,30 +228,46 @@ const Dashboard = () => {
                 </h3>
                 {lastMonthTotalIncomes > 0 && (
                   <div>
-                    {incomePorcentageBetweenLastMonth > 0 && (
+                    {incomePorcentageBetweenLastMonth !== "-Infinity" &&
+                      incomePorcentageBetweenLastMonth > 0 && (
+                        <>
+                          <i className="fa-solid fa-arrow-up me-1 text-success"></i>
+                          <span className="text-success fw-bold">
+                            +{incomePorcentageBetweenLastMonth} %
+                          </span>
+                          <span className="text-muted fw-lighter me-1">
+                            {" "}
+                            más que el mes pasado
+                          </span>
+                        </>
+                      )}
+                    {incomePorcentageBetweenLastMonth !== "-Infinity" &&
+                      incomePorcentageBetweenLastMonth < 0 && (
+                        <>
+                          <i className="fa-solid fa-arrow-down me-1 text-danger"></i>
+                          <span className="text-danger fw-bold">
+                            {incomePorcentageBetweenLastMonth} %
+                          </span>
+                          <span className="text-muted fw-lighter me-1">
+                            {" "}
+                            menos que el mes pasado
+                          </span>
+                        </>
+                      )}
+                    {incomePorcentageBetweenLastMonth === "-Infinity" && (
                       <>
-                        <i className="fa-solid fa-arrow-up me-1 text-success"></i>
-                        <span className="text-success fw-bold">
-                          +{incomePorcentageBetweenLastMonth} %
-                        </span>
                         <span className="text-muted fw-lighter me-1">
-                          {" "}
-                          más que el mes pasado
+                          No hay datos de este mes aún
                         </span>
                       </>
                     )}
-                    {incomePorcentageBetweenLastMonth < 0 && (
-                      <>
-                        <i className="fa-solid fa-arrow-down me-1 text-danger"></i>
-                        <span className="text-danger fw-bold">
-                          {incomePorcentageBetweenLastMonth} %
-                        </span>
-                        <span className="text-muted fw-lighter me-1">
-                          {" "}
-                          menos que el mes pasado
-                        </span>
-                      </>
-                    )}
+                  </div>
+                )}
+                {lastMonthTotalIncomes === "0.00" && (
+                  <div>
+                    <span className="text-muted fw-lighter me-1">
+                      No hay datos del mes anterior
+                    </span>
                   </div>
                 )}
               </Card.Body>
@@ -316,30 +333,46 @@ const Dashboard = () => {
                 </h3>
                 {lastSpentTotals > 0 && (
                   <div>
-                    {expensePorcentageBetweenLastMonth > 0 && (
+                    {expensePorcentageBetweenLastMonth !== "-Infinity" &&
+                      expensePorcentageBetweenLastMonth > 0 && (
+                        <>
+                          <i className="fa-solid fa-arrow-up me-1 text-success"></i>
+                          <span className="text-success fw-bold">
+                            +{expensePorcentageBetweenLastMonth} %
+                          </span>
+                          <span className="text-muted fw-lighter me-1">
+                            {" "}
+                            más que el mes pasado
+                          </span>
+                        </>
+                      )}
+                    {expensePorcentageBetweenLastMonth !== "-Infinity" &&
+                      expensePorcentageBetweenLastMonth < 0 && (
+                        <>
+                          <i className="fa-solid fa-arrow-down me-1 text-danger"></i>
+                          <span className="text-danger fw-bold">
+                            {expensePorcentageBetweenLastMonth} %
+                          </span>
+                          <span className="text-muted fw-lighter me-1">
+                            {" "}
+                            menos que el mes pasado
+                          </span>
+                        </>
+                      )}
+                    {expensePorcentageBetweenLastMonth === "-Infinity" && (
                       <>
-                        <i className="fa-solid fa-arrow-up me-1 text-success"></i>
-                        <span className="text-success fw-bold">
-                          +{expensePorcentageBetweenLastMonth} %
-                        </span>
                         <span className="text-muted fw-lighter me-1">
-                          {" "}
-                          más que el mes pasado
+                          No hay datos de este mes aún
                         </span>
                       </>
                     )}
-                    {expensePorcentageBetweenLastMonth < 0 && (
-                      <>
-                        <i className="fa-solid fa-arrow-down me-1 text-danger"></i>
-                        <span className="text-danger fw-bold">
-                          {expensePorcentageBetweenLastMonth} %
-                        </span>
-                        <span className="text-muted fw-lighter me-1">
-                          {" "}
-                          menos que el mes pasado
-                        </span>
-                      </>
-                    )}
+                  </div>
+                )}
+                {lastSpentTotals === "0.00" && (
+                  <div>
+                    <span className="text-muted fw-lighter me-1">
+                      No hay datos del mes anterior
+                    </span>
                   </div>
                 )}
               </Card.Body>
@@ -365,7 +398,7 @@ const Dashboard = () => {
         <Col md={12} lg={4}>
           {!isLoading && (
             <Card
-              className="shadow-sm mb-4 pb-2 bg-body rounded"
+              className="shadow-sm mb-4 bg-body rounded"
               style={{ border: "none" }}
             >
               <Card.Body>
@@ -377,6 +410,7 @@ const Dashboard = () => {
                     currency: "USD",
                   }).format((totalIncomes - spentTotals).toFixed(2))}
                 </h3>
+
                 {leftPorcentage >= 70 && (
                   <ProgressBar
                     now={leftPorcentage}
@@ -390,12 +424,19 @@ const Dashboard = () => {
                     label={`${leftPorcentage}% disponible`}
                   />
                 )}
-                {leftPorcentage < 50 && (
+                {leftPorcentage > 0 && leftPorcentage < 50 && (
                   <ProgressBar
                     className="progress-low"
                     now={leftPorcentage}
                     label={`${leftPorcentage}% disponible`}
                   />
+                )}
+                {leftPorcentage === 0 && (
+                  <div>
+                    <span className="text-muted fw-lighter m-0 p-0">
+                      No hay datos de este mes aún
+                    </span>
+                  </div>
                 )}
               </Card.Body>
             </Card>
