@@ -210,7 +210,7 @@ const Dashboard = () => {
         </Col>
       </Row> */}
       <Row>
-        <Col md={6}>
+        <Col md={6} lg={4}>
           {!isLoading && (
             <Card
               className="shadow-sm mb-4 bg-body rounded"
@@ -243,7 +243,7 @@ const Dashboard = () => {
                       <>
                         <i className="fa-solid fa-arrow-down me-1 text-danger"></i>
                         <span className="text-danger fw-bold">
-                          +{incomePorcentageBetweenLastMonth} %
+                          {incomePorcentageBetweenLastMonth} %
                         </span>
                         <span className="text-muted fw-lighter me-1">
                           {" "}
@@ -299,7 +299,7 @@ const Dashboard = () => {
             </Card>
           )}
         </Col> */}
-        <Col md={6}>
+        <Col md={6} lg={4}>
           {!isLoading && (
             <Card
               className="shadow-sm mb-4 bg-body rounded"
@@ -316,14 +316,30 @@ const Dashboard = () => {
                 </h3>
                 {lastSpentTotals > 0 && (
                   <div>
-                    <i className="fa-solid fa-arrow-down me-1 text-danger"></i>
-                    <span className="text-danger fw-bold">
-                      {expensePorcentageBetweenLastMonth} %
-                    </span>
-                    <span className="text-muted fw-lighter me-1">
-                      {" "}
-                      menos que el mes pasado
-                    </span>
+                    {expensePorcentageBetweenLastMonth > 0 && (
+                      <>
+                        <i className="fa-solid fa-arrow-up me-1 text-success"></i>
+                        <span className="text-success fw-bold">
+                          +{expensePorcentageBetweenLastMonth} %
+                        </span>
+                        <span className="text-muted fw-lighter me-1">
+                          {" "}
+                          más que el mes pasado
+                        </span>
+                      </>
+                    )}
+                    {expensePorcentageBetweenLastMonth < 0 && (
+                      <>
+                        <i className="fa-solid fa-arrow-down me-1 text-danger"></i>
+                        <span className="text-danger fw-bold">
+                          {expensePorcentageBetweenLastMonth} %
+                        </span>
+                        <span className="text-muted fw-lighter me-1">
+                          {" "}
+                          menos que el mes pasado
+                        </span>
+                      </>
+                    )}
                   </div>
                 )}
               </Card.Body>
@@ -346,7 +362,7 @@ const Dashboard = () => {
             </Card>
           )}
         </Col>
-        <Col md={12}>
+        <Col md={12} lg={4}>
           {!isLoading && (
             <Card
               className="shadow-sm mb-4 pb-2 bg-body rounded"
