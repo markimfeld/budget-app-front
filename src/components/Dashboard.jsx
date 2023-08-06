@@ -35,7 +35,7 @@ import { useIncomeContext } from "../hooks/useIncomeContext";
 // ];
 
 const Dashboard = () => {
-  const { budgets } = useBudgetContext();
+  const { budgets, getBudgets } = useBudgetContext();
   const { clearMessages } = useMessageContext();
 
   const { getIncomes } = useIncomeContext();
@@ -45,6 +45,32 @@ const Dashboard = () => {
     queryFn: getIncomes,
   });
 
+  const { data: lastMonthIncomes } = useQuery({
+    queryKey: [
+      "lastMonthIncomes",
+      {
+        filters: {
+          month: new Date().getMonth(),
+          year: new Date().getFullYear(),
+        },
+      },
+    ],
+    queryFn: getIncomes,
+  });
+
+  const { data: lastMonthBudgets } = useQuery({
+    queryKey: [
+      "lastMonthBudgets",
+      {
+        filters: {
+          month: new Date().getMonth(),
+          year: new Date().getFullYear(),
+        },
+      },
+    ],
+    queryFn: getBudgets,
+  });
+
   const navigate = useNavigate();
 
   const totalIncomes = incomes
@@ -52,12 +78,23 @@ const Dashboard = () => {
     .reduce((acc, currentValue) => acc + currentValue, 0)
     .toFixed(2);
 
+  const lastMonthTotalIncomes = lastMonthIncomes
+    ?.map((income) => income.amount)
+    .reduce((acc, currentValue) => acc + currentValue, 0)
+    .toFixed(2);
+
   const spentTotal = budgets.map((budget) => budget.spentAmount);
+
+  const lastSpentTotal = lastMonthBudgets?.map((budget) => budget.spentAmount);
 
   // const expectedTotal = budgets.map((budget) => budget.expectedAmount);
 
   const spentTotals = spentTotal
     .reduce((acc, currentValue) => acc + currentValue, 0)
+    .toFixed(2);
+
+  const lastSpentTotals = lastSpentTotal
+    ?.reduce((acc, currentValue) => acc + currentValue, 0)
     .toFixed(2);
 
   // const expectedTotals = expectedTotal
@@ -66,6 +103,15 @@ const Dashboard = () => {
 
   const leftPorcentage =
     Math.floor((1 - spentTotals / totalIncomes) * 100) || 0;
+
+  const incomePorcentageBetweenLastMonth =
+    Number.parseFloat((1 - lastMonthTotalIncomes / totalIncomes) * 100).toFixed(
+      2
+    ) || 0;
+
+  const expensePorcentageBetweenLastMonth =
+    Number.parseFloat((1 - lastSpentTotals / spentTotals) * 100).toFixed(2) ||
+    0;
 
   const handleShowBudgetFormOrList = () => {
     clearMessages();
@@ -165,18 +211,65 @@ const Dashboard = () => {
         </Col>
       </Row> */}
       <Row>
-        {/* <Col md={4}>
+        <Col md={6} lg={4}>
           {!isLoading && (
-            <Card className="mb-3 card-background-gradient">
+            <Card
+              className="shadow-sm mb-4 bg-body rounded"
+              style={{ border: "none" }}
+            >
               <Card.Body>
-                <p className="m-0 mb-1 text-white">Ingresos este mes</p>
-                <h3 className="ms-auto text-white">
+                <p className="m-0 mb-1">Ingreso total</p>
+                <h3 className="ms-auto fw-bold mb-3">
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
                     minimumFractionDigits: 2,
                     currency: "USD",
                   }).format(totalIncomes)}
                 </h3>
+                {lastMonthTotalIncomes > 0 && (
+                  <div>
+                    {incomePorcentageBetweenLastMonth !== "-Infinity" &&
+                      incomePorcentageBetweenLastMonth > 0 && (
+                        <>
+                          <i className="fa-solid fa-arrow-up me-1 text-success"></i>
+                          <span className="text-success fw-bold">
+                            +{incomePorcentageBetweenLastMonth} %
+                          </span>
+                          <span className="text-muted fw-lighter me-1">
+                            {" "}
+                            más que el mes pasado
+                          </span>
+                        </>
+                      )}
+                    {incomePorcentageBetweenLastMonth !== "-Infinity" &&
+                      incomePorcentageBetweenLastMonth < 0 && (
+                        <>
+                          <i className="fa-solid fa-arrow-down me-1 text-danger"></i>
+                          <span className="text-danger fw-bold">
+                            {incomePorcentageBetweenLastMonth} %
+                          </span>
+                          <span className="text-muted fw-lighter me-1">
+                            {" "}
+                            menos que el mes pasado
+                          </span>
+                        </>
+                      )}
+                    {incomePorcentageBetweenLastMonth === "-Infinity" && (
+                      <>
+                        <span className="text-muted fw-lighter me-1">
+                          No hay datos de este mes aún
+                        </span>
+                      </>
+                    )}
+                  </div>
+                )}
+                {lastMonthTotalIncomes === "0.00" && (
+                  <div>
+                    <span className="text-muted fw-lighter me-1">
+                      No hay datos del mes anterior
+                    </span>
+                  </div>
+                )}
               </Card.Body>
             </Card>
           )}
@@ -196,7 +289,7 @@ const Dashboard = () => {
               </Card.Body>
             </Card>
           )}
-        </Col> */}
+        </Col>
         {/* <Col md={3}>
           {!isLoading && (
             <Card className="mb-3 card-background-gradient">
@@ -223,18 +316,65 @@ const Dashboard = () => {
             </Card>
           )}
         </Col> */}
-        {/* <Col md={4}>
+        <Col md={6} lg={4}>
           {!isLoading && (
-            <Card className="mb-3 card-background-gradient">
+            <Card
+              className="shadow-sm mb-4 bg-body rounded"
+              style={{ border: "none" }}
+            >
               <Card.Body>
-                <p className="m-0 mb-1 text-white">Gastos este mes</p>
-                <h3 className="ms-auto text-white">
+                <p className="m-0 mb-1">Gasto total</p>
+                <h3 className="ms-auto fw-bold mb-3">
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
                     minimumFractionDigits: 2,
                     currency: "USD",
                   }).format(spentTotals)}
                 </h3>
+                {lastSpentTotals > 0 && (
+                  <div>
+                    {expensePorcentageBetweenLastMonth !== "-Infinity" &&
+                      expensePorcentageBetweenLastMonth > 0 && (
+                        <>
+                          <i className="fa-solid fa-arrow-up me-1 text-success"></i>
+                          <span className="text-success fw-bold">
+                            +{expensePorcentageBetweenLastMonth} %
+                          </span>
+                          <span className="text-muted fw-lighter me-1">
+                            {" "}
+                            más que el mes pasado
+                          </span>
+                        </>
+                      )}
+                    {expensePorcentageBetweenLastMonth !== "-Infinity" &&
+                      expensePorcentageBetweenLastMonth < 0 && (
+                        <>
+                          <i className="fa-solid fa-arrow-down me-1 text-danger"></i>
+                          <span className="text-danger fw-bold">
+                            {expensePorcentageBetweenLastMonth} %
+                          </span>
+                          <span className="text-muted fw-lighter me-1">
+                            {" "}
+                            menos que el mes pasado
+                          </span>
+                        </>
+                      )}
+                    {expensePorcentageBetweenLastMonth === "-Infinity" && (
+                      <>
+                        <span className="text-muted fw-lighter me-1">
+                          No hay datos de este mes aún
+                        </span>
+                      </>
+                    )}
+                  </div>
+                )}
+                {lastSpentTotals === "0.00" && (
+                  <div>
+                    <span className="text-muted fw-lighter me-1">
+                      No hay datos del mes anterior
+                    </span>
+                  </div>
+                )}
               </Card.Body>
             </Card>
           )}
@@ -254,8 +394,8 @@ const Dashboard = () => {
               </Card.Body>
             </Card>
           )}
-        </Col> */}
-        <Col md={12}>
+        </Col>
+        <Col md={12} lg={4}>
           {!isLoading && (
             <Card
               className="shadow-sm mb-4 bg-body rounded"
@@ -270,6 +410,7 @@ const Dashboard = () => {
                     currency: "USD",
                   }).format((totalIncomes - spentTotals).toFixed(2))}
                 </h3>
+
                 {leftPorcentage >= 70 && (
                   <ProgressBar
                     now={leftPorcentage}
@@ -283,12 +424,19 @@ const Dashboard = () => {
                     label={`${leftPorcentage}% disponible`}
                   />
                 )}
-                {leftPorcentage < 50 && (
+                {leftPorcentage > 0 && leftPorcentage < 50 && (
                   <ProgressBar
                     className="progress-low"
                     now={leftPorcentage}
                     label={`${leftPorcentage}% disponible`}
                   />
+                )}
+                {leftPorcentage === 0 && (
+                  <div>
+                    <span className="text-muted fw-lighter m-0 p-0">
+                      No hay datos de este mes aún
+                    </span>
+                  </div>
                 )}
               </Card.Body>
             </Card>

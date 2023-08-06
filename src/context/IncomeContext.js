@@ -24,13 +24,18 @@ export const IncomeContextProvider = ({ children }) => {
   const { handleSetMessage, handleSetType, handleSetRecordType } =
     useMessageContext();
 
-  const getIncomes = async () => {
+  const getIncomes = async (key) => {
     if (user !== null) {
       try {
-        const response = await incomeService.getAll();
-        setIncomes(response.data);
+        const filters = key.queryKey[1]?.filters;
 
-        return response.data;
+        const { data } = await incomeService.getAll({ ...filters });
+
+        if (!filters) {
+          setIncomes(data);
+        }
+
+        return data;
       } catch (err) {
         if (
           err.response.data.status === 400 &&

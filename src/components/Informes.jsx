@@ -8,9 +8,9 @@ const Informes = () => {
     <Row>
       <Col md={6}>
         <Card
-          className="mb-3 mb-md-1"
           border="light"
-          style={{ backgroundColor: "white" }}
+          style={{ backgroundColor: "white", border: "none" }}
+          className="shadow-sm py-2 mb-3 bg-body rounded"
         >
           <Card.Body
             style={{ height: "300px" }}
@@ -22,9 +22,9 @@ const Informes = () => {
       </Col>
       <Col md={6}>
         <Card
-          className="mb-1"
           border="light"
-          style={{ backgroundColor: "white" }}
+          style={{ backgroundColor: "white", border: "none" }}
+          className="shadow-sm py-2 mb-3 bg-body rounded"
         >
           <Card.Body
             style={{ height: "300px" }}
