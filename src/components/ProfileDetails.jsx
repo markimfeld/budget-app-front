@@ -190,7 +190,7 @@ const ProfileDetails = () => {
                   <Card.Title className="fs-4">
                     {userInfo?.firstName} {userInfo?.lastName}
                   </Card.Title>
-                  <hr />
+                  <hr className="mb-0" />
                 </Card.Header>
                 <Card.Body>
                   <Stack className="mb-2" direction="horizontal" gap={3}>
