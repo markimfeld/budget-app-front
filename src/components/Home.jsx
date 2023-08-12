@@ -69,8 +69,8 @@ const Home = () => {
               <Route path="/debts" element={<Debts />} />
               <Route path="/debts/:debtId/details" element={<DebtDetails />} />
               <Route path="/debts/add" element={<DebtForm />} />
+              <Route path="/debts/:debtId/edit" element={<DebtForm />} />
 
-              {/* <Route path="/debts/:debtId/edit" element={<DebtForm />} /> */}
               <Route path="/users/profile" element={<ProfileDetails />} />
             </Routes>
           </Col>

@@ -112,10 +112,10 @@ const Debt = ({ debt }) => {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Borrar Presupuesto</Modal.Title>
+          <Modal.Title>Borrar deuda</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          ¿Estás seguro de eliminar el presupuesto{" "}
+          ¿Estás seguro de eliminar la deuda{" "}
           <span className="fw-bold">{debt.name}</span>?
         </Modal.Body>
         <Modal.Footer>

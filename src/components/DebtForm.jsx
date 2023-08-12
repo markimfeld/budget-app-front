@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // components
 import DebtFormAdd from "./DebtFormAdd";
-// import DebtFormEdit from "./DebtFormEdit";
+import DebtFormEdit from "./DebtFormEdit";
 
 // services
 import debtService from "../services/debt";
@@ -58,9 +58,6 @@ const DebtForm = () => {
         endDate,
       };
 
-      console.log(newDebt);
-      debugger;
-
       if (!debtId) {
         try {
           await debtService.store(newDebt);
@@ -89,6 +86,10 @@ const DebtForm = () => {
 
         debtUpdated.installmentAmount = Number.parseFloat(installmentAmount);
         debtUpdated.name = name;
+        debtUpdated.initialAmountInstallments = initialAmountInstallments;
+        debtUpdated.leftAmountInstallments = leftAmountInstallments;
+        debtUpdated.startDate = startDate;
+        debtUpdated.endDate = endDate;
 
         try {
           await debtService.update(debtId, debtUpdated);
@@ -123,13 +124,13 @@ const DebtForm = () => {
 
   return (
     <>
-      {/* {debtId && (
+      {debtId && (
         <DebtFormEdit
           onSubmit={onSubmit}
           onCancelOperation={onCancelOperation}
           debtToUpdate={{ ...debts?.find((d) => d._id === debtId) }}
         />
-      )} */}
+      )}
       {!debtId && (
         <DebtFormAdd
           onSubmit={onSubmit}
