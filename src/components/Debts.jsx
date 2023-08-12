@@ -50,6 +50,10 @@ const Debts = () => {
     navigate("add");
   };
 
+  const handlePaid = () => {
+    console.log("pagando");
+  };
+
   return (
     <>
       <Row>
@@ -129,6 +133,9 @@ const Debts = () => {
           <Card className="bg-card-secondary">
             <Card.Body>
               <Stack direction="horizontal" gap={3}>
+                <Button variant="light" size="md" onClick={() => handlePaid()}>
+                  Pagar
+                </Button>
                 <Button
                   size="md"
                   onClick={() => handleShowDebtFormOrList()}
