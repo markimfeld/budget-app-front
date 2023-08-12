@@ -33,6 +33,18 @@ const Debts = () => {
     return <Debt key={debt._id} debt={debt} />;
   });
 
+  const totalDebt = data
+    ?.map((debt) => debt.leftAmountInstallments * debt.installmentAmount)
+    .reduce((acc, currentValue) => acc + currentValue, 0)
+    .toFixed(2);
+
+  const nextMonthTotal = data
+    ?.map((debt) =>
+      debt.leftAmountInstallments !== 0 ? debt.installmentAmount : 0
+    )
+    .reduce((acc, currentValue) => acc + currentValue, 0)
+    .toFixed(2);
+
   const handleShowDebtFormOrList = () => {
     clearMessages();
     navigate("add");
@@ -40,6 +52,78 @@ const Debts = () => {
 
   return (
     <>
+      <Row>
+        <Col md={6}>
+          {!isLoading && (
+            <Card
+              className="shadow-sm mb-4 bg-body rounded"
+              style={{ border: "none" }}
+            >
+              <Card.Body>
+                <p className="m-0 mb-1">Deuda total</p>
+                <h3 className="ms-auto fw-bold mb-3">
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "USD",
+                  }).format(totalDebt)}
+                </h3>
+              </Card.Body>
+            </Card>
+          )}
+          {isLoading && (
+            <Card
+              className="mb-3"
+              border="light"
+              style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+            >
+              <Card.Body>
+                <Placeholder as={Card.Text} animation="glow">
+                  <Placeholder xs={6} />
+                </Placeholder>
+                <Placeholder as={Card.Text} animation="glow">
+                  <Placeholder xs={4} />
+                </Placeholder>
+              </Card.Body>
+            </Card>
+          )}
+        </Col>
+        <Col md={6}>
+          {!isLoading && (
+            <Card
+              className="shadow-sm mb-4 bg-body rounded"
+              style={{ border: "none" }}
+            >
+              <Card.Body>
+                <p className="m-0 mb-1">Monto a pagar próximo mes</p>
+                <h3 className="ms-auto fw-bold mb-3">
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "USD",
+                  }).format(nextMonthTotal)}
+                </h3>
+              </Card.Body>
+            </Card>
+          )}
+          {isLoading && (
+            <Card
+              className="mb-3"
+              border="light"
+              style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
+            >
+              <Card.Body>
+                <Placeholder as={Card.Text} animation="glow">
+                  <Placeholder xs={6} />
+                </Placeholder>
+                <Placeholder as={Card.Text} animation="glow">
+                  <Placeholder xs={4} />
+                </Placeholder>
+              </Card.Body>
+            </Card>
+          )}
+        </Col>
+      </Row>
       <Row className="mb-4">
         <Col>
           <Card className="bg-card-secondary">
