@@ -197,7 +197,7 @@ const DebtFormEdit = (props) => {
           <div className="d-grid gap-2">
             <Stack direction="horizontal" gap={3}>
               <Button className="ms-auto" variant="success" type="submit">
-                Guardar
+                Modificar
               </Button>
               <Button
                 variant="outline-secondary"
