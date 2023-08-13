@@ -28,6 +28,11 @@ const Header = () => {
     navigate("/budgets");
   };
 
+  const handleShowDebtList = () => {
+    clearMessages();
+    navigate("/debts");
+  };
+
   const handleLogout = () => {
     logout();
   };
@@ -117,6 +122,14 @@ const Header = () => {
                   }}
                 >
                   Presupuestos
+                </Nav.Link>
+                <Nav.Link
+                  onClick={() => {
+                    handleShowDebtList();
+                    handleClose();
+                  }}
+                >
+                  Deudas
                 </Nav.Link>
                 <NavDropdown
                   title={`${user.firstName} ${user.lastName}`}
