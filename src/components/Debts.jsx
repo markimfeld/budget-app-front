@@ -10,6 +10,10 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
+import { useQueryClient } from "react-query";
+
+import debtService from "../services/debt";
+
 // components
 import Debt from "./Debt";
 
@@ -22,23 +26,26 @@ const Debts = () => {
   const { clearMessages } = useMessageContext();
   const { getDebts } = useDebtContext();
 
-  const { data, isLoading } = useQuery({
+  // Get QueryClient from the context
+  const queryClient = useQueryClient();
+
+  const { data: debts, isLoading } = useQuery({
     queryKey: ["debts"],
     queryFn: getDebts,
   });
 
   const navigate = useNavigate();
 
-  const debtList = data?.map((debt) => {
+  const debtList = debts?.map((debt) => {
     return <Debt key={debt._id} debt={debt} />;
   });
 
-  const totalDebt = data
+  const totalDebt = debts
     ?.map((debt) => debt.leftAmountInstallments * debt.installmentAmount)
     .reduce((acc, currentValue) => acc + currentValue, 0)
     .toFixed(2);
 
-  const nextMonthTotal = data
+  const nextMonthTotal = debts
     ?.map((debt) =>
       debt.leftAmountInstallments !== 0 ? debt.installmentAmount : 0
     )
@@ -50,8 +57,16 @@ const Debts = () => {
     navigate("add");
   };
 
-  const handlePaid = () => {
-    console.log("pagando");
+  const handlePaid = async () => {
+    const debtsFiltered = debts.filter(
+      (debt) => debt.leftAmountInstallments > 0
+    );
+
+    const { data } = await debtService.updateMany({ debts: debtsFiltered });
+
+    if (data.nModified) {
+      queryClient.invalidateQueries({ queryKey: ["debts"] });
+    }
   };
 
   return (
@@ -193,8 +208,8 @@ const Debts = () => {
         )}
       </div>
       <div>
-        {data?.length > 0 && !isLoading && <Row>{debtList}</Row>}
-        {data?.length === 0 && !isLoading && (
+        {debts?.length > 0 && !isLoading && <Row>{debtList}</Row>}
+        {debts?.length === 0 && !isLoading && (
           <Card
             border="light"
             style={{ backgroundColor: "white" }}
