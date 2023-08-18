@@ -9,3 +9,4 @@ export const INVALID_TOKEN = "Token inválido";
 export const RECORD_CREATED_MESSAGE = "Nuevo registro creado.";
 export const RECORD_UPDATED_MESSAGE = "Registro editado.";
 export const RECORD_DELETED_MESSAGE = "Registro eliminado.";
+export const DEBT_UPDATED_MESSAGE = "Deudas actualizadas.";

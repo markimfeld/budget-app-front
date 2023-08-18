@@ -17,13 +17,22 @@ import debtService from "../services/debt";
 // components
 import Debt from "./Debt";
 
+// labels
+import { DEBT_UPDATED_MESSAGE } from "../labels/labels";
+
 // custom hooks
 import { useMessageContext } from "../hooks/useMessageContext";
 import { useDebtContext } from "../hooks/useDebtContext";
 import { useQuery } from "react-query";
 
 const Debts = () => {
-  const { clearMessages } = useMessageContext();
+  const {
+    handleSetMessage,
+    handleSetType,
+    handleSetRecordType,
+    clearMessages,
+  } = useMessageContext();
+
   const { getDebts } = useDebtContext();
 
   // Get QueryClient from the context
@@ -62,9 +71,19 @@ const Debts = () => {
       (debt) => debt.leftAmountInstallments > 0
     );
 
+    if (debtsFiltered.length === 0) {
+      handleSetMessage("No tenes mas deudas");
+      handleSetType("success");
+      handleSetRecordType("debt");
+      return;
+    }
+
     const { data } = await debtService.updateMany({ debts: debtsFiltered });
 
     if (data.nModified) {
+      handleSetMessage(DEBT_UPDATED_MESSAGE);
+      handleSetType("success");
+      handleSetRecordType("debt");
       queryClient.invalidateQueries({ queryKey: ["debts"] });
     }
   };
