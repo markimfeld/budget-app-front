@@ -11,6 +11,6 @@
 - [x] Agregar funcionalidad para editar usuario.
 - [x] Recuperar contraseña.
 - [x] Tema dark / light.
-- [ ] Sección deudas.
-- [ ] Pagar todas de una.
+- [x] Sección deudas.
+- [x] Pagar todas de una.
 - [ ] Pagar algunas

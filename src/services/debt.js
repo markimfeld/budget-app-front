@@ -39,6 +39,12 @@ const debtService = {
     });
     return data;
   },
+  updateMany: async (debts) => {
+    const { data } = await axios.put(`${baseUrl}`, debts, {
+      withCredentials: true,
+    });
+    return data;
+  },
 };
 
 export default debtService;

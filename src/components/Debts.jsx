@@ -10,8 +10,15 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
+import { useQueryClient } from "react-query";
+
+import debtService from "../services/debt";
+
 // components
 import Debt from "./Debt";
+
+// labels
+import { DEBT_UPDATED_MESSAGE } from "../labels/labels";
 
 // custom hooks
 import { useMessageContext } from "../hooks/useMessageContext";
@@ -19,26 +26,35 @@ import { useDebtContext } from "../hooks/useDebtContext";
 import { useQuery } from "react-query";
 
 const Debts = () => {
-  const { clearMessages } = useMessageContext();
+  const {
+    handleSetMessage,
+    handleSetType,
+    handleSetRecordType,
+    clearMessages,
+  } = useMessageContext();
+
   const { getDebts } = useDebtContext();
 
-  const { data, isLoading } = useQuery({
+  // Get QueryClient from the context
+  const queryClient = useQueryClient();
+
+  const { data: debts, isLoading } = useQuery({
     queryKey: ["debts"],
     queryFn: getDebts,
   });
 
   const navigate = useNavigate();
 
-  const debtList = data?.map((debt) => {
+  const debtList = debts?.map((debt) => {
     return <Debt key={debt._id} debt={debt} />;
   });
 
-  const totalDebt = data
+  const totalDebt = debts
     ?.map((debt) => debt.leftAmountInstallments * debt.installmentAmount)
     .reduce((acc, currentValue) => acc + currentValue, 0)
     .toFixed(2);
 
-  const nextMonthTotal = data
+  const nextMonthTotal = debts
     ?.map((debt) =>
       debt.leftAmountInstallments !== 0 ? debt.installmentAmount : 0
     )
@@ -50,8 +66,26 @@ const Debts = () => {
     navigate("add");
   };
 
-  const handlePaid = () => {
-    console.log("pagando");
+  const handlePaid = async () => {
+    const debtsFiltered = debts.filter(
+      (debt) => debt.leftAmountInstallments > 0
+    );
+
+    if (debtsFiltered.length === 0) {
+      handleSetMessage("No tenes mas deudas");
+      handleSetType("success");
+      handleSetRecordType("debt");
+      return;
+    }
+
+    const { data } = await debtService.updateMany({ debts: debtsFiltered });
+
+    if (data.nModified) {
+      handleSetMessage(DEBT_UPDATED_MESSAGE);
+      handleSetType("success");
+      handleSetRecordType("debt");
+      queryClient.invalidateQueries({ queryKey: ["debts"] });
+    }
   };
 
   return (
@@ -193,8 +227,8 @@ const Debts = () => {
         )}
       </div>
       <div>
-        {data?.length > 0 && !isLoading && <Row>{debtList}</Row>}
-        {data?.length === 0 && !isLoading && (
+        {debts?.length > 0 && !isLoading && <Row>{debtList}</Row>}
+        {debts?.length === 0 && !isLoading && (
           <Card
             border="light"
             style={{ backgroundColor: "white" }}
