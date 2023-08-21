@@ -56,13 +56,13 @@ const Debt = ({ debt }) => {
                 <Card.Text className="card-subtitle">
                   {/* {debt.leftAmountInstallments} de{" "}
                   {debt.initialAmountInstallments} */}
-                  {debt?.status === false && (
+                  {debt?.isPaid === false && (
                     <Badge className="ms-auto" bg="secondary">
                       {debt.leftAmountInstallments} de{" "}
                       {debt.initialAmountInstallments}
                     </Badge>
                   )}
-                  {debt?.status === true && (
+                  {debt?.isPaid === true && (
                     <Badge className="ms-auto" bg="primary">
                       Pagado
                     </Badge>

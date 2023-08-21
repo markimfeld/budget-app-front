@@ -8,6 +8,8 @@ const debtService = {
 
     if (filters.month && filters.year) {
       finalUrl = `${baseUrl}?month=${filters.month}&year=${filters.year}`;
+    } else if (filters.isPaid !== undefined) {
+      finalUrl = `${baseUrl}?isPaid=${filters.isPaid}`;
     } else {
       finalUrl = baseUrl;
     }

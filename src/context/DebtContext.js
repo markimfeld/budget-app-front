@@ -23,6 +23,7 @@ export const DebtContextProvider = ({ children }) => {
     month: currentMonth,
     year: currentYear,
   });
+  const [isPaid, setIsPaid] = useState(false);
 
   // Get QueryClient from the context
   const queryClient = useQueryClient();
@@ -34,6 +35,7 @@ export const DebtContextProvider = ({ children }) => {
     if (user !== null) {
       try {
         const debtId = key.queryKey[1]?.id;
+        console.log(key);
 
         const filters = key.queryKey[1]?.filters;
 
@@ -121,6 +123,14 @@ export const DebtContextProvider = ({ children }) => {
     }
   };
 
+  const handleIsPaid = (isPaid) => {
+    if (isPaid) {
+      setIsPaid(true);
+    } else {
+      setIsPaid(false);
+    }
+  };
+
   return (
     <DebtContext.Provider
       value={{
@@ -131,6 +141,8 @@ export const DebtContextProvider = ({ children }) => {
         getPreviuosMonthDebts,
         getDebts,
         handleDeleteDebt,
+        handleIsPaid,
+        isPaid,
       }}
     >
       {children}

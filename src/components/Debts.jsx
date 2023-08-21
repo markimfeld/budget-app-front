@@ -33,13 +33,13 @@ const Debts = () => {
     clearMessages,
   } = useMessageContext();
 
-  const { getDebts } = useDebtContext();
+  const { getDebts, isPaid, handleIsPaid } = useDebtContext();
 
   // Get QueryClient from the context
   const queryClient = useQueryClient();
 
   const { data: debts, isLoading } = useQuery({
-    queryKey: ["debts"],
+    queryKey: ["debts", { filters: { isPaid } }],
     queryFn: getDebts,
   });
 
@@ -86,6 +86,10 @@ const Debts = () => {
       handleSetRecordType("debt");
       queryClient.invalidateQueries({ queryKey: ["debts"] });
     }
+  };
+
+  const handleFilterByPaid = () => {
+    handleIsPaid(!isPaid);
   };
 
   return (
@@ -182,72 +186,98 @@ const Debts = () => {
           </Card>
         </Col>
       </Row>
-      <div>
-        {isLoading && (
-          <Card
-            className="mb-4"
-            style={{ backgroundColor: "hsl(0, 0%, 97%, 0.5)", border: "none" }}
-          >
-            <Card.Body className="p-0">
-              <Card.Header style={{ border: "none" }} className="py-2">
-                <Placeholder
-                  as={Card.Title}
-                  animation="wave"
-                  className="justify-content-between"
-                >
-                  <Stack direction="horizontal" gap={3}>
-                    <Placeholder xs={3} />
-                    <Placeholder.Button
-                      as={DropdownButton}
-                      variant="link"
-                      className="ms-auto"
-                      animation="wave"
-                    >
-                      <i className="fa-sharp fa-solid fa-plus gray-color"></i>
-                    </Placeholder.Button>
-                  </Stack>
-                </Placeholder>
-              </Card.Header>
 
-              <Placeholder
-                className="mt-3 px-3"
-                as={Card.Text}
-                animation="wave"
+      <Row>
+        <Col md={4} sm={12} lg={3}>
+          <Row className="mb-sm-4">
+            <Col>
+              <Card
+                style={{ backgroundColor: "white", border: "none" }}
+                className="shadow-sm mb-3 bg-body rounded"
               >
-                <Placeholder xs={1} />
-              </Placeholder>
-              <Placeholder className="px-3" as={Card.Text} animation="wave">
-                <Placeholder xs={2} />
-              </Placeholder>
-              <Placeholder className="px-3" as={Card.Text} animation="wave">
-                <Placeholder xs={1} />
-              </Placeholder>
-            </Card.Body>
-          </Card>
-        )}
-      </div>
-      <div>
-        {debts?.length > 0 && !isLoading && <Row>{debtList}</Row>}
-        {debts?.length === 0 && !isLoading && (
-          <Card
-            border="light"
-            style={{ backgroundColor: "white" }}
-            className="shadow-sm py-2 mb-3 bg-body rounded"
-          >
-            <Card.Body>
-              <Card.Title className="mb-0">
-                ¡Excelente! No tienes deudas 😄.{" "}
-                <Button
-                  onClick={() => handleShowDebtFormOrList()}
-                  variant="link"
+                <Card.Body style={{ wordBreak: "break-all" }}>
+                  <Card.Text>Filtros:</Card.Text>
+                  <Button
+                    onClick={() => handleFilterByPaid()}
+                    variant="outline-success"
+                    className="me-2 mb-2"
+                    active
+                  >
+                    {isPaid ? "No terminadas" : "Terminadas"}
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+          {isLoading && (
+            <Card
+              className="mb-4"
+              style={{
+                backgroundColor: "hsl(0, 0%, 97%, 0.5)",
+                border: "none",
+              }}
+            >
+              <Card.Body className="p-0">
+                <Card.Header style={{ border: "none" }} className="py-2">
+                  <Placeholder
+                    as={Card.Title}
+                    animation="wave"
+                    className="justify-content-between"
+                  >
+                    <Stack direction="horizontal" gap={3}>
+                      <Placeholder xs={3} />
+                      <Placeholder.Button
+                        as={DropdownButton}
+                        variant="link"
+                        className="ms-auto"
+                        animation="wave"
+                      >
+                        <i className="fa-sharp fa-solid fa-plus gray-color"></i>
+                      </Placeholder.Button>
+                    </Stack>
+                  </Placeholder>
+                </Card.Header>
+
+                <Placeholder
+                  className="mt-3 px-3"
+                  as={Card.Text}
+                  animation="wave"
                 >
-                  Crear nuevo deuda
-                </Button>
-              </Card.Title>
-            </Card.Body>
-          </Card>
-        )}
-      </div>
+                  <Placeholder xs={1} />
+                </Placeholder>
+                <Placeholder className="px-3" as={Card.Text} animation="wave">
+                  <Placeholder xs={2} />
+                </Placeholder>
+                <Placeholder className="px-3" as={Card.Text} animation="wave">
+                  <Placeholder xs={1} />
+                </Placeholder>
+              </Card.Body>
+            </Card>
+          )}
+        </Col>
+        <Col>
+          {debts?.length > 0 && !isLoading && <Row>{debtList}</Row>}
+          {debts?.length === 0 && !isLoading && (
+            <Card
+              border="light"
+              style={{ backgroundColor: "white" }}
+              className="shadow-sm py-2 mb-3 bg-body rounded"
+            >
+              <Card.Body>
+                <Card.Title className="mb-0">
+                  ¡Excelente! No tienes deudas 😄.{" "}
+                  <Button
+                    onClick={() => handleShowDebtFormOrList()}
+                    variant="link"
+                  >
+                    Crear nuevo deuda
+                  </Button>
+                </Card.Title>
+              </Card.Body>
+            </Card>
+          )}
+        </Col>
+      </Row>
     </>
   );
 };

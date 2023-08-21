@@ -161,24 +161,24 @@ const DebtDetails = () => {
             <Stack className="mb-2" direction="horizontal" gap={3}>
               <span className="text-muted">Fecha de compra: </span>
               <span className="ms-auto fw-bold">
-                {format(new Date(debt.startDate), "dd/MM/yyyy")}
+                {format(new Date(debt?.startDate), "dd/MM/yyyy")}
               </span>
             </Stack>
             <Stack className="mb-2" direction="horizontal" gap={3}>
               <span className="text-muted">Fecha de finalización: </span>
               <span className="ms-auto fw-bold">
-                {format(new Date(debt.endDate), "dd/MM/yyyy")}
+                {format(new Date(debt?.endDate), "dd/MM/yyyy")}
               </span>
             </Stack>
             <Stack className="mb-2" direction="horizontal" gap={3}>
               <span className="text-muted">Estado: </span>
               <span className="ms-auto fw-bold">
-                {debt?.status === false && (
+                {debt?.isPaid === false && (
                   <Badge className="ms-auto" bg="secondary">
                     Falta
                   </Badge>
                 )}
-                {debt?.status === true && (
+                {debt?.isPaid === true && (
                   <Badge className="ms-auto" bg="primary">
                     Pagado
                   </Badge>
