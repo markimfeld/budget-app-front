@@ -18,14 +18,14 @@ import { format } from "date-fns";
 import { useNavigate, useParams } from "react-router-dom";
 
 const DebtDetails = () => {
-  const { getDebts } = useDebtContext();
+  const { getDebts, isPaid } = useDebtContext();
 
   const { clearMessages } = useMessageContext();
 
   const { debtId } = useParams("debtId");
 
   const { data: debt, isLoading } = useQuery({
-    queryKey: ["debts", { id: debtId }],
+    queryKey: ["debts", { id: debtId, filters: { isPaid } }],
     queryFn: getDebts,
   });
 

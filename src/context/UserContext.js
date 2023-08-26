@@ -37,6 +37,12 @@ export const UserContextProvider = ({ children }) => {
       if (response.status === 200) {
         setUser(response.user);
         window.localStorage.setItem("user", JSON.stringify(response.user));
+
+        window.localStorage.setItem(
+          "isPaid",
+          JSON.stringify({ isPaid: false })
+        );
+
         setIsLoading(false);
 
         return response;
@@ -64,6 +70,7 @@ export const UserContextProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     window.localStorage.removeItem("user");
+    window.localStorage.removeItem("isPaid");
     document.cookie = "jwt=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
   };
 
