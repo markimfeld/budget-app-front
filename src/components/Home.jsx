@@ -19,6 +19,8 @@ import ProfileDetails from "./ProfileDetails";
 import DebtDetails from "./DebtDetails";
 import Debts from "./Debts";
 import DebtForm from "./DebtForm";
+import Investments from "./Investments";
+import InvestmentForm from "./InvestmentForm";
 
 // custom hooks
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -70,6 +72,9 @@ const Home = () => {
               <Route path="/debts/:debtId/details" element={<DebtDetails />} />
               <Route path="/debts/add" element={<DebtForm />} />
               <Route path="/debts/:debtId/edit" element={<DebtForm />} />
+
+              <Route path="/investments" element={<Investments />} />
+              <Route path="/investments/add" element={<InvestmentForm />} />
 
               <Route path="/users/profile" element={<ProfileDetails />} />
             </Routes>

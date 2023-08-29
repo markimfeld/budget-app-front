@@ -33,6 +33,11 @@ const Header = () => {
     navigate("/debts");
   };
 
+  const handleShowInvestmentList = () => {
+    clearMessages();
+    navigate("/investments");
+  };
+
   const handleLogout = () => {
     logout();
   };
@@ -130,6 +135,14 @@ const Header = () => {
                   }}
                 >
                   Deudas
+                </Nav.Link>
+                <Nav.Link
+                  onClick={() => {
+                    handleShowInvestmentList();
+                    handleClose();
+                  }}
+                >
+                  Fondos
                 </Nav.Link>
                 <NavDropdown
                   title={`${user.firstName} ${user.lastName}`}

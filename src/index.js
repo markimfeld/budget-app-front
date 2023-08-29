@@ -13,6 +13,7 @@ import { MessageContextProvider } from "./context/MessageContext";
 import { ExpenseContextProvider } from "./context/ExpenseContext";
 import { ThemeContextProvider } from "./context/ThemeContext";
 import { DebtContextProvider } from "./context/DebtContext";
+import { InvestmentContextProvider } from "./context/InvestmentContext";
 
 const queryClient = new QueryClient();
 
@@ -23,19 +24,21 @@ root.render(
     <ThemeContextProvider>
       <MessageContextProvider>
         <UserContextProvider>
-          <DebtContextProvider>
-            <IncomeContextProvider>
-              <BudgetContextProvider>
-                <ExpenseContextProvider>
-                  <BrowserRouter>
-                    <Routes>
-                      <Route path="/*" element={<App />} />
-                    </Routes>
-                  </BrowserRouter>
-                </ExpenseContextProvider>
-              </BudgetContextProvider>
-            </IncomeContextProvider>
-          </DebtContextProvider>
+          <InvestmentContextProvider>
+            <DebtContextProvider>
+              <IncomeContextProvider>
+                <BudgetContextProvider>
+                  <ExpenseContextProvider>
+                    <BrowserRouter>
+                      <Routes>
+                        <Route path="/*" element={<App />} />
+                      </Routes>
+                    </BrowserRouter>
+                  </ExpenseContextProvider>
+                </BudgetContextProvider>
+              </IncomeContextProvider>
+            </DebtContextProvider>
+          </InvestmentContextProvider>
         </UserContextProvider>
       </MessageContextProvider>
     </ThemeContextProvider>
