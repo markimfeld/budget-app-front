@@ -46,7 +46,7 @@ const Investments = () => {
               style={{ border: "none" }}
             >
               <Card.Body>
-                <p className="m-0 mb-1">Fondos totales</p>
+                <p className="m-0 mb-1">Balance total</p>
                 <h3 className="ms-auto fw-bold mb-3">
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
