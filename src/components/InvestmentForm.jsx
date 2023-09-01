@@ -115,7 +115,7 @@ const IncomeForm = () => {
         <InvestmentFormEdit
           onSubmit={onSubmit}
           onCancelOperation={onCancelOperation}
-          incomeToUpdate={{
+          investmentToUpdate={{
             ...investments?.find(
               (investment) => investment._id === investmentId
             ),

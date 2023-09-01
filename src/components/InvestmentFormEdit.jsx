@@ -20,6 +20,7 @@ const InvestmentFormEdit = (props) => {
       name: investmentToUpdate?.name || "",
       amount: investmentToUpdate?.amount || "",
     },
+    enableReinitialize: true,
     validationSchema: InvestmentSchema,
     onSubmit,
   });
@@ -27,12 +28,10 @@ const InvestmentFormEdit = (props) => {
   return (
     <Card
       style={{ border: "none", backgroundColor: "white" }}
-      className="shadow-sm mb-3 mt-4 bg-body rounded"
+      className="shadow-sm mb-3 mt-4 pt-3 bg-body rounded"
     >
       <Card.Header style={{ border: "none", backgroundColor: "#373E68" }}>
-        <Card.Title className="text-center fs-3 text-white">
-          Editar fondo
-        </Card.Title>
+        <Card.Title className="text-center fs-3">Editar fondo</Card.Title>
       </Card.Header>
       <Card.Body className="p-4">
         <Form noValidate onSubmit={handleSubmit}>
