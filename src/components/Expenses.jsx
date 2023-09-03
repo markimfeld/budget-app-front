@@ -1,6 +1,8 @@
 import { Card, Row, Col, Button, Stack, Placeholder } from "react-bootstrap";
 
 import { useQuery } from "react-query";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // components
 import Expense from "./Expense";
@@ -8,14 +10,20 @@ import Expense from "./Expense";
 // custom hooks
 import { useExpenseContext } from "../hooks/useExpenseContext";
 import { useBudgetContext } from "../hooks/useBudgetContext";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCurrencyContext } from "../hooks/useCurrencyContext";
 
 const Expenses = () => {
   const { getAllExpenses } = useExpenseContext();
   const { getBudgets } = useBudgetContext();
 
   const [budgetId, setBudgetId] = useState(null);
+
+  const { getCurrencyPrice } = useCurrencyContext();
+
+  const { data: currency } = useQuery({
+    queryKey: ["currency", { type: "blue" }],
+    queryFn: getCurrencyPrice,
+  });
 
   const navigate = useNavigate();
 
@@ -36,6 +44,7 @@ const Expenses = () => {
         <Expense
           expense={expense}
           budget={budgets?.find((b) => b._id === expense.budget._id)}
+          currency={currency}
         />
       </div>
     );

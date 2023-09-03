@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useExpenseContext } from "../hooks/useExpenseContext";
 import { useMessageContext } from "../hooks/useMessageContext";
 
-const Expense = ({ expense, budget }) => {
+const Expense = ({ expense, budget, currency }) => {
   const { handleDeleteExpense } = useExpenseContext();
 
   const { clearMessages } = useMessageContext();
@@ -60,7 +60,7 @@ const Expense = ({ expense, budget }) => {
             </span>
             <Card.Title className="ms-auto mb-0">
               <Stack direction="horizontal" gap={3}>
-                <span className="fs-4 fw-bold">
+                <span className="fs-4 fw-bold m-0 p-0">
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
                     minimumFractionDigits: 2,

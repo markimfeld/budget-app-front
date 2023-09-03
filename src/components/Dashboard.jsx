@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useBudgetContext } from "../hooks/useBudgetContext";
 import { useMessageContext } from "../hooks/useMessageContext";
 import { useIncomeContext } from "../hooks/useIncomeContext";
+import { useCurrencyContext } from "../hooks/useCurrencyContext";
 
 // const months = [
 //   "Enero",
@@ -39,6 +40,13 @@ const Dashboard = () => {
   const { clearMessages } = useMessageContext();
 
   const { getIncomes } = useIncomeContext();
+
+  const { getCurrencyPrice } = useCurrencyContext();
+
+  const { data: currency } = useQuery({
+    queryKey: ["currency", { type: "blue" }],
+    queryFn: getCurrencyPrice,
+  });
 
   const { data: incomes, isLoading } = useQuery({
     queryKey: ["incomes"],

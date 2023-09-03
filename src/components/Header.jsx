@@ -13,11 +13,13 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useMessageContext } from "../hooks/useMessageContext";
 import { useThemeContext } from "../hooks/useThemeContext";
+import { useCurrencyContext } from "../hooks/useCurrencyContext";
 
 const Header = () => {
   const { clearMessages } = useMessageContext();
   const { user, logout } = useAuthContext();
   const { theme, handleSetTheme } = useThemeContext();
+  const { currency, handleSetCurrency } = useCurrencyContext();
 
   const [show, setShow] = useState(false);
 
@@ -47,6 +49,15 @@ const Header = () => {
       handleSetTheme("dark");
     } else {
       handleSetTheme("light");
+    }
+    handleClose();
+  };
+
+  const handleCurrency = () => {
+    if (currency === "ARS") {
+      handleSetCurrency("USD");
+    } else {
+      handleSetCurrency("ARS");
     }
     handleClose();
   };
@@ -170,6 +181,9 @@ const Header = () => {
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={() => handleTheme()}>
                     {theme === "dark" ? "Tema claro" : "Tema oscuro"}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item onClick={() => handleCurrency()}>
+                    {currency === "USD" ? "Cambiar a pesos" : "Cambiar a dólar"}
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={() => handleLogout()}>
