@@ -123,7 +123,7 @@ const BudgetDetails = () => {
                 {new Intl.NumberFormat("en-US", {
                   style: "currency",
                   minimumFractionDigits: 2,
-                  currency: "USD",
+                  currency: "ARS",
                 }).format(budget.expectedAmount.toFixed(2))}
               </span>
             </Card.Text>
@@ -133,7 +133,7 @@ const BudgetDetails = () => {
                 {new Intl.NumberFormat("en-US", {
                   style: "currency",
                   minimumFractionDigits: 2,
-                  currency: "USD",
+                  currency: "ARS",
                 }).format(budget.spentAmount.toFixed(2))}
               </span>
             </Card.Text>

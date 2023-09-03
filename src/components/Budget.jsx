@@ -45,7 +45,7 @@ const Budget = ({ budget }) => {
   const leftAmount = new Intl.NumberFormat("en-US", {
     style: "currency",
     minimumFractionDigits: 2,
-    currency: "USD",
+    currency: "ARS",
   }).format(budget.leftAmount.toFixed(2));
 
   const leftPorcentage = Math.floor(

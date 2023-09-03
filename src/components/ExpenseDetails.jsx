@@ -109,7 +109,7 @@ const ExpenseDetails = () => {
                 {new Intl.NumberFormat("en-US", {
                   style: "currency",
                   minimumFractionDigits: 2,
-                  currency: "USD",
+                  currency: "ARS",
                 }).format(expense.amount.toFixed(2))}
               </span>
             </Card.Text>

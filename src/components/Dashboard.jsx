@@ -223,7 +223,7 @@ const Dashboard = () => {
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
                     minimumFractionDigits: 2,
-                    currency: "USD",
+                    currency: "ARS",
                   }).format(totalIncomes)}
                 </h3>
                 {lastMonthTotalIncomes > 0 && (
@@ -328,7 +328,7 @@ const Dashboard = () => {
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
                     minimumFractionDigits: 2,
-                    currency: "USD",
+                    currency: "ARS",
                   }).format(spentTotals)}
                 </h3>
                 {lastSpentTotals > 0 && (
@@ -407,7 +407,7 @@ const Dashboard = () => {
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
                     minimumFractionDigits: 2,
-                    currency: "USD",
+                    currency: "ARS",
                   }).format((totalIncomes - spentTotals).toFixed(2))}
                 </h3>
 

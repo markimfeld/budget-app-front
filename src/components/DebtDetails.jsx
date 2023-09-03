@@ -116,7 +116,7 @@ const DebtDetails = () => {
                 {new Intl.NumberFormat("en-US", {
                   style: "currency",
                   minimumFractionDigits: 2,
-                  currency: "USD",
+                  currency: "ARS",
                 }).format(debt?.installmentAmount.toFixed(2))}
               </span>
             </Stack>
@@ -126,7 +126,7 @@ const DebtDetails = () => {
                 {new Intl.NumberFormat("en-US", {
                   style: "currency",
                   minimumFractionDigits: 2,
-                  currency: "USD",
+                  currency: "ARS",
                 }).format(
                   debt?.installmentAmount.toFixed(2) *
                     debt?.leftAmountInstallments
@@ -139,7 +139,7 @@ const DebtDetails = () => {
                 {new Intl.NumberFormat("en-US", {
                   style: "currency",
                   minimumFractionDigits: 2,
-                  currency: "USD",
+                  currency: "ARS",
                 }).format(
                   debt?.installmentAmount.toFixed(2) *
                     debt?.initialAmountInstallments

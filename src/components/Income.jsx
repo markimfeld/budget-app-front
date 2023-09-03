@@ -68,7 +68,7 @@ const Income = ({ income }) => {
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 minimumFractionDigits: 2,
-                currency: "USD",
+                currency: "ARS",
               }).format(income.amount.toFixed(2))}
             </Card.Title>
           </Card.Body>

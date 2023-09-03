@@ -99,7 +99,7 @@ const Debts = () => {
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
                     minimumFractionDigits: 2,
-                    currency: "USD",
+                    currency: "ARS",
                   }).format(totalDebt)}
                 </h3>
               </Card.Body>
@@ -134,7 +134,7 @@ const Debts = () => {
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
                     minimumFractionDigits: 2,
-                    currency: "USD",
+                    currency: "ARS",
                   }).format(nextMonthTotal)}
                 </h3>
               </Card.Body>
