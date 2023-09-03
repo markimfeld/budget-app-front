@@ -1,4 +1,4 @@
-import { Alert } from "react-bootstrap";
+import { Alert, Container } from "react-bootstrap";
 
 // custom hooks
 import { useMessageContext } from "../hooks/useMessageContext";
@@ -19,17 +19,17 @@ const Message = () => {
   };
 
   return (
-    <>
-      <Alert
-        style={{ borderRadius: 0 }}
-        key={type}
-        variant={type}
-        onClose={handleClose}
-        dismissible
-      >
-        {message}
-      </Alert>
-    </>
+    <Alert
+      style={{ borderRadius: 0 }}
+      key={type}
+      variant={type}
+      onClose={handleClose}
+      dismissible
+    >
+      <Container>
+        <span className="ms-md-3">{message}</span>
+      </Container>
+    </Alert>
   );
 };
 

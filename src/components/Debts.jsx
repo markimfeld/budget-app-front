@@ -1,12 +1,4 @@
-import {
-  Card,
-  Button,
-  Placeholder,
-  Stack,
-  DropdownButton,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Card, Button, Placeholder, Stack, Row, Col } from "react-bootstrap";
 
 import { useNavigate } from "react-router-dom";
 
@@ -172,7 +164,7 @@ const Debts = () => {
             <Card.Body>
               <Stack direction="horizontal" gap={3}>
                 <Button variant="light" size="md" onClick={() => handlePaid()}>
-                  Pagar
+                  Pagar resumen
                 </Button>
                 <Button
                   size="md"

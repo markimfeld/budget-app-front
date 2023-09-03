@@ -109,7 +109,7 @@ const Investments = () => {
                     onClick={() => handleShowInvestmentFormOrList()}
                     variant="link"
                   >
-                    Crear nuevo deuda
+                    Crear nuevo fondo
                   </Button>
                 </Card.Title>
               </Card.Body>
