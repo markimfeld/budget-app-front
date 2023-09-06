@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useBudgetContext } from "../hooks/useBudgetContext";
 import { useMessageContext } from "../hooks/useMessageContext";
 
-const Budget = ({ budget }) => {
+const Budget = ({ budget, currency, currencyType }) => {
   const { clearMessages } = useMessageContext();
   const { handleDeleteBudget } = useBudgetContext();
 
@@ -42,11 +42,26 @@ const Budget = ({ budget }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const leftAmount = new Intl.NumberFormat("en-US", {
+  let configARS = {
     style: "currency",
     minimumFractionDigits: 2,
     currency: "ARS",
-  }).format(budget.leftAmount.toFixed(2));
+  };
+
+  let configUSD = {
+    style: "currency",
+    minimumFractionDigits: 2,
+    currency: "USD",
+  };
+
+  const leftAmount = new Intl.NumberFormat(
+    "en-US",
+    currencyType === "ARS" ? configARS : configUSD
+  ).format(
+    currencyType === "ARS"
+      ? budget.leftAmount.toFixed(2)
+      : budget.leftAmount.toFixed(2) / currency?.compra
+  );
 
   const leftPorcentage = Math.floor(
     (1 - budget.spentAmount / budget.expectedAmount) * 100

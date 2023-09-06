@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useIncomeContext } from "../hooks/useIncomeContext";
 import { useMessageContext } from "../hooks/useMessageContext";
 
-const Income = ({ income }) => {
+const Income = ({ income, currency, currencyType }) => {
   const { clearMessages } = useMessageContext();
   const { handleDeleteIncome } = useIncomeContext();
 
@@ -65,11 +65,18 @@ const Income = ({ income }) => {
           </Card.Header>
           <Card.Body>
             <Card.Title>
-              {new Intl.NumberFormat("en-US", {
-                style: "currency",
-                minimumFractionDigits: 2,
-                currency: "ARS",
-              }).format(income.amount.toFixed(2))}
+              {currencyType === "ARS" &&
+                new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  minimumFractionDigits: 2,
+                  currency: "ARS",
+                }).format(income.amount.toFixed(2))}
+              {currencyType === "USD" &&
+                new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  minimumFractionDigits: 2,
+                  currency: "USD",
+                }).format(income.amount.toFixed(2) / currency?.compra || 1)}
             </Card.Title>
           </Card.Body>
         </Card>

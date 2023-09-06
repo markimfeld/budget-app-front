@@ -9,6 +9,7 @@ import {
 } from "react-bootstrap";
 
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
 
 // components
 import Budget from "./Budget";
@@ -16,11 +17,18 @@ import Budget from "./Budget";
 // custom hooks
 import { useMessageContext } from "../hooks/useMessageContext";
 import { useBudgetContext } from "../hooks/useBudgetContext";
-import { useQuery } from "react-query";
+import { useCurrencyContext } from "../hooks/useCurrencyContext";
 
 const Budgets = () => {
   const { clearMessages } = useMessageContext();
   const { getBudgets } = useBudgetContext();
+
+  const { getCurrencyPrice, currencyType } = useCurrencyContext();
+
+  const { data: currency } = useQuery({
+    queryKey: ["currency", { type: "blue" }],
+    queryFn: getCurrencyPrice,
+  });
 
   const { data, isLoading } = useQuery({
     queryKey: ["budgets"],
@@ -30,7 +38,14 @@ const Budgets = () => {
   const navigate = useNavigate();
 
   const budgetList = data?.map((budget) => {
-    return <Budget key={budget._id} budget={budget} />;
+    return (
+      <Budget
+        key={budget._id}
+        budget={budget}
+        currencyType={currencyType}
+        currency={currency}
+      />
+    );
   });
 
   const handleShowBudgetFormOrList = () => {

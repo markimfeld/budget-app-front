@@ -18,7 +18,7 @@ const Expenses = () => {
 
   const [budgetId, setBudgetId] = useState(null);
 
-  const { getCurrencyPrice } = useCurrencyContext();
+  const { getCurrencyPrice, currencyType } = useCurrencyContext();
 
   const { data: currency } = useQuery({
     queryKey: ["currency", { type: "blue" }],
@@ -45,6 +45,7 @@ const Expenses = () => {
           expense={expense}
           budget={budgets?.find((b) => b._id === expense.budget._id)}
           currency={currency}
+          currencyType={currencyType}
         />
       </div>
     );

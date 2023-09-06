@@ -41,7 +41,7 @@ const Dashboard = () => {
 
   const { getIncomes } = useIncomeContext();
 
-  const { getCurrencyPrice } = useCurrencyContext();
+  const { getCurrencyPrice, currencyType } = useCurrencyContext();
 
   const { data: currency } = useQuery({
     queryKey: ["currency", { type: "blue" }],
@@ -228,11 +228,18 @@ const Dashboard = () => {
               <Card.Body>
                 <p className="m-0 mb-1">Ingreso total</p>
                 <h3 className="ms-auto fw-bold mb-3">
-                  {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    minimumFractionDigits: 2,
-                    currency: "ARS",
-                  }).format(totalIncomes)}
+                  {currencyType === "ARS" &&
+                    new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      minimumFractionDigits: 2,
+                      currency: "ARS",
+                    }).format(totalIncomes)}
+                  {currencyType === "USD" &&
+                    new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      minimumFractionDigits: 2,
+                      currency: "USD",
+                    }).format(totalIncomes / currency?.compra || 1)}
                 </h3>
                 {lastMonthTotalIncomes > 0 && (
                   <div>
@@ -333,11 +340,18 @@ const Dashboard = () => {
               <Card.Body>
                 <p className="m-0 mb-1">Gasto total</p>
                 <h3 className="ms-auto fw-bold mb-3">
-                  {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    minimumFractionDigits: 2,
-                    currency: "ARS",
-                  }).format(spentTotals)}
+                  {currencyType === "ARS" &&
+                    new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      minimumFractionDigits: 2,
+                      currency: "ARS",
+                    }).format(spentTotals)}
+                  {currencyType === "USD" &&
+                    new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      minimumFractionDigits: 2,
+                      currency: "USD",
+                    }).format(spentTotals / currency?.compra || 1)}
                 </h3>
                 {lastSpentTotals > 0 && (
                   <div>
@@ -412,11 +426,22 @@ const Dashboard = () => {
               <Card.Body>
                 <p className="m-0 mb-1">Balance total</p>
                 <h3 className="ms-auto fw-bold mb-3">
-                  {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    minimumFractionDigits: 2,
-                    currency: "ARS",
-                  }).format((totalIncomes - spentTotals).toFixed(2))}
+                  {currencyType === "ARS" &&
+                    new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      minimumFractionDigits: 2,
+                      currency: "ARS",
+                    }).format((totalIncomes - spentTotals).toFixed(2))}
+                  {currencyType === "USD" &&
+                    new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      minimumFractionDigits: 2,
+                      currency: "USD",
+                    }).format(
+                      (
+                        (totalIncomes - spentTotals) / currency?.compra || 1
+                      ).toFixed(2)
+                    )}
                 </h3>
 
                 {leftPorcentage >= 70 && (

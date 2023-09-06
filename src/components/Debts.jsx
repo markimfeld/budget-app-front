@@ -9,13 +9,15 @@ import debtService from "../services/debt";
 // components
 import Debt from "./Debt";
 
+import { useQuery } from "react-query";
+
 // labels
 import { DEBT_UPDATED_MESSAGE } from "../labels/labels";
 
 // custom hooks
 import { useMessageContext } from "../hooks/useMessageContext";
 import { useDebtContext } from "../hooks/useDebtContext";
-import { useQuery } from "react-query";
+import { useCurrencyContext } from "../hooks/useCurrencyContext";
 
 const Debts = () => {
   const {
@@ -26,6 +28,13 @@ const Debts = () => {
   } = useMessageContext();
 
   const { getDebts, isPaid, handleIsPaid } = useDebtContext();
+
+  const { getCurrencyPrice, currencyType } = useCurrencyContext();
+
+  const { data: currency } = useQuery({
+    queryKey: ["currency", { type: "blue" }],
+    queryFn: getCurrencyPrice,
+  });
 
   // Get QueryClient from the context
   const queryClient = useQueryClient();
@@ -38,7 +47,14 @@ const Debts = () => {
   const navigate = useNavigate();
 
   const debtList = debts?.map((debt) => {
-    return <Debt key={debt._id} debt={debt} />;
+    return (
+      <Debt
+        key={debt._id}
+        debt={debt}
+        currency={currency}
+        currencyType={currencyType}
+      />
+    );
   });
 
   const totalDebt = debts
@@ -96,11 +112,19 @@ const Debts = () => {
               <Card.Body>
                 <p className="m-0 mb-1">Deuda total</p>
                 <h3 className="ms-auto fw-bold mb-3">
-                  {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    minimumFractionDigits: 2,
-                    currency: "ARS",
-                  }).format(totalDebt)}
+                  {currencyType === "ARS" &&
+                    new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      minimumFractionDigits: 2,
+                      currency: "ARS",
+                    }).format(totalDebt)}
+                  {currencyType === "USD" &&
+                    currency &&
+                    new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      minimumFractionDigits: 2,
+                      currency: "USD",
+                    }).format(totalDebt / currency?.compra)}
                 </h3>
               </Card.Body>
             </Card>
@@ -131,11 +155,19 @@ const Debts = () => {
               <Card.Body>
                 <p className="m-0 mb-1">Monto a pagar próximo mes</p>
                 <h3 className="ms-auto fw-bold mb-3">
-                  {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    minimumFractionDigits: 2,
-                    currency: "ARS",
-                  }).format(nextMonthTotal)}
+                  {currencyType === "ARS" &&
+                    new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      minimumFractionDigits: 2,
+                      currency: "ARS",
+                    }).format(nextMonthTotal)}
+                  {currencyType === "USD" &&
+                    currency &&
+                    new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      minimumFractionDigits: 2,
+                      currency: "USD",
+                    }).format(nextMonthTotal / currency?.compra)}
                 </h3>
               </Card.Body>
             </Card>

@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 // services
 import currencyService from "../services/currency";
 
@@ -10,23 +10,13 @@ export const CurrencyContext = createContext();
 export const CurrencyContextProvider = ({ children }) => {
   const { user, logout } = useAuthContext();
   const [dollarPrice, setDollarPrice] = useState(null);
-  const [currency, setCurrency] = useState(
-    window.localStorage.getItem("currency") || "ARS"
+  const [currencyType, setCurrencyType] = useState(
+    window.localStorage.getItem("currencyType")
   );
 
-  useEffect(() => {
-    const selectedCurrency = window.localStorage.getItem("currency");
-
-    if (selectedCurrency === "ARS") {
-      setCurrency("USD");
-    } else {
-      setCurrency("ARS");
-    }
-  }, [currency]);
-
   const handleSetCurrency = (currency) => {
-    setCurrency(currency);
-    window.localStorage.setItem("currency", currency);
+    setCurrencyType(currency);
+    window.localStorage.setItem("currencyType", currency);
   };
 
   const getCurrencyPrice = async (key) => {
@@ -53,6 +43,7 @@ export const CurrencyContextProvider = ({ children }) => {
         dollarPrice,
         getCurrencyPrice,
         handleSetCurrency,
+        currencyType,
       }}
     >
       {children}

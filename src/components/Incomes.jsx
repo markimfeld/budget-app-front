@@ -9,6 +9,7 @@ import {
 } from "react-bootstrap";
 
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
 
 // components
 import Income from "./Income";
@@ -16,11 +17,18 @@ import Income from "./Income";
 // custom hooks
 import { useMessageContext } from "../hooks/useMessageContext";
 import { useIncomeContext } from "../hooks/useIncomeContext";
-import { useQuery } from "react-query";
+import { useCurrencyContext } from "../hooks/useCurrencyContext";
 
 const Incomes = () => {
   const { clearMessages } = useMessageContext();
   const { getIncomes } = useIncomeContext();
+
+  const { getCurrencyPrice, currencyType } = useCurrencyContext();
+
+  const { data: currency } = useQuery({
+    queryKey: ["currency", { type: "blue" }],
+    queryFn: getCurrencyPrice,
+  });
 
   const { data, isLoading } = useQuery({
     queryKey: ["incomes"],
@@ -30,7 +38,14 @@ const Incomes = () => {
   const navigate = useNavigate();
 
   const incomeList = data?.map((income) => {
-    return <Income key={income._id} income={income} />;
+    return (
+      <Income
+        key={income._id}
+        income={income}
+        currencyType={currencyType}
+        currency={currency}
+      />
+    );
   });
 
   const handleShowIncomeFormOrList = () => {

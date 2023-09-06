@@ -19,7 +19,7 @@ const Header = () => {
   const { clearMessages } = useMessageContext();
   const { user, logout } = useAuthContext();
   const { theme, handleSetTheme } = useThemeContext();
-  const { currency, handleSetCurrency } = useCurrencyContext();
+  const { currencyType, handleSetCurrency } = useCurrencyContext();
 
   const [show, setShow] = useState(false);
 
@@ -54,7 +54,7 @@ const Header = () => {
   };
 
   const handleCurrency = () => {
-    if (currency === "ARS") {
+    if (currencyType === "ARS") {
       handleSetCurrency("USD");
     } else {
       handleSetCurrency("ARS");
@@ -183,7 +183,9 @@ const Header = () => {
                     {theme === "dark" ? "Tema claro" : "Tema oscuro"}
                   </NavDropdown.Item>
                   <NavDropdown.Item onClick={() => handleCurrency()}>
-                    {currency === "USD" ? "Cambiar a pesos" : "Cambiar a dólar"}
+                    {currencyType === "USD"
+                      ? "Cambiar a pesos"
+                      : "Cambiar a dólar"}
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={() => handleLogout()}>

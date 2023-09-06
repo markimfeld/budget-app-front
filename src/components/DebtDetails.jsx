@@ -12,6 +12,7 @@ import { useQuery } from "react-query";
 
 import { useDebtContext } from "../hooks/useDebtContext";
 import { useMessageContext } from "../hooks/useMessageContext";
+import { useCurrencyContext } from "../hooks/useCurrencyContext";
 
 import { format } from "date-fns";
 
@@ -21,6 +22,13 @@ const DebtDetails = () => {
   const { getDebts, isPaid } = useDebtContext();
 
   const { clearMessages } = useMessageContext();
+
+  const { getCurrencyPrice, currencyType } = useCurrencyContext();
+
+  const { data: currency } = useQuery({
+    queryKey: ["currency", { type: "blue" }],
+    queryFn: getCurrencyPrice,
+  });
 
   const { debtId } = useParams("debtId");
 
@@ -113,37 +121,71 @@ const DebtDetails = () => {
             <Stack className="mb-2" direction="horizontal" gap={3}>
               <span className="text-muted">Monto de la cuota: </span>
               <span className="ms-auto fw-bold">
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  minimumFractionDigits: 2,
-                  currency: "ARS",
-                }).format(debt?.installmentAmount.toFixed(2))}
+                {currencyType === "ARS" &&
+                  new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "ARS",
+                  }).format(debt?.installmentAmount.toFixed(2))}
+                {currencyType === "USD" &&
+                  currency &&
+                  new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "USD",
+                  }).format(
+                    debt?.installmentAmount.toFixed(2) / currency?.compra
+                  )}
               </span>
             </Stack>
             <Stack className="mb-2" direction="horizontal" gap={3}>
               <span className="text-muted">Monto restante: </span>
               <span className="ms-auto fw-bold">
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  minimumFractionDigits: 2,
-                  currency: "ARS",
-                }).format(
-                  debt?.installmentAmount.toFixed(2) *
-                    debt?.leftAmountInstallments
-                )}
+                {currencyType === "ARS" &&
+                  new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "ARS",
+                  }).format(
+                    debt?.installmentAmount.toFixed(2) *
+                      debt?.leftAmountInstallments
+                  )}
+                {currencyType === "USD" &&
+                  currency &&
+                  new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "USD",
+                  }).format(
+                    (debt?.installmentAmount.toFixed(2) *
+                      debt?.leftAmountInstallments) /
+                      currency?.compra
+                  )}
               </span>
             </Stack>
             <Stack className="mb-2" direction="horizontal" gap={3}>
               <span className="text-muted">Monto total: </span>
               <span className="ms-auto fw-bold">
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  minimumFractionDigits: 2,
-                  currency: "ARS",
-                }).format(
-                  debt?.installmentAmount.toFixed(2) *
-                    debt?.initialAmountInstallments
-                )}
+                {currencyType === "ARS" &&
+                  new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "ARS",
+                  }).format(
+                    debt?.installmentAmount.toFixed(2) *
+                      debt?.initialAmountInstallments
+                  )}
+                {currencyType === "USD" &&
+                  currency &&
+                  new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "USD",
+                  }).format(
+                    (debt?.installmentAmount.toFixed(2) *
+                      debt?.initialAmountInstallments) /
+                      currency?.compra
+                  )}
               </span>
             </Stack>
             <Stack className="mb-2" direction="horizontal" gap={3}>

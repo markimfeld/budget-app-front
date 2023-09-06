@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 
 import { useExpenseContext } from "../hooks/useExpenseContext";
 import { useMessageContext } from "../hooks/useMessageContext";
+import { useCurrencyContext } from "../hooks/useCurrencyContext";
 
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -12,6 +13,13 @@ const ExpenseDetails = () => {
   const { getAllExpenses } = useExpenseContext();
 
   const { clearMessages } = useMessageContext();
+
+  const { getCurrencyPrice, currencyType } = useCurrencyContext();
+
+  const { data: currency } = useQuery({
+    queryKey: ["currency", { type: "blue" }],
+    queryFn: getCurrencyPrice,
+  });
 
   const { expenseId } = useParams("expenseId");
 
@@ -106,11 +114,18 @@ const ExpenseDetails = () => {
             <Card.Text>
               Monto:{" "}
               <span className="fw-bold">
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  minimumFractionDigits: 2,
-                  currency: "ARS",
-                }).format(expense.amount.toFixed(2))}
+                {currencyType === "ARS" &&
+                  new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "ARS",
+                  }).format(expense.amount.toFixed(2))}
+                {currencyType === "USD" &&
+                  new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "USD",
+                  }).format(expense.amount.toFixed(2) / currency?.compra || 1)}
               </span>
             </Card.Text>
             <Card.Text>

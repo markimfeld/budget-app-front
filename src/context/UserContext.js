@@ -43,6 +43,14 @@ export const UserContextProvider = ({ children }) => {
           JSON.stringify({ isPaid: false })
         );
 
+        let currencyType = window.localStorage.getItem("currencyType");
+
+        if (currencyType) {
+          window.localStorage.setItem("currencyType", currencyType);
+        } else {
+          window.localStorage.setItem("currencyType", "ARS");
+        }
+
         setIsLoading(false);
 
         return response;

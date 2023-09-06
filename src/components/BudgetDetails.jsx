@@ -12,6 +12,7 @@ import { useQuery } from "react-query";
 
 import { useBudgetContext } from "../hooks/useBudgetContext";
 import { useMessageContext } from "../hooks/useMessageContext";
+import { useCurrencyContext } from "../hooks/useCurrencyContext";
 
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -19,6 +20,12 @@ const BudgetDetails = () => {
   const { getBudgets } = useBudgetContext();
 
   const { clearMessages } = useMessageContext();
+  const { getCurrencyPrice, currencyType } = useCurrencyContext();
+
+  const { data: currency } = useQuery({
+    queryKey: ["currency", { type: "blue" }],
+    queryFn: getCurrencyPrice,
+  });
 
   const { budgetId } = useParams("budgetId");
 
@@ -38,11 +45,26 @@ const BudgetDetails = () => {
     navigate(`/budgets/${budget._id}/edit`, { replace: true });
   };
 
-  const leftAmount = new Intl.NumberFormat("en-US", {
+  let configARS = {
+    style: "currency",
+    minimumFractionDigits: 2,
+    currency: "ARS",
+  };
+
+  let configUSD = {
     style: "currency",
     minimumFractionDigits: 2,
     currency: "USD",
-  }).format(budget?.leftAmount.toFixed(2));
+  };
+
+  const leftAmount = new Intl.NumberFormat(
+    "en-US",
+    currencyType === "ARS" ? configARS : configUSD
+  ).format(
+    currencyType === "ARS"
+      ? budget?.leftAmount.toFixed(2)
+      : budget?.leftAmount.toFixed(2) / currency?.compra || 1
+  );
 
   const leftPorcentage = Math.floor(
     (1 - budget?.spentAmount / budget?.expectedAmount) * 100
@@ -120,21 +142,39 @@ const BudgetDetails = () => {
             <Card.Text>
               Presupuestado:{" "}
               <span className="fw-bold">
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  minimumFractionDigits: 2,
-                  currency: "ARS",
-                }).format(budget.expectedAmount.toFixed(2))}
+                {currencyType === "ARS" &&
+                  new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "ARS",
+                  }).format(budget.expectedAmount.toFixed(2))}
+                {currencyType === "USD" &&
+                  new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "USD",
+                  }).format(
+                    budget.expectedAmount.toFixed(2) / currency?.compra || 1
+                  )}
               </span>
             </Card.Text>
             <Card.Text>
               Gastado:{" "}
               <span className="fw-bold">
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  minimumFractionDigits: 2,
-                  currency: "ARS",
-                }).format(budget.spentAmount.toFixed(2))}
+                {currencyType === "ARS" &&
+                  new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "ARS",
+                  }).format(budget.spentAmount.toFixed(2))}
+                {currencyType === "USD" &&
+                  new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    minimumFractionDigits: 2,
+                    currency: "USD",
+                  }).format(
+                    budget.spentAmount.toFixed(2) / currency?.compra || 1
+                  )}
               </span>
             </Card.Text>
             {/* <Card.Text>

@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useDebtContext } from "../hooks/useDebtContext";
 import { useMessageContext } from "../hooks/useMessageContext";
 
-const Debt = ({ debt }) => {
+const Debt = ({ debt, currency, currencyType }) => {
   const { clearMessages } = useMessageContext();
   const { handleDeleteDebt } = useDebtContext();
 
@@ -72,11 +72,21 @@ const Debt = ({ debt }) => {
               <Card.Title className="ms-auto mb-0">
                 <Stack direction="horizontal" gap={3}>
                   <span className="fs-4 fw-bold">
-                    {new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      minimumFractionDigits: 2,
-                      currency: "ARS",
-                    }).format(debt.installmentAmount.toFixed(2))}
+                    {currencyType === "ARS" &&
+                      new Intl.NumberFormat("en-US", {
+                        style: "currency",
+                        minimumFractionDigits: 2,
+                        currency: "ARS",
+                      }).format(debt.installmentAmount.toFixed(2))}
+                    {currencyType === "USD" &&
+                      currency &&
+                      new Intl.NumberFormat("en-US", {
+                        style: "currency",
+                        minimumFractionDigits: 2,
+                        currency: "USD",
+                      }).format(
+                        debt.installmentAmount.toFixed(2) / currency?.compra
+                      )}
                   </span>
 
                   <DropdownButton
