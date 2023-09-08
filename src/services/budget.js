@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:3001/api/v1/budgets";
+const baseUrl = "https://budget-app-k4i2-dev.fl0.io/api/v1/budgets";
 
 const budgetService = {
   getAll: async (filters) => {
