@@ -13,4 +13,5 @@
 - [x] Tema dark / light.
 - [x] Sección deudas.
 - [x] Pagar todas de una.
-- [ ] Pagar algunas
+- [ ] Pagar algunas.
+- [ ] Revisar bugs.
