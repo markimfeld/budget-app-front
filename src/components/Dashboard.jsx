@@ -235,11 +235,12 @@ const Dashboard = () => {
                       currency: "ARS",
                     }).format(totalIncomes)}
                   {currencyType === "USD" &&
+                    currency &&
                     new Intl.NumberFormat("en-US", {
                       style: "currency",
                       minimumFractionDigits: 2,
                       currency: "USD",
-                    }).format(totalIncomes / currency?.compra || 1)}
+                    }).format(totalIncomes / currency?.compra)}
                 </h3>
                 {lastMonthTotalIncomes > 0 && (
                   <div>
@@ -347,11 +348,12 @@ const Dashboard = () => {
                       currency: "ARS",
                     }).format(spentTotals)}
                   {currencyType === "USD" &&
+                    currency &&
                     new Intl.NumberFormat("en-US", {
                       style: "currency",
                       minimumFractionDigits: 2,
                       currency: "USD",
-                    }).format(spentTotals / currency?.compra || 1)}
+                    }).format(spentTotals / currency?.compra)}
                 </h3>
                 {lastSpentTotals > 0 && (
                   <div>
@@ -433,14 +435,15 @@ const Dashboard = () => {
                       currency: "ARS",
                     }).format((totalIncomes - spentTotals).toFixed(2))}
                   {currencyType === "USD" &&
+                    currency &&
                     new Intl.NumberFormat("en-US", {
                       style: "currency",
                       minimumFractionDigits: 2,
                       currency: "USD",
                     }).format(
-                      (
-                        (totalIncomes - spentTotals) / currency?.compra || 1
-                      ).toFixed(2)
+                      ((totalIncomes - spentTotals) / currency?.compra).toFixed(
+                        2
+                      )
                     )}
                 </h3>
 
