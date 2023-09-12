@@ -1,6 +1,6 @@
 import axios from "axios";
-// https://budget-app-k4i2-dev.fl0.io/
-const baseUrl = "https://budget-app-k4i2-dev.fl0.io/api/v1/users";
+
+const baseUrl = `${process.env.BACKEND_BASE_URL}/api/v1/users`;
 
 const loginService = {
   login: async (credentials) => {

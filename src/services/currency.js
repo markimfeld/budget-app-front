@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "https://dolarapi.com/v1/dolares";
+const baseUrl = `${process.env.DOLAR_API_BASE_URL}`;
 
 const currencyService = {
   getDolarPrice: async (type) => {
