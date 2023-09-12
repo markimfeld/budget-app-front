@@ -1,4 +1,6 @@
 import axios from "axios";
+import dotenv from "dotenv";
+dotenv.config();
 
 const baseUrl = `${process.env.DOLAR_API_BASE_URL}`;
 

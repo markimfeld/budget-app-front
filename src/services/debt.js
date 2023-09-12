@@ -1,4 +1,6 @@
 import axios from "axios";
+import dotenv from "dotenv";
+dotenv.config();
 
 const baseUrl = `${process.env.BACKEND_BASE_URL}/api/v1/debts`;
 

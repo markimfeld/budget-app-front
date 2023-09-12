@@ -10,9 +10,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import NewPasswordForm from "./components/NewPasswordForm";
 import ForgotPasswordForm from "./components/ForgotPassword";
 
-import dotenv from "dotenv";
-dotenv.config();
-
 function App() {
   return (
     <div className="theme">
