@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "https://budget-app-k4i2-dev.fl0.io/api/v1/expenses";
+const baseUrl = `${process.env.BACKEND_BASE_URL}/api/v1/expenses`;
 
 const expenseService = {
   getAll: async () => {
