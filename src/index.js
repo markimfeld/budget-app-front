@@ -16,6 +16,9 @@ import { DebtContextProvider } from "./context/DebtContext";
 import { InvestmentContextProvider } from "./context/InvestmentContext";
 import { CurrencyContextProvider } from "./context/CurrencyContext";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
