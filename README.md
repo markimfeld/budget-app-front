@@ -15,3 +15,4 @@
 - [x] Pagar todas de una.
 - [ ] Pagar algunas.
 - [ ] Revisar bugs.
+- [ ] Mejorar navegación con boton de ir para atras
