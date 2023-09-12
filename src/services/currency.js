@@ -1,5 +1,5 @@
 import axios from "axios";
-import DOLAR_API_BASE_URL from "../services/api";
+import { DOLAR_API_BASE_URL } from "../services/api";
 
 const baseUrl = `${DOLAR_API_BASE_URL}`;
 

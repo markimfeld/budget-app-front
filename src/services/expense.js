@@ -1,5 +1,5 @@
 import axios from "axios";
-import BACKEND_BASE_URL from "../services/api";
+import { BACKEND_BASE_URL } from "../services/api";
 
 const baseUrl = `${BACKEND_BASE_URL}/api/v1/expenses`;
 
