@@ -1,8 +1,7 @@
 import axios from "axios";
-import dotenv from "dotenv";
-dotenv.config();
+import DOLAR_API_BASE_URL from "../services/api";
 
-const baseUrl = `${process.env.DOLAR_API_BASE_URL}`;
+const baseUrl = `${DOLAR_API_BASE_URL}`;
 
 const currencyService = {
   getDolarPrice: async (type) => {

@@ -1,8 +1,7 @@
 import axios from "axios";
-import dotenv from "dotenv";
-dotenv.config();
+import BACKEND_BASE_URL from "../services/api";
 
-const baseUrl = `${process.env.BACKEND_BASE_URL}/api/v1/budgets`;
+const baseUrl = `${BACKEND_BASE_URL}/api/v1/budgets`;
 
 const budgetService = {
   getAll: async (filters) => {
