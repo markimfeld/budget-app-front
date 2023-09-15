@@ -98,7 +98,23 @@ const Investments = () => {
           {isLoading && (
             <>
               <Row>
-                <Col>
+                <Col md={6}>
+                  <Card
+                    className="mb-3 p-1 shadow-sm bg-body rounded"
+                    border="light"
+                    style={{ backgroundColor: "white" }}
+                  >
+                    <Card.Body>
+                      <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={6} />
+                      </Placeholder>
+                      <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={4} />
+                      </Placeholder>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col md={6}>
                   <Card
                     className="mb-3 p-1 shadow-sm bg-body rounded"
                     border="light"
@@ -116,7 +132,57 @@ const Investments = () => {
                 </Col>
               </Row>
               <Row>
-                <Col>
+                <Col md={6}>
+                  <Card
+                    className="mb-3 p-1 shadow-sm bg-body rounded"
+                    border="light"
+                    style={{ backgroundColor: "white" }}
+                  >
+                    <Card.Body>
+                      <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={6} />
+                      </Placeholder>
+                      <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={4} />
+                      </Placeholder>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col md={6}>
+                  <Card
+                    className="mb-3 p-1 shadow-sm bg-body rounded"
+                    border="light"
+                    style={{ backgroundColor: "white" }}
+                  >
+                    <Card.Body>
+                      <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={6} />
+                      </Placeholder>
+                      <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={4} />
+                      </Placeholder>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={6}>
+                  <Card
+                    className="mb-3 p-1 shadow-sm bg-body rounded"
+                    border="light"
+                    style={{ backgroundColor: "white" }}
+                  >
+                    <Card.Body>
+                      <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={6} />
+                      </Placeholder>
+                      <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={4} />
+                      </Placeholder>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col md={6}>
                   <Card
                     className="mb-3 p-1 shadow-sm bg-body rounded"
                     border="light"

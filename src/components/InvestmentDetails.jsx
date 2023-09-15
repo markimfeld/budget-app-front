@@ -94,9 +94,9 @@ const InvestmentDetails = () => {
           style={{ border: "none" }}
         >
           <Card.Header className="pb-0">
-            <Stack direction="horizontal" gap={3}>
-              <span className="fs-4 fw-bold">{investment?.name}</span>
-            </Stack>
+            <Card.Title className="fs-4 fw-bold text-center">
+              {investment?.name}
+            </Card.Title>
             <hr className="mb-0" />
           </Card.Header>
           <Card.Body>

@@ -45,17 +45,17 @@ const Investment = ({ investment }) => {
     <>
       <Col md={6}>
         <Card
-          className="shadow-sm p-4 mb-3 bg-body rounded"
+          className="shadow-sm py-0 mb-3 bg-body rounded"
           style={{ border: "none" }}
         >
-          <Card.Body className="px-2 py-1">
+          <Card.Body>
             <Stack direction="horizontal" gap={3}>
               <span>
-                <Card.Title className="mb-2">{investment.name}</Card.Title>
+                <Card.Title className="mb-5">{investment.name}</Card.Title>
               </span>
               <Card.Title className="ms-auto mb-0">
-                <Stack direction="horizontal" gap={3}>
-                  <span className="fs-4 fw-bold">
+                <Stack direction="vertical" gap={1}>
+                  <span className="fs-5 fw-bold m-0 p-0">
                     {new Intl.NumberFormat("en-US", {
                       style: "currency",
                       minimumFractionDigits: 2,
@@ -69,6 +69,7 @@ const Investment = ({ investment }) => {
                     }
                     id="bg-vertical-dropdown-2"
                     variant="link"
+                    className="ms-auto"
                     align="end"
                   >
                     <Dropdown.Item
