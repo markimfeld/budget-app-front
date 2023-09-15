@@ -80,7 +80,7 @@ const Header = () => {
       <Navbar
         key="md"
         expand="lg"
-        className="bg-body-dark"
+        className="bg-body-dark p-3"
         bg="dark"
         variant="dark"
       >

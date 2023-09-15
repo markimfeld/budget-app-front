@@ -67,9 +67,7 @@ const ExpenseFormAdd = (props) => {
         className="shadow-sm mb-3 mt-4 bg-body rounded"
       >
         <Card.Header style={{ border: "none", backgroundColor: "#373E68" }}>
-          <Card.Title className="text-center fs-3 text-white">
-            Nuevo gasto
-          </Card.Title>
+          <Card.Title className="text-center fs-3">Nuevo gasto</Card.Title>
         </Card.Header>
         <Card.Body className="p-4">
           <Form noValidate onSubmit={handleSubmit}>
