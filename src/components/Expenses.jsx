@@ -140,7 +140,7 @@ const Expenses = () => {
                   <Row>
                     <Col>
                       <Card
-                        className="mb-3"
+                        className="mb-3 shadow-sm bg-body rounded"
                         border="light"
                         style={{ backgroundColor: "white" }}
                       >
@@ -158,7 +158,7 @@ const Expenses = () => {
                   <Row>
                     <Col>
                       <Card
-                        className="mb-3"
+                        className="mb-3 shadow-sm bg-body rounded"
                         border="light"
                         style={{ backgroundColor: "white" }}
                       >

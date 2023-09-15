@@ -48,19 +48,19 @@ const Expense = ({ expense, budget, currency, currencyType }) => {
         key={expense._id}
         border="light"
         style={{ backgroundColor: "white", border: "none" }}
-        className="shadow-sm py-2 mb-3 bg-body rounded"
+        className="shadow-sm py-0 mb-3 bg-body rounded"
       >
         <Card.Body>
           <Stack direction="horizontal" gap={3}>
             <span>
-              <Card.Title className="mb-2">{expense.name}</Card.Title>
+              <Card.Title className="mb-3">{expense.name}</Card.Title>
               <Card.Text className="card-subtitle">
                 {format(new Date(expense.createdAt), "dd/MM/yyyy kk:mm")}
               </Card.Text>
             </span>
             <Card.Title className="ms-auto mb-0">
-              <Stack direction="horizontal" gap={3}>
-                <span className="fs-4 fw-bold m-0 p-0">
+              <Stack direction="vertical" gap={1}>
+                <span className="fs-5 fw-bold m-0 p-0">
                   {currencyType === "ARS" &&
                     new Intl.NumberFormat("en-US", {
                       style: "currency",
@@ -83,6 +83,7 @@ const Expense = ({ expense, budget, currency, currencyType }) => {
                   }
                   id="bg-vertical-dropdown-2"
                   variant="link"
+                  className="ms-auto"
                   align="end"
                 >
                   <Dropdown.Item

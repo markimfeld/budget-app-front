@@ -134,14 +134,15 @@ const BudgetDetails = () => {
           style={{ border: "none" }}
         >
           <Card.Header>
-            <Stack direction="horizontal" gap={3}>
-              <span className="fs-4 fw-bold">{budget?.name}</span>
-            </Stack>
+            <Card.Title className="fs-4 fw-bold text-center">
+              {budget?.name}
+            </Card.Title>
+            <hr className="mb-0" />
           </Card.Header>
           <Card.Body>
-            <Card.Text>
-              Presupuestado:{" "}
-              <span className="fw-bold">
+            <Stack className="mb-2" direction="horizontal" gap={3}>
+              <span className="text-muted">Presupuestado: </span>
+              <span className="ms-auto fw-bold">
                 {currencyType === "ARS" &&
                   new Intl.NumberFormat("en-US", {
                     style: "currency",
@@ -157,10 +158,10 @@ const BudgetDetails = () => {
                     budget.expectedAmount.toFixed(2) / currency?.compra || 1
                   )}
               </span>
-            </Card.Text>
-            <Card.Text>
-              Gastado:{" "}
-              <span className="fw-bold">
+            </Stack>
+            <Stack className="mb-2" direction="horizontal" gap={3}>
+              <span className="text-muted">Gastado: </span>
+              <span className="ms-auto fw-bold">
                 {currencyType === "ARS" &&
                   new Intl.NumberFormat("en-US", {
                     style: "currency",
@@ -176,7 +177,7 @@ const BudgetDetails = () => {
                     budget.spentAmount.toFixed(2) / currency?.compra || 1
                   )}
               </span>
-            </Card.Text>
+            </Stack>
             {/* <Card.Text>
               Balance:{" "}
               <span className="fw-bold">

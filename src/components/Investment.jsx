@@ -43,9 +43,9 @@ const Investment = ({ investment }) => {
 
   return (
     <>
-      <Col md={12}>
+      <Col md={6}>
         <Card
-          className="shadow-sm p-3 mb-3 bg-body rounded"
+          className="shadow-sm p-4 mb-3 bg-body rounded"
           style={{ border: "none" }}
         >
           <Card.Body className="px-2 py-1">

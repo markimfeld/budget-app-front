@@ -131,7 +131,7 @@ const Debts = () => {
           )}
           {isLoading && (
             <Card
-              className="mb-3"
+              className="mb-3 p-2 shadow-sm bg-body rounded"
               border="light"
               style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
             >
@@ -174,7 +174,7 @@ const Debts = () => {
           )}
           {isLoading && (
             <Card
-              className="mb-3"
+              className="mb-3 p-2 shadow-sm bg-body rounded"
               border="light"
               style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
             >
@@ -235,6 +235,46 @@ const Debts = () => {
           </Row>
         </Col>
         <Col>
+          {isLoading && (
+            <>
+              <Row>
+                <Col>
+                  <Card
+                    className="mb-3 shadow-sm bg-body rounded"
+                    border="light"
+                    style={{ backgroundColor: "white" }}
+                  >
+                    <Card.Body>
+                      <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={6} />
+                      </Placeholder>
+                      <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={4} />
+                      </Placeholder>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Card
+                    className="mb-3 shadow-sm bg-body rounded"
+                    border="light"
+                    style={{ backgroundColor: "white" }}
+                  >
+                    <Card.Body>
+                      <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={6} />
+                      </Placeholder>
+                      <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={4} />
+                      </Placeholder>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+            </>
+          )}
           {debts?.length > 0 && !isLoading && <Row>{debtList}</Row>}
           {debts?.length === 0 && !isLoading && (
             <Card
