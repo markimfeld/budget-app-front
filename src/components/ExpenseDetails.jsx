@@ -101,19 +101,22 @@ const ExpenseDetails = () => {
           className="shadow-sm p-3 mb-3 bg-body rounded"
           style={{ border: "none" }}
         >
-          <Card.Header>
-            <Stack direction="horizontal" gap={3}>
-              <span className="fs-4 fw-bold">{expense?.name}</span>
-            </Stack>
+          <Card.Header className="pb-0">
+            <Card.Text className="fs-2 fw-bold text-center">
+              {expense?.name}
+            </Card.Text>
+            <hr className="mb-0" />
           </Card.Header>
           <Card.Body>
-            <Card.Text>
-              Descripción:{" "}
-              <span className="fw-bold">{expense?.description || " - "}</span>
-            </Card.Text>
-            <Card.Text>
-              Monto:{" "}
-              <span className="fw-bold">
+            <Stack className="mb-2" direction="horizontal" gap={3}>
+              <span className="text-muted">Descripción: </span>
+              <span className="ms-auto fw-bold">
+                {expense?.description || " - "}
+              </span>
+            </Stack>
+            <Stack className="mb-2" direction="horizontal" gap={3}>
+              <span className="text-muted">Monto: </span>
+              <span className="ms-auto fw-bold">
                 {currencyType === "ARS" &&
                   new Intl.NumberFormat("en-US", {
                     style: "currency",
@@ -127,13 +130,13 @@ const ExpenseDetails = () => {
                     currency: "USD",
                   }).format(expense.amount.toFixed(2) / currency?.compra || 1)}
               </span>
-            </Card.Text>
-            <Card.Text>
-              Creado:{" "}
-              <span className="fw-bold">
+            </Stack>
+            <Stack className="mb-2" direction="horizontal" gap={3}>
+              <span className="text-muted">Creado: </span>
+              <span className="ms-auto fw-bold">
                 {format(new Date(expense.createdAt), "dd/MM/yyyy kk:mm")}
               </span>
-            </Card.Text>
+            </Stack>
           </Card.Body>
         </Card>
       )}

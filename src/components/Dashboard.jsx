@@ -291,7 +291,7 @@ const Dashboard = () => {
           )}
           {isLoading && (
             <Card
-              className="mb-3"
+              className="mb-3 p-2 shadow-sm bg-body rounded"
               border="light"
               style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
             >
@@ -404,7 +404,7 @@ const Dashboard = () => {
           )}
           {isLoading && (
             <Card
-              className="mb-3"
+              className="mb-3 p-2 shadow-sm bg-body rounded"
               border="light"
               style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
             >
@@ -479,7 +479,7 @@ const Dashboard = () => {
           )}
           {isLoading && (
             <Card
-              className="mb-3"
+              className="mb-3 p-2 shadow-sm bg-body rounded"
               border="light"
               style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
             >

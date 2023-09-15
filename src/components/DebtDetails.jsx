@@ -112,9 +112,9 @@ const DebtDetails = () => {
           style={{ border: "none" }}
         >
           <Card.Header className="pb-0">
-            <Stack direction="horizontal" gap={3}>
-              <span className="fs-4 fw-bold">{debt?.name}</span>
-            </Stack>
+            <Card.Text className="fs-2 fw-bold text-center">
+              {debt?.name}
+            </Card.Text>
             <hr className="mb-0" />
           </Card.Header>
           <Card.Body>
