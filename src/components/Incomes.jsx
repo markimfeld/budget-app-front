@@ -84,7 +84,7 @@ const Incomes = () => {
                     border: "none",
                   }}
                 >
-                  <Card.Body className="py-3">
+                  <Card.Body className="py-2">
                     <Card.Header style={{ border: "none" }} className="px-3">
                       <Placeholder
                         as={Card.Title}
@@ -110,7 +110,7 @@ const Incomes = () => {
                       as={Card.Text}
                       animation="wave"
                     >
-                      <Placeholder xs={2} />
+                      <Placeholder xs={9} />
                     </Placeholder>
                   </Card.Body>
                 </Card>
@@ -123,7 +123,7 @@ const Incomes = () => {
                     border: "none",
                   }}
                 >
-                  <Card.Body className="py-3">
+                  <Card.Body className="py-2">
                     <Card.Header style={{ border: "none" }} className="px-3">
                       <Placeholder
                         as={Card.Title}
@@ -149,7 +149,7 @@ const Incomes = () => {
                       as={Card.Text}
                       animation="wave"
                     >
-                      <Placeholder xs={2} />
+                      <Placeholder xs={9} />
                     </Placeholder>
                   </Card.Body>
                 </Card>
@@ -164,7 +164,7 @@ const Incomes = () => {
                     border: "none",
                   }}
                 >
-                  <Card.Body className="py-3">
+                  <Card.Body className="py-2">
                     <Card.Header style={{ border: "none" }} className="px-3">
                       <Placeholder
                         as={Card.Title}
@@ -190,7 +190,7 @@ const Incomes = () => {
                       as={Card.Text}
                       animation="wave"
                     >
-                      <Placeholder xs={2} />
+                      <Placeholder xs={9} />
                     </Placeholder>
                   </Card.Body>
                 </Card>
@@ -203,7 +203,7 @@ const Incomes = () => {
                     border: "none",
                   }}
                 >
-                  <Card.Body className="py-3">
+                  <Card.Body className="py-2">
                     <Card.Header style={{ border: "none" }} className="px-3">
                       <Placeholder
                         as={Card.Title}
@@ -229,7 +229,167 @@ const Incomes = () => {
                       as={Card.Text}
                       animation="wave"
                     >
-                      <Placeholder xs={2} />
+                      <Placeholder xs={9} />
+                    </Placeholder>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={6} lg={6}>
+                <Card
+                  className="mb-4 pb-3 shadow-sm bg-body rounded"
+                  style={{
+                    backgroundColor: "hsl(0, 0%, 97%, 0.5)",
+                    border: "none",
+                  }}
+                >
+                  <Card.Body className="py-2">
+                    <Card.Header style={{ border: "none" }} className="px-3">
+                      <Placeholder
+                        as={Card.Title}
+                        animation="wave"
+                        className="justify-content-between"
+                      >
+                        <Stack direction="horizontal" gap={3}>
+                          <Placeholder xs={3} />
+                          <Placeholder.Button
+                            as={DropdownButton}
+                            variant="link"
+                            className="ms-auto"
+                            animation="wave"
+                          >
+                            <i className="fa-sharp fa-solid fa-plus gray-color"></i>
+                          </Placeholder.Button>
+                        </Stack>
+                      </Placeholder>
+                    </Card.Header>
+
+                    <Placeholder
+                      className="px-3"
+                      as={Card.Text}
+                      animation="wave"
+                    >
+                      <Placeholder xs={9} />
+                    </Placeholder>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={6} lg={6}>
+                <Card
+                  className="mb-4 pb-3 shadow-sm bg-body rounded"
+                  style={{
+                    backgroundColor: "hsl(0, 0%, 97%, 0.5)",
+                    border: "none",
+                  }}
+                >
+                  <Card.Body className="py-2">
+                    <Card.Header style={{ border: "none" }} className="px-3">
+                      <Placeholder
+                        as={Card.Title}
+                        animation="wave"
+                        className="justify-content-between"
+                      >
+                        <Stack direction="horizontal" gap={3}>
+                          <Placeholder xs={3} />
+                          <Placeholder.Button
+                            as={DropdownButton}
+                            variant="link"
+                            className="ms-auto"
+                            animation="wave"
+                          >
+                            <i className="fa-sharp fa-solid fa-plus gray-color"></i>
+                          </Placeholder.Button>
+                        </Stack>
+                      </Placeholder>
+                    </Card.Header>
+
+                    <Placeholder
+                      className="px-3"
+                      as={Card.Text}
+                      animation="wave"
+                    >
+                      <Placeholder xs={9} />
+                    </Placeholder>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={6} lg={6}>
+                <Card
+                  className="mb-4 pb-3 shadow-sm bg-body rounded"
+                  style={{
+                    backgroundColor: "hsl(0, 0%, 97%, 0.5)",
+                    border: "none",
+                  }}
+                >
+                  <Card.Body className="py-2">
+                    <Card.Header style={{ border: "none" }} className="px-3">
+                      <Placeholder
+                        as={Card.Title}
+                        animation="wave"
+                        className="justify-content-between"
+                      >
+                        <Stack direction="horizontal" gap={3}>
+                          <Placeholder xs={3} />
+                          <Placeholder.Button
+                            as={DropdownButton}
+                            variant="link"
+                            className="ms-auto"
+                            animation="wave"
+                          >
+                            <i className="fa-sharp fa-solid fa-plus gray-color"></i>
+                          </Placeholder.Button>
+                        </Stack>
+                      </Placeholder>
+                    </Card.Header>
+
+                    <Placeholder
+                      className="px-3"
+                      as={Card.Text}
+                      animation="wave"
+                    >
+                      <Placeholder xs={9} />
+                    </Placeholder>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={6} lg={6}>
+                <Card
+                  className="mb-4 pb-3 shadow-sm bg-body rounded"
+                  style={{
+                    backgroundColor: "hsl(0, 0%, 97%, 0.5)",
+                    border: "none",
+                  }}
+                >
+                  <Card.Body className="py-2">
+                    <Card.Header style={{ border: "none" }} className="px-3">
+                      <Placeholder
+                        as={Card.Title}
+                        animation="wave"
+                        className="justify-content-between"
+                      >
+                        <Stack direction="horizontal" gap={3}>
+                          <Placeholder xs={3} />
+                          <Placeholder.Button
+                            as={DropdownButton}
+                            variant="link"
+                            className="ms-auto"
+                            animation="wave"
+                          >
+                            <i className="fa-sharp fa-solid fa-plus gray-color"></i>
+                          </Placeholder.Button>
+                        </Stack>
+                      </Placeholder>
+                    </Card.Header>
+
+                    <Placeholder
+                      className="px-3"
+                      as={Card.Text}
+                      animation="wave"
+                    >
+                      <Placeholder xs={9} />
                     </Placeholder>
                   </Card.Body>
                 </Card>
