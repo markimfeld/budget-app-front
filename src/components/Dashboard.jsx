@@ -222,12 +222,12 @@ const Dashboard = () => {
         <Col md={6} lg={4}>
           {!isLoading && (
             <Card
-              className="shadow-sm mb-4 bg-body rounded"
+              className="shadow-sm p-1 mb-3 bg-body rounded"
               style={{ border: "none" }}
             >
               <Card.Body>
                 <p className="m-0 mb-1">Ingreso total</p>
-                <h3 className="ms-auto fw-bold mb-3">
+                <h3 className="ms-auto fw-bold mb-0">
                   {currencyType === "ARS" &&
                     new Intl.NumberFormat("en-US", {
                       style: "currency",
@@ -242,7 +242,7 @@ const Dashboard = () => {
                       currency: "USD",
                     }).format(totalIncomes / currency?.compra)}
                 </h3>
-                {lastMonthTotalIncomes > 0 && (
+                {/* {lastMonthTotalIncomes > 0 && (
                   <div>
                     {incomePorcentageBetweenLastMonth !== "-Infinity" &&
                       incomePorcentageBetweenLastMonth > 0 && (
@@ -285,22 +285,22 @@ const Dashboard = () => {
                       No hay datos del mes anterior
                     </span>
                   </div>
-                )}
+                )} */}
               </Card.Body>
             </Card>
           )}
           {isLoading && (
             <Card
-              className="mb-3 p-2 shadow-sm bg-body rounded"
+              className="mb-4 p-2 shadow-sm bg-body rounded"
               border="light"
               style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
             >
               <Card.Body>
                 <Placeholder as={Card.Text} animation="glow">
-                  <Placeholder xs={6} />
+                  <Placeholder xs={4} />
                 </Placeholder>
                 <Placeholder as={Card.Text} animation="glow">
-                  <Placeholder xs={4} />
+                  <Placeholder xs={9} />
                 </Placeholder>
               </Card.Body>
             </Card>
@@ -335,12 +335,12 @@ const Dashboard = () => {
         <Col md={6} lg={4}>
           {!isLoading && (
             <Card
-              className="shadow-sm mb-4 bg-body rounded"
+              className="shadow-sm p-1 mb-3 bg-body rounded"
               style={{ border: "none" }}
             >
               <Card.Body>
                 <p className="m-0 mb-1">Gasto total</p>
-                <h3 className="ms-auto fw-bold mb-3">
+                <h3 className="ms-auto fw-bold mb-0">
                   {currencyType === "ARS" &&
                     new Intl.NumberFormat("en-US", {
                       style: "currency",
@@ -355,7 +355,7 @@ const Dashboard = () => {
                       currency: "USD",
                     }).format(spentTotals / currency?.compra)}
                 </h3>
-                {lastSpentTotals > 0 && (
+                {/* {lastSpentTotals > 0 && (
                   <div>
                     {expensePorcentageBetweenLastMonth !== "-Infinity" &&
                       expensePorcentageBetweenLastMonth > 0 && (
@@ -398,22 +398,22 @@ const Dashboard = () => {
                       No hay datos del mes anterior
                     </span>
                   </div>
-                )}
+                )} */}
               </Card.Body>
             </Card>
           )}
           {isLoading && (
             <Card
-              className="mb-3 p-2 shadow-sm bg-body rounded"
+              className="mb-4 p-2 shadow-sm bg-body rounded"
               border="light"
               style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
             >
               <Card.Body>
                 <Placeholder as={Card.Text} animation="glow">
-                  <Placeholder xs={6} />
+                  <Placeholder xs={4} />
                 </Placeholder>
                 <Placeholder as={Card.Text} animation="glow">
-                  <Placeholder xs={4} />
+                  <Placeholder xs={9} />
                 </Placeholder>
               </Card.Body>
             </Card>
@@ -427,7 +427,7 @@ const Dashboard = () => {
             >
               <Card.Body>
                 <p className="m-0 mb-1">Balance total</p>
-                <h3 className="ms-auto fw-bold mb-3">
+                <h3 className="ms-auto fw-bold">
                   {currencyType === "ARS" &&
                     new Intl.NumberFormat("en-US", {
                       style: "currency",
@@ -447,7 +447,7 @@ const Dashboard = () => {
                     )}
                 </h3>
 
-                {leftPorcentage >= 70 && (
+                {/* {leftPorcentage >= 70 && (
                   <ProgressBar
                     now={leftPorcentage}
                     label={`${leftPorcentage}% disponible`}
@@ -473,22 +473,22 @@ const Dashboard = () => {
                       No hay datos de este mes aún
                     </span>
                   </div>
-                )}
+                )} */}
               </Card.Body>
             </Card>
           )}
           {isLoading && (
             <Card
-              className="mb-3 p-2 shadow-sm bg-body rounded"
+              className="mb-4 p-2 shadow-sm bg-body rounded"
               border="light"
               style={{ backgroundColor: "hsl(0, 0%, 97%)" }}
             >
               <Card.Body>
                 <Placeholder as={Card.Text} animation="glow">
-                  <Placeholder xs={6} />
+                  <Placeholder xs={4} />
                 </Placeholder>
                 <Placeholder as={Card.Text} animation="glow">
-                  <Placeholder xs={4} />
+                  <Placeholder xs={9} />
                 </Placeholder>
               </Card.Body>
             </Card>

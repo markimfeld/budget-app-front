@@ -170,18 +170,18 @@ const Header = () => {
                   <NavDropdown.Item onClick={() => handleProfile()}>
                     Tu perfil
                   </NavDropdown.Item>
-                  <NavDropdown.Item
+                  {/* <NavDropdown.Item
                     onClick={() => {
                       navigate("/informes");
                       handleClose();
                     }}
                   >
                     Gráficos
-                  </NavDropdown.Item>
+                  </NavDropdown.Item> */}
                   <NavDropdown.Divider />
-                  <NavDropdown.Item onClick={() => handleTheme()}>
+                  {/* <NavDropdown.Item onClick={() => handleTheme()}>
                     {theme === "dark" ? "Tema claro" : "Tema oscuro"}
-                  </NavDropdown.Item>
+                  </NavDropdown.Item> */}
                   <NavDropdown.Item onClick={() => handleCurrency()}>
                     {currencyType === "USD"
                       ? "Cambiar a pesos"
