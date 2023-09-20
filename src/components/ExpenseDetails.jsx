@@ -137,6 +137,12 @@ const ExpenseDetails = () => {
                 {format(new Date(expense.createdAt), "dd/MM/yyyy kk:mm")}
               </span>
             </Stack>
+            <Stack className="mb-2" direction="horizontal" gap={3}>
+              <span className="text-muted">Presupuesto: </span>
+              <span className="ms-auto fw-bold">
+                {expense?.budget.name || " - "}
+              </span>
+            </Stack>
           </Card.Body>
         </Card>
       )}

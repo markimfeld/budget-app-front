@@ -144,6 +144,8 @@
     --bs-form-control-bg: white;
     --bs-form-control-border-color: #ccc;
     --bs-form-control-color: #000;
+
+    --bs-url-image: url("");
 }
 
 [data-theme="dark"] {
@@ -223,6 +225,9 @@
     --bs-form-control-bg: #373E68;
     --bs-form-control-border-color: #373E68;
     --bs-form-control-color: white;
+
+    /* btn close */
+    --bs-url-image: url("../public/xmark-solid.svg");
 }
 
 body {
@@ -345,21 +350,22 @@ body {
 
 
 .bg-body-dark {
-    background-color: var(--bs-nav-bg) !important;
-    color: white;
+    /* background-color: var(--bs-nav-bg) !important;
+    color: white; */
 }
 
 .dropdown-menu {
-    background-color: var(--bs-nav-bg) !important;
-    color: white;
+    /* background-color: var(--bs-nav-bg) !important;
+    color: white; */
 }
 
 .dropdown-item {
-    color: white;
+    /* color: white; */
 }
 
 .btn-close {
-    background-image: url("../public/xmark-solid.svg");
+    /* background-image: url("../public/xmark-solid.svg"); */
+    /* background-image: var(--bs-url-image); */
 }
 
 .alert-success {
