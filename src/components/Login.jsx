@@ -104,7 +104,7 @@ const Login = () => {
               <Card className="shadow-sm py-2 mb-3 bg-body rounded-0">
                 <Card.Body>
                   <Card.Title className="text-center fs-1 mb-4">
-                    <i className="fa-solid fa-coins"></i> Finanzas perfectas
+                    <i className="fa-solid fa-coins"></i> Finanzas claras
                   </Card.Title>
                   <Form noValidate onSubmit={handleSubmit}>
                     <Row className="g-2 mb-2">

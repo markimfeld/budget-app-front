@@ -88,7 +88,7 @@ const ForgotPasswordForm = () => {
               <Card className="shadow-sm py-2 mb-3 bg-body rounded-0">
                 <Card.Body>
                   <Card.Title className="text-center fs-1 mb-4">
-                    <i className="fa-solid fa-coins"></i> Finanzas perfectas
+                    <i className="fa-solid fa-coins"></i> Finanzas claras
                   </Card.Title>
                   <Card.Subtitle className="fs-5 mb-2">
                     Ingresá tu correo electrónico con el que te registraste.
@@ -145,7 +145,7 @@ const ForgotPasswordForm = () => {
               <Card className="shadow-sm py-2 mb-3 bg-body rounded-0">
                 <Card.Body>
                   <Card.Title className="text-center fs-1 mb-4">
-                    <i className="fa-solid fa-coins"></i> Finanzas perfectas
+                    <i className="fa-solid fa-coins"></i> Finanzas claras
                   </Card.Title>
 
                   {showMessage && (
